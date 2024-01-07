@@ -9,5 +9,4 @@ public class AinotebookApplication {
     public static void main(String[] args) {
         SpringApplication.run(AinotebookApplication.class, args);
     }
-
 }

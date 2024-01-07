@@ -1,5 +1,3 @@
 package com.abx.ainotebook.repository;
 
-public class NoteRepository {
-
-}
+public class NoteRepository {}
