@@ -11,6 +11,17 @@ import org.springframework.stereotype.Service;
 public class NoteBookService {
     private NotebookRepository notebookRepository;
 
+    public NoteBookService(NotebookRepository notebookRepository) {
+        this.notebookRepository = notebookRepository;
+    }
+
+    public Notebook createNotebook(
+            UUID notebookId, UUID userId, String title, String category, Timestamp createdAt, Timestamp updatedAt) {
+        var notebook = new Notebook(notebookId, userId, title, category, createdAt, updatedAt);
+        notebookRepository.save(notebook);
+        return notebook;
+    }
+
     public List<Notebook> findAll() {
         return notebookRepository.findAll();
     }
