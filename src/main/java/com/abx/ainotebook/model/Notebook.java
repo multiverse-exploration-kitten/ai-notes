@@ -25,12 +25,17 @@ public class Notebook {
     @Column(name = "created_at")
     private Timestamp createdAt;
 
-    public Notebook(UUID notebookId, UUID userId, String title, String category, Timestamp createdAt) {
+    @Column(name = "updated_at")
+    private Timestamp updatedAt;
+
+    public Notebook(
+            UUID notebookId, UUID userId, String title, String category, Timestamp createdAt, Timestamp updatedAt) {
         this.notebookId = notebookId;
         this.userId = userId;
         this.title = title;
         this.category = category;
         this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
     }
 
     public UUID getNotebookId() {
@@ -51,6 +56,14 @@ public class Notebook {
 
     public Timestamp getCreatedAt() {
         return createdAt;
+    }
+
+    public Timestamp getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(Timestamp updatedAt) {
+        this.updatedAt = updatedAt;
     }
 
     public void setUserId(UUID userId) {
