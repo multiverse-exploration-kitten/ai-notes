@@ -9,16 +9,17 @@ CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 CREATE TABLE IF NOT EXISTS ai_notes.users (
     user_id SERIAL PRIMARY KEY DEFAULT uuid_generate_v4(),
     notebook_name VARCHAR(255),
-    notebook_id UUID REFERENCES ai_notes.notebook(notebook_id),
     );
 
 CREATE TABLE IF NOT EXISTS ai_notes.notebook (
-    notebook_id SERIAL PRIMARY KEY DEFAULT uuid_generate_v4(),
-    user_id UUID REFERENCES ai_notes.users(user_id),
+    notebook_id PRIMARY KEY DEFAULT uuid_generate_v4(),
+    user_id UUID,
     title VARCHAR(255),
     category VARCHAR(255),
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     );
-
+CREATE INDEX "user_id_title_index" ON "ai_notes.notebook"("user_id","title");
+CREATE INDEX "user_id_category_index" ON "ai_notes.notebook"("user_id","category");
 
 

@@ -4,30 +4,35 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-
 import java.sql.Timestamp;
 import java.util.UUID;
+
 @Entity
 @Table(name = "ai_notes")
-public class Note {
+public class Notebook {
 
     @Id
     private UUID notebookId;
+
     private UUID userId;
+
     @Column(name = "title")
     private String title;
-    @Column(name="category")
+
+    @Column(name = "category")
     private String category;
+
     @Column(name = "created_at")
     private Timestamp createdAt;
 
-    public Note(UUID notebookId, UUID userId, String title, String category, Timestamp createdAt){
+    public Notebook(UUID notebookId, UUID userId, String title, String category, Timestamp createdAt) {
         this.notebookId = notebookId;
         this.userId = userId;
         this.title = title;
         this.category = category;
         this.createdAt = createdAt;
     }
+
     public UUID getNotebookId() {
         return notebookId;
     }
