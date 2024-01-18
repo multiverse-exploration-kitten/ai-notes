@@ -8,7 +8,8 @@ CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 
 CREATE TABLE IF NOT EXISTS ai_notes.users (
     user_id SERIAL PRIMARY KEY DEFAULT uuid_generate_v4(),
-    notebook_name VARCHAR(255),
+    user_name VARCHAR(255),
+    email VARCHAR(255),
     );
 
 CREATE TABLE IF NOT EXISTS ai_notes.notebook (

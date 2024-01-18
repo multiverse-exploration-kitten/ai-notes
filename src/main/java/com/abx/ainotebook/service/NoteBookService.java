@@ -15,9 +15,14 @@ public class NoteBookService {
         this.notebookRepository = notebookRepository;
     }
 
-    public Notebook createNotebook(
-            UUID notebookId, UUID userId, String title, String category, Timestamp createdAt, Timestamp updatedAt) {
-        var notebook = new Notebook(notebookId, userId, title, category, createdAt, updatedAt);
+    public Notebook createNotebook(CreateNotebookDto createNotebookDto) {
+        var notebook = new Notebook(
+                createNotebookDto.getNotebookId(),
+                createNotebookDto.getUserId(),
+                createNotebookDto.getTitle(),
+                createNotebookDto.getCategory(),
+                createNotebookDto.getCreatedAt(),
+                createNotebookDto.getUpdatedAt());
         notebookRepository.save(notebook);
         return notebook;
     }

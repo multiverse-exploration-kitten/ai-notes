@@ -1,6 +1,7 @@
 package com.abx.ainotebook.controller;
 
 import com.abx.ainotebook.model.Notebook;
+import com.abx.ainotebook.service.CreateNotebookDto;
 import com.abx.ainotebook.service.NoteBookService;
 import java.util.List;
 import java.util.Objects;
@@ -20,24 +21,26 @@ public class NoteBookController {
         this.noteBookService = noteBookService;
     }
 
-    @GetMapping("/notebook/{user_id_category_index}")
-    public List<Notebook> findByCategoryUAndUserId(@PathVariable String category, UUID userID) {
-        return noteBookService.findByCategoryUAndUserId(category, userID);
+    @GetMapping("/notebook/{user_uuid}/{user_id_category_index}")
+    public ResponseEntity<List<Notebook>> findByCategoryUAndUserId(
+            @PathVariable("user_id_category_index") String category, @PathVariable("user_uuid") UUID userID) {
+        if (Objects.equals(category, "")) {
+            return ResponseEntity.badRequest().body(null);
+        }
+        if (Objects.equals(userID, null)) {
+            return ResponseEntity.badRequest().body(null);
+        }
+        var found = noteBookService.findByCategoryUAndUserId(category, userID);
+        return ResponseEntity.ok(found);
     }
 
     @PostMapping("notebook/create")
-    public ResponseEntity<Notebook> createNotebook(@RequestBody Notebook notebook) {
-        if (Objects.equals(notebook.getNotebookId(), null)) {
+    public ResponseEntity<CreateNotebookDto> createNotebook(@RequestBody CreateNotebookDto createNotebookDto) {
+        if (Objects.equals(createNotebookDto.getNotebookId(), null)) {
             return ResponseEntity.badRequest().body(null);
         }
-
-        var createdNotebook = noteBookService.createNotebook(
-                notebook.getNotebookId(),
-                notebook.getUserId(),
-                notebook.getTitle(),
-                notebook.getCategory(),
-                notebook.getCreatedAt(),
-                notebook.getUpdatedAt());
-        return ResponseEntity.ok(createdNotebook);
+        Notebook createdNotebook = noteBookService.createNotebook(createNotebookDto);
+        CreateNotebookDto responseDto = createNotebookDto.convertToDto(createdNotebook);
+        return ResponseEntity.ok(responseDto);
     }
 }
