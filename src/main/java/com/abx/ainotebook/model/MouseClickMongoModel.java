@@ -7,22 +7,25 @@ import org.springframework.data.mongodb.core.mapping.Field;
 import java.time.Instant;
 import java.util.UUID;
 
-@Document(collection = "mouseclick_coordinate")
-public class MouseclickCoordinateMongoModel {
+@Document(collection = "mouseclick")
+public class MouseClickMongoModel {
     @Id
     private UUID id;
 
     @Field
-    private UUID user_id;
+    private UUID userId;
 
     @Field
-    private UUID notebook_id;
+    private UUID notebookId;
 
     @Field("x")
     private int coordX;
 
     @Field("y")
     private int coordY;
+
+    @Field("target")
+    private String targetId;
 
     private Instant timestamp;
 
@@ -34,20 +37,20 @@ public class MouseclickCoordinateMongoModel {
         this.id = id;
     }
 
-    public UUID getUser_id() {
-        return user_id;
+    public UUID getUserId() {
+        return userId;
     }
 
-    public void setUser_id(UUID user_id) {
-        this.user_id = user_id;
+    public void setUserId(UUID userId) {
+        this.userId = userId;
     }
 
-    public UUID getNotebook_id() {
-        return notebook_id;
+    public UUID getNotebookId() {
+        return notebookId;
     }
 
-    public void setNotebook_id(UUID notebook_id) {
-        this.notebook_id = notebook_id;
+    public void setNotebookId(UUID notebookId) {
+        this.notebookId = notebookId;
     }
 
     public int getCoordX() {
@@ -64,6 +67,14 @@ public class MouseclickCoordinateMongoModel {
 
     public void setCoordY(int coordY) {
         this.coordY = coordY;
+    }
+
+    public String getTargetId() {
+        return targetId;
+    }
+
+    public void setTargetId(String targetId) {
+        this.targetId = targetId;
     }
 
     public Instant getTimestamp() {
