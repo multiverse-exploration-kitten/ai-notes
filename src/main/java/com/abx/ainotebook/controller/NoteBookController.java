@@ -1,7 +1,9 @@
 package com.abx.ainotebook.controller;
 
+import com.abx.ainotebook.dto.CreateNotebookDto;
+import com.abx.ainotebook.dto.ImmutableNotebookDto;
+import com.abx.ainotebook.dto.NotebookDto;
 import com.abx.ainotebook.model.Notebook;
-import com.abx.ainotebook.service.CreateNotebookDto;
 import com.abx.ainotebook.service.NoteBookService;
 import java.util.List;
 import java.util.Objects;
@@ -34,13 +36,22 @@ public class NoteBookController {
         return ResponseEntity.ok(found);
     }
 
-    @PostMapping("notebook/create")
-    public ResponseEntity<CreateNotebookDto> createNotebook(@RequestBody CreateNotebookDto createNotebookDto) {
-        if (Objects.equals(createNotebookDto.getNotebookId(), null)) {
-            return ResponseEntity.badRequest().body(null);
+    @PostMapping("notebook/{user-uuid}/create")
+    public ResponseEntity<NotebookDto> createNotebook(
+            @RequestBody CreateNotebookDto createNotebookDto, @PathVariable("user-uuid") UUID userUuid) {
+        if (Objects.equals(createNotebookDto.getTitle(), null)) {
+            return ResponseEntity.badRequest().build();
         }
-        Notebook createdNotebook = noteBookService.createNotebook(createNotebookDto);
-        CreateNotebookDto responseDto = createNotebookDto.convertToDto(createdNotebook);
-        return ResponseEntity.ok(responseDto);
+        if (Objects.equals(createNotebookDto.getTitle(), null)) {
+            return ResponseEntity.badRequest().build();
+        }
+        Notebook createdNotebook = noteBookService.createNotebook(createNotebookDto, userUuid);
+        NotebookDto responseNotebook = ImmutableNotebookDto.builder()
+                .category(createdNotebook.getCategory())
+                .title(createdNotebook.getTitle())
+                .createdAt(createdNotebook.getCreatedAt())
+                .updatedAt(createdNotebook.getUpdatedAt())
+                .build();
+        return ResponseEntity.ok(responseNotebook);
     }
 }
