@@ -38,6 +38,14 @@ public class Notebook {
         this.updatedAt = updatedAt;
     }
 
+    //     TODO: overload constructor
+    public Notebook(UUID userId, String title, String category) {
+        this.userId = userId;
+        this.title = title;
+        this.category = category;
+    }
+    //    public Note()
+
     public UUID getNotebookId() {
         return notebookId;
     }

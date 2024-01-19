@@ -1,5 +1,6 @@
 package com.abx.ainotebook.service;
 
+import com.abx.ainotebook.dto.CreateNotebookDto;
 import com.abx.ainotebook.model.Notebook;
 import com.abx.ainotebook.model.NotebookRepository;
 import java.sql.Timestamp;
@@ -15,14 +16,8 @@ public class NoteBookService {
         this.notebookRepository = notebookRepository;
     }
 
-    public Notebook createNotebook(CreateNotebookDto createNotebookDto) {
-        var notebook = new Notebook(
-                createNotebookDto.getNotebookId(),
-                createNotebookDto.getUserId(),
-                createNotebookDto.getTitle(),
-                createNotebookDto.getCategory(),
-                createNotebookDto.getCreatedAt(),
-                createNotebookDto.getUpdatedAt());
+    public Notebook createNotebook(CreateNotebookDto createNotebookDto, UUID userUuid) {
+        var notebook = new Notebook(userUuid, createNotebookDto.getTitle(), createNotebookDto.getCategory());
         notebookRepository.save(notebook);
         return notebook;
     }
