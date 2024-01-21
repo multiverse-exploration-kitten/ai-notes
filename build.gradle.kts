@@ -27,9 +27,7 @@ dependencies {
     implementation("com.diffplug.spotless:spotless-plugin-gradle:6.18.0")
     implementation("org.springframework.boot:spring-boot-starter-data-mongodb")
 
-//    implementation ('com.theokanning.openai-gpt3-java:<api|client|service>:<version>')
     implementation ("com.theokanning.openai-gpt3-java:service:0.12.0")
-    implementation ("com.theokanning.openai-gpt3-java:api")
 
 
     annotationProcessor("org.immutables:value:2.9.3")
