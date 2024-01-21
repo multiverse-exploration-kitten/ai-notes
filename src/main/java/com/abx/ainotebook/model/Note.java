@@ -3,8 +3,6 @@ package com.abx.ainotebook.model;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import java.sql.Timestamp;
-import java.time.Instant;
 import java.util.UUID;
 
 @Document(collection = "notes")
@@ -21,9 +19,9 @@ public class Note {
 
     private String content;
 
-    private Timestamp createdAt;
+    private Long createdAt;
 
-    private Timestamp updatedAt;
+    private Long updatedAt;
 
     public Note(
         UUID id,
@@ -31,8 +29,8 @@ public class Note {
         UUID notebookId,
         String title,
         String content,
-        Timestamp createdAt,
-        Timestamp updatedAt
+        Long createdAt,
+        Long updatedAt
     ) {
         this.id = id;
         this.userId = userId;
@@ -46,11 +44,6 @@ public class Note {
     public Note(UUID id, UUID userId) {
         this.id = id;
         this.userId = userId;
-        this.notebookId = null;
-        this.title = "untitled";
-        this.content = "";
-        this.createdAt = Timestamp.from(Instant.now());;
-        this.updatedAt = Timestamp.from(Instant.now());;
     }
 
     public UUID getId() { return this.id; }
@@ -93,7 +86,7 @@ public class Note {
         return this.createdAt;
     }
 
-    public void setCreatedAt(Timestamp createdAt) {
+    public void setCreatedAt(Long createdAt) {
         this.createdAt = createdAt;
     }
 
@@ -101,7 +94,7 @@ public class Note {
         return this.updatedAt;
     }
 
-    public void setUpdatedAt(Timestamp updatedAt) {
+    public void setUpdatedAt(Long updatedAt) {
         this.updatedAt = updatedAt;
     }
 
