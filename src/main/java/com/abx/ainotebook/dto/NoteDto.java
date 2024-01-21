@@ -15,5 +15,4 @@ public interface NoteDto {
     long getCreatedAt();
 
     long getUpdatedAt();
-
 }

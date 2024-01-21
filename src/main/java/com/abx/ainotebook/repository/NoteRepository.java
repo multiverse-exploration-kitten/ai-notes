@@ -18,5 +18,4 @@ public interface NoteRepository extends MongoRepository<Note, String> {
     List<Note> findByNotebookId(UUID notebookId);
 
     List<Note> findByTitleContaining(String title, UUID userId);
-
 }

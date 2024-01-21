@@ -1,9 +1,8 @@
 package com.abx.ainotebook.model;
 
+import java.util.UUID;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
-
-import java.util.UUID;
 
 @Document(collection = "notes")
 public class Note {
@@ -23,15 +22,7 @@ public class Note {
 
     private Long updatedAt;
 
-    public Note(
-        UUID id,
-        UUID userId,
-        UUID notebookId,
-        String title,
-        String content,
-        Long createdAt,
-        Long updatedAt
-    ) {
+    public Note(UUID id, UUID userId, UUID notebookId, String title, String content, Long createdAt, Long updatedAt) {
         this.id = id;
         this.userId = userId;
         this.notebookId = notebookId;
@@ -46,9 +37,13 @@ public class Note {
         this.userId = userId;
     }
 
-    public UUID getId() { return this.id; }
+    public UUID getId() {
+        return this.id;
+    }
 
-    public void setId(UUID id) { this.id = id; }
+    public void setId(UUID id) {
+        this.id = id;
+    }
 
     public UUID getUserId(UUID userId) {
         return this.userId;
@@ -70,7 +65,7 @@ public class Note {
         return this.title;
     }
 
-    public void setTitle(String title){
+    public void setTitle(String title) {
         this.title = title;
     }
 
@@ -97,5 +92,4 @@ public class Note {
     public void setUpdatedAt(Long updatedAt) {
         this.updatedAt = updatedAt;
     }
-
 }

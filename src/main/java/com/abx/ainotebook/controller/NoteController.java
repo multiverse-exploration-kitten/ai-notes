@@ -5,12 +5,11 @@ import com.abx.ainotebook.dto.ImmutableNoteDto;
 import com.abx.ainotebook.dto.NoteDto;
 import com.abx.ainotebook.model.Note;
 import com.abx.ainotebook.service.NoteService;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-
 import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 public class NoteController {
@@ -21,9 +20,7 @@ public class NoteController {
     }
 
     @GetMapping("/note/{noteId}")
-    public ResponseEntity<Note> getNote(
-            @PathVariable("noteId") UUID noteId
-    ) {
+    public ResponseEntity<Note> getNote(@PathVariable("noteId") UUID noteId) {
         if (Objects.equals(noteId, null)) {
             return ResponseEntity.badRequest().body(null);
         }
@@ -33,10 +30,7 @@ public class NoteController {
 
     @PostMapping("user/{userId}/notebook/{notebookId}/create_note")
     public ResponseEntity<NoteDto> createNote(
-            @RequestBody CreateNoteDto createNoteDto,
-            @PathVariable UUID userId,
-            @PathVariable UUID notebookId
-            ) {
+            @RequestBody CreateNoteDto createNoteDto, @PathVariable UUID userId, @PathVariable UUID notebookId) {
         if (Objects.equals(createNoteDto.getTitle(), null)) {
             return ResponseEntity.badRequest().build();
         }

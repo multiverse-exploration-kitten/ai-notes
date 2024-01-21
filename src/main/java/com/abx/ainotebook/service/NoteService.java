@@ -3,11 +3,10 @@ package com.abx.ainotebook.service;
 import com.abx.ainotebook.dto.CreateNoteDto;
 import com.abx.ainotebook.model.Note;
 import com.abx.ainotebook.repository.NoteRepository;
-import org.springframework.stereotype.Service;
-
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import org.springframework.stereotype.Service;
 
 @Service
 public class NoteService {
@@ -38,5 +37,4 @@ public class NoteService {
     public List<Note> findByTitleContaining(String title, UUID userId) {
         return noteRepository.findByTitleContaining(title, userId);
     }
-
 }
