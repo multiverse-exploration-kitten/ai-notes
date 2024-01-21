@@ -11,6 +11,7 @@ public class OpenAiServiceConfiguration {
 
     @Value("${openai.token}")
     private String openaiToken;
+
     @Value("${openai.token}")
     private String openaiToken2;
 
