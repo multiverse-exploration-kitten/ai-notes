@@ -19,7 +19,7 @@ public class KafkaConsumerConfig {
     public ConsumerFactory<UUID, MouseClick> consumerFactory() {
         Map<String, Object> props = new HashMap<>();
         props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9092");
-        props.put(ConsumerConfig.GROUP_ID_CONFIG, "group-trace"); // identify consumer group
+        props.put(ConsumerConfig.GROUP_ID_CONFIG, "group-mouse-click"); // identify consumer group
         return new DefaultKafkaConsumerFactory<>(
                 props, new UUIDDeserializer(), new JsonDeserializer<>(MouseClick.class));
     }
