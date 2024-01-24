@@ -16,13 +16,13 @@ public class KafkaProducerService {
         this.kafkaTemplate = kafkaTemplate;
     }
 
-    public void recordMouseClick(UUID userId, UUID notebookId, long coordX, long coordY, String targetId) {
+    public void recordMouseClick(UUID notebookId, long coordX, long coordY, String targetId) {
         MouseClick mouseClick = ImmutableMouseClick.builder()
                 .x(coordX)
                 .y(coordY)
-                .target(targetId)
+                .clickedTarget(targetId)
                 .notebookId(notebookId)
                 .build();
-        kafkaTemplate.send(TOPIC_MOUSE_CLICK, userId, mouseClick);
+        kafkaTemplate.send(TOPIC_MOUSE_CLICK, notebookId, mouseClick);
     }
 }

@@ -12,19 +12,16 @@ public class MouseClickMongoModel {
     private UUID id;
 
     @Field
-    private UUID userId;
-
-    @Field
     private UUID notebookId;
 
     @Field("x")
-    private int coordX;
+    private long coordX;
 
     @Field("y")
-    private int coordY;
+    private long coordY;
 
     @Field("target")
-    private String targetId;
+    private String clickedTargetId;
 
     private Instant timestamp;
 
@@ -36,14 +33,6 @@ public class MouseClickMongoModel {
         this.id = id;
     }
 
-    public UUID getUserId() {
-        return userId;
-    }
-
-    public void setUserId(UUID userId) {
-        this.userId = userId;
-    }
-
     public UUID getNotebookId() {
         return notebookId;
     }
@@ -52,28 +41,28 @@ public class MouseClickMongoModel {
         this.notebookId = notebookId;
     }
 
-    public int getCoordX() {
+    public long getCoordX() {
         return coordX;
     }
 
-    public void setCoordX(int coordX) {
+    public void setCoordX(long coordX) {
         this.coordX = coordX;
     }
 
-    public int getCoordY() {
+    public long getCoordY() {
         return coordY;
     }
 
-    public void setCoordY(int coordY) {
+    public void setCoordY(long coordY) {
         this.coordY = coordY;
     }
 
-    public String getTargetId() {
-        return targetId;
+    public String getClickedTargetId() {
+        return clickedTargetId;
     }
 
-    public void setTargetId(String targetId) {
-        this.targetId = targetId;
+    public void setClickedTargetId(String clickedTargetId) {
+        this.clickedTargetId = clickedTargetId;
     }
 
     public Instant getTimestamp() {

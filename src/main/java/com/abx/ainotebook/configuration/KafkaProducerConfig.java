@@ -17,8 +17,9 @@ import org.springframework.kafka.core.ProducerFactory;
 import org.springframework.kafka.support.serializer.JsonSerializer;
 
 @Configuration
-public class KafkaConfig {
+public class KafkaProducerConfig {
     @Bean
+    // TODO: what do we need admin for?
     public KafkaAdmin kafkaAdmin() {
         Map<String, Object> configs = new HashMap<>();
         configs.put(AdminClientConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9092");
@@ -31,11 +32,11 @@ public class KafkaConfig {
     }
 
     @Bean
-    // TODO: change factory value type
+    // TODO: for the value type, should it be MouseClick or ImmutableMouseClick?
+    // TODO: move config values to app properties
     public ProducerFactory<UUID, MouseClick> producerFactory() {
         Map<String, Object> configProps = new HashMap<>();
 
-        // TODO: need retries / buffer memory config?
         configProps.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9092");
         configProps.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, UUIDSerializer.class);
         configProps.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, JsonSerializer.class);

@@ -9,11 +9,11 @@ import org.immutables.value.Value;
 @JsonSerialize(as = ImmutableMouseClick.class)
 @JsonDeserialize(as = ImmutableMouseClick.class)
 public interface MouseClick {
+    UUID getNotebookId();
+
     long getX();
 
     long getY();
 
-    String getTarget();
-
-    UUID getNotebookId();
+    String getClickedTarget();
 }
