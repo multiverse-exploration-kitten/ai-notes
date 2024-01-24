@@ -3,12 +3,11 @@ package com.abx.ainotebook.service;
 import com.abx.ainotebook.model.MouseClick;
 import com.abx.ainotebook.model.MouseClickMongoModel;
 import com.abx.ainotebook.repository.MouseClickRepository;
+import java.time.Instant;
+import java.util.UUID;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.stereotype.Service;
-
-import java.time.Instant;
-import java.util.UUID;
 
 @Service
 public class KafkaConsumerService {

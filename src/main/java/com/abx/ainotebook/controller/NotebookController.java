@@ -2,12 +2,11 @@ package com.abx.ainotebook.controller;
 
 import com.abx.ainotebook.model.MouseClick;
 import com.abx.ainotebook.service.KafkaProducerService;
+import java.util.UUID;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.UUID;
 
 @RestController
 public class NotebookController {
@@ -17,8 +16,9 @@ public class NotebookController {
         this.kafkaProducerService = kafkaProducerService;
     }
 
-    @PostMapping("/track-mouse-click/{NotebookId}")
-    public void trackMouseClick(@PathVariable UUID NotebookId, @RequestBody MouseClick mouseClick) {
-        kafkaProducerService.recordMouseClick(NotebookId, mouseClick.getX(), mouseClick.getY(), mouseClick.getClickedTarget());
+    @PostMapping("/track-mouse-click/{notebookId}")
+    public void trackMouseClick(@PathVariable UUID notebookId, @RequestBody MouseClick mouseClick) {
+        kafkaProducerService.recordMouseClick(
+                notebookId, mouseClick.getX(), mouseClick.getY(), mouseClick.getClickedTarget());
     }
 }
