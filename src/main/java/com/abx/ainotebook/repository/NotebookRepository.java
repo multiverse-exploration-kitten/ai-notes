@@ -1,5 +1,6 @@
-package com.abx.ainotebook.model;
+package com.abx.ainotebook.repository;
 
+import com.abx.ainotebook.model.Notebook;
 import java.sql.Timestamp;
 import java.util.List;
 import java.util.UUID;
