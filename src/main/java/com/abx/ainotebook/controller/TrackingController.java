@@ -9,10 +9,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-public class NotebookController {
+public class TrackingController {
     private final KafkaProducerService kafkaProducerService;
 
-    public NotebookController(KafkaProducerService kafkaProducerService) {
+    public TrackingController(KafkaProducerService kafkaProducerService) {
         this.kafkaProducerService = kafkaProducerService;
     }
 
