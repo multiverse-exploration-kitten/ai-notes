@@ -5,11 +5,12 @@ import com.abx.ainotebook.dto.ImmutableNoteDto;
 import com.abx.ainotebook.dto.NoteDto;
 import com.abx.ainotebook.model.Note;
 import com.abx.ainotebook.service.NoteService;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
 import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
 
 @RestController
 public class NoteController {
@@ -25,7 +26,11 @@ public class NoteController {
             return ResponseEntity.badRequest().body(null);
         }
         Optional<Note> note = noteService.findById(noteId);
-        return ResponseEntity.of(note);
+        if (note.isPresent()) {
+            return ResponseEntity.of(note);
+        } else {
+            return ResponseEntity.badRequest().build();
+        }
     }
 
     @PostMapping("user/{userId}/notebook/{notebookId}/create_note")

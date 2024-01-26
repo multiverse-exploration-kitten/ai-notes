@@ -5,8 +5,8 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import org.immutables.value.Value;
 
 @Value.Immutable
-@JsonSerialize(as = ImmutableNoteDto.class)
-@JsonDeserialize(as = ImmutableNoteDto.class)
+@JsonSerialize(as = ImmutableCreateNoteDto.class)
+@JsonDeserialize(as = ImmutableCreateNoteDto.class)
 public interface CreateNoteDto {
     String getTitle();
 }
