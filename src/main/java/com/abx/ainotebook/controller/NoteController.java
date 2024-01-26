@@ -5,16 +5,14 @@ import com.abx.ainotebook.dto.ImmutableNoteDto;
 import com.abx.ainotebook.dto.NoteDto;
 import com.abx.ainotebook.model.Note;
 import com.abx.ainotebook.service.NoteService;
+import java.util.Objects;
+import java.util.UUID;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.Objects;
-import java.util.Optional;
-import java.util.UUID;
 
 @RestController
 public class NoteController {
@@ -29,12 +27,8 @@ public class NoteController {
         if (Objects.equals(noteId, null)) {
             return ResponseEntity.badRequest().body(null);
         }
-        Optional<Note> note = noteService.findById(noteId);
-        if (note.isPresent()) {
-            return ResponseEntity.of(note);
-        } else {
-            return ResponseEntity.badRequest().build();
-        }
+        Note note = noteService.findById(noteId);
+        return ResponseEntity.ok(note);
     }
 
     @PostMapping("user/{userId}/notebook/{notebookId}/create_note")
