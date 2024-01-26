@@ -25,8 +25,11 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
     implementation("com.diffplug.spotless:spotless-plugin-gradle:6.18.0")
     implementation("org.springframework.boot:spring-boot-starter-data-mongodb")
+
+    implementation ("org.springframework.kafka:spring-kafka")
     annotationProcessor("org.immutables:value:2.9.3")
     compileOnly("org.immutables:value:2.9.3")
+    implementation("com.fasterxml.jackson.core:jackson-databind:2.15.2")
 
     testImplementation("org.springframework.boot:spring-boot-starter-test")
 
