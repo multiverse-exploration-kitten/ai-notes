@@ -15,7 +15,7 @@ public class Note {
 
     private UUID notebookId;
 
-    public String title;
+    private String title;
 
     private String content;
 
@@ -50,7 +50,7 @@ public class Note {
         this.id = id;
     }
 
-    public UUID getUserId(UUID userId) {
+    public UUID getUserId() {
         return this.userId;
     }
 

@@ -6,7 +6,6 @@ import com.abx.ainotebook.dto.NotebookDto;
 import com.abx.ainotebook.model.Notebook;
 import com.abx.ainotebook.service.NoteBookService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Objects;

@@ -18,7 +18,8 @@ public class NoteService {
     }
 
     public Optional<Note> findById(UUID id) {
-        return noteRepository.findById(id);
+
+//        return noteRepository.findById(id).orElseGet();
     }
 
     public Note createNote(CreateNoteDto createNoteDto, UUID userId, UUID notebookId) {
