@@ -27,18 +27,27 @@ public class NoteController {
 
     @GetMapping("/notes/{noteId}")
     public ResponseEntity<Note> getNote(@PathVariable("noteId") UUID noteId) {
+        if (Objects.equals(noteId, null)) {
+            return ResponseEntity.badRequest().build();
+        }
         Note note = noteService.findById(noteId);
         return ResponseEntity.ok(note);
     }
 
     @DeleteMapping("/notes/{noteId}")
     public ResponseEntity<Note> deleteNote(@PathVariable("noteId") UUID noteId) {
+        if (Objects.equals(noteId, null)) {
+            return ResponseEntity.badRequest().build();
+        }
         noteService.delete(noteId);
         return ResponseEntity.ok().build();
     }
 
     @GetMapping("notebooks/{notebookId}")
     public ResponseEntity<List<NoteDto>> getNotesByNotebookId(@PathVariable UUID notebookId) {
+        if (Objects.equals(notebookId, null)) {
+            return ResponseEntity.badRequest().build();
+        }
         List<Note> notes = noteService.findByNotebookId(notebookId);
         List<NoteDto> noteDtos =
                 notes.stream().map(noteService::convertNoteToDto).collect(Collectors.toList());
@@ -47,6 +56,9 @@ public class NoteController {
 
     @GetMapping("users/{userId}")
     public ResponseEntity<List<NoteDto>> getNotesByUserId(@PathVariable UUID userId) {
+        if (Objects.equals(userId, null)) {
+            return ResponseEntity.badRequest().build();
+        }
         List<Note> notes = noteService.findByUserId(userId);
         List<NoteDto> noteDtos =
                 notes.stream().map(noteService::convertNoteToDto).collect(Collectors.toList());
@@ -56,9 +68,11 @@ public class NoteController {
     @PostMapping("user/{userId}/notebook/{notebookId}/create_note")
     public ResponseEntity<NoteDto> createNote(
             @RequestBody CreateNoteDto createNoteDto, @PathVariable UUID userId, @PathVariable UUID notebookId) {
+
         if (Objects.equals(createNoteDto.getTitle(), null)) {
             return ResponseEntity.badRequest().build();
         }
+
         Note createdNote = noteService.createNote(createNoteDto, userId, notebookId);
         NoteDto noteDto = ImmutableNoteDto.builder()
                 .title(createdNote.getTitle())
