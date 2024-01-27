@@ -72,7 +72,12 @@ public class NoteController {
         if (Objects.equals(createNoteDto.getTitle(), null)) {
             return ResponseEntity.badRequest().build();
         }
-
+        if (Objects.equals(userId, null)) {
+            return ResponseEntity.badRequest().build();
+        }
+        if (Objects.equals(notebookId, null)) {
+            return ResponseEntity.badRequest().build();
+        }
         Note createdNote = noteService.createNote(createNoteDto, userId, notebookId);
         NoteDto noteDto = ImmutableNoteDto.builder()
                 .title(createdNote.getTitle())
