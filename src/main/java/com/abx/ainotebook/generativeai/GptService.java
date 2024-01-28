@@ -23,7 +23,16 @@ public class GptService implements GenerativeAiService<String, List<CompletionCh
         return openAiService.createCompletion(completionRequest).getChoices();
     }
 
-    public String parseGptResponse(CompletionChoice choice) {
+    @Override
+    public String parseGptResponse(List<CompletionChoice> completionChoices) {
+        StringBuilder ans = new StringBuilder();
+        for (CompletionChoice choice : completionChoices) {
+            ans.append(parseSingleGptResponse(choice));
+        }
+        return ans.toString();
+    }
+
+    private String parseSingleGptResponse(CompletionChoice choice) {
 
         return choice.getText();
     }

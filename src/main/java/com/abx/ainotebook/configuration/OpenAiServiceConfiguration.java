@@ -1,6 +1,10 @@
 package com.abx.ainotebook.configuration;
 
+import com.abx.ainotebook.generativeai.GenerativeAiService;
+import com.abx.ainotebook.generativeai.GptService;
+import com.theokanning.openai.completion.CompletionChoice;
 import com.theokanning.openai.service.OpenAiService;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -12,18 +16,14 @@ public class OpenAiServiceConfiguration {
     @Value("${openai.token}")
     private String openaiToken;
 
-    @Value("${openai.token}")
-    private String openaiToken2;
-
     @Bean
-    @Qualifier("gpt-company-account-1")
     public OpenAiService openAiService() {
         return new OpenAiService(openaiToken);
     }
 
     @Bean
-    @Qualifier("gpt-company-account-2")
-    public OpenAiService openAiService2() {
-        return new OpenAiService(openaiToken2);
+    @Qualifier("openAiService")
+    public GenerativeAiService<String, List<CompletionChoice>> gptService(OpenAiService openAiService) {
+        return new GptService(openAiService);
     }
 }
