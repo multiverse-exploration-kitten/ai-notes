@@ -5,20 +5,23 @@ import com.abx.ainotebook.dto.ImmutableNoteDto;
 import com.abx.ainotebook.dto.NoteDto;
 import com.abx.ainotebook.model.Note;
 import com.abx.ainotebook.repository.NoteRepository;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
 import org.apache.kafka.common.errors.ResourceNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
+
 @Service
 public class NoteService {
     private final NoteRepository noteRepository;
+    private final InsightService insightService;
 
-    public NoteService(NoteRepository noteRepository) {
+    public NoteService(NoteRepository noteRepository, InsightService insightService) {
         this.noteRepository = noteRepository;
+        this.insightService = insightService;
     }
 
     public NoteDto convertNoteToDto(Note note) {
@@ -62,6 +65,9 @@ public class NoteService {
             Note note = existingNote.get();
             note.setContent(newContent);
             noteRepository.save(note);
+//            update later
+            insightService.genInsight(newContent);
+            insightService.genSummary(newContent);
         } else {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Note not found with ID: " + id);
         }
