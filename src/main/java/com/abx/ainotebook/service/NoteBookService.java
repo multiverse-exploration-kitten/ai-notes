@@ -27,7 +27,7 @@ public class NoteBookService {
     }
 
     public List<Notebook> findByCategoryUAndUserId(String category, UUID userID) {
-        return notebookRepository.findByCategoryUAndUserId(category, userID);
+        return notebookRepository.findByCategoryAndUserId(category, userID);
     }
 
     public List<Notebook> findByTitleAndUserId(String title, UUID userID) {
