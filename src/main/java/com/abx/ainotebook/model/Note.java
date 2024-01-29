@@ -1,18 +1,5 @@
 package com.abx.ainotebook.model;
 
-<<<<<<< HEAD
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
-
-@Document
-public class Note {
-    @Id
-    private String id;
-
-    private String title;
-    private String content;
-    private String userId;
-=======
 import java.util.UUID;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -109,5 +96,4 @@ public class Note {
     public void setUpdatedAt(Long updatedAt) {
         this.updatedAt = updatedAt;
     }
->>>>>>> main
 }
