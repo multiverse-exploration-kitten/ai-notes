@@ -1,5 +1,6 @@
 package com.abx.ainotebook.controller;
 
+import com.abx.ainotebook.model.Keystroke;
 import com.abx.ainotebook.model.MouseClick;
 import com.abx.ainotebook.service.KafkaProducerService;
 import java.util.UUID;
@@ -18,7 +19,11 @@ public class TrackingController {
 
     @PostMapping("/track-mouse-click/{notebookId}")
     public void trackMouseClick(@PathVariable UUID notebookId, @RequestBody MouseClick mouseClick) {
-        kafkaProducerService.recordMouseClick(
-                notebookId, mouseClick.getX(), mouseClick.getY(), mouseClick.getClickedTarget());
+        kafkaProducerService.recordMouseClick(notebookId, mouseClick);
+    }
+
+    @PostMapping("/track-keystroke/{notebookId}")
+    public void trackKeystroke(@PathVariable UUID notebookId, @RequestBody Keystroke keystroke) {
+        kafkaProducerService.recordKeystroke(notebookId, keystroke);
     }
 }
