@@ -2,7 +2,6 @@ package com.abx.ainotebook.service;
 
 import com.abx.ainotebook.dto.UserEventDto;
 import com.abx.ainotebook.model.ActionFilter;
-import com.abx.ainotebook.model.Note;
 import com.abx.ainotebook.model.UserEventMongoModel;
 import com.abx.ainotebook.repository.UserEventRepository;
 import java.util.Set;
@@ -17,18 +16,18 @@ public class KafkaConsumerService {
     public static final String TOPIC_USER_EVENT = "topic-user-event";
     private final UserEventRepository userEventRepository;
     private final ActionFilter actionFilter;
-    private final NoteService noteService;
-    private final InsightService insightService;
+    //    private final NoteService noteService;
+    //    private final InsightService insightService;
 
-    public KafkaConsumerService(UserEventRepository userEventRepository, NoteService noteService, InsightService insightService) {
+    public KafkaConsumerService(UserEventRepository userEventRepository) {
         this.userEventRepository = userEventRepository;
         this.actionFilter = new ActionFilter();
-        this.noteService = noteService;
-        this.insightService = insightService;
+        //        this.noteService = noteService;
+        //        this.insightService = insightService;
     }
 
     @KafkaListener(topics = TOPIC_USER_EVENT, groupId = "group-user-event")
-    public void listenToPartition(@Payload UserEventDto userEventDto) {
+    public UserEventDto listenToPartition(@Payload UserEventDto userEventDto) {
         UserEventMongoModel model = new UserEventMongoModel();
 
         long eventTimestamp = System.currentTimeMillis();
@@ -47,19 +46,14 @@ public class KafkaConsumerService {
         if (eventType.equalsIgnoreCase("Keystroke")) {
             actionFilter.processKeyPressEvent(noteId, eventTimestamp);
         }
+
+        return userEventDto;
     }
 
     @Scheduled(fixedRate = 5000)
     public void genInsight() {
         Set<UUID> inactiveNotes = actionFilter.checkInactiveNotes();
 
-        // TODO: make this async task?
-        for (UUID noteId : inactiveNotes) {
-            Note note = noteService.findById(noteId);
-            String noteContent = note.getContent();
-            String insight = insightService.genInsight(noteContent);
-
-            // TODO: display insight to UI
-        }
+        // TODO: display insight to UI via web socket
     }
 }

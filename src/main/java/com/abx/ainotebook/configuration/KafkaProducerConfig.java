@@ -1,5 +1,6 @@
 package com.abx.ainotebook.configuration;
 
+import com.abx.ainotebook.dto.UserEventDto;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -24,27 +25,29 @@ public class KafkaProducerConfig {
     @Bean
     public KafkaAdmin kafkaAdmin() {
         Map<String, Object> configs = new HashMap<>();
-        configs.put(AdminClientConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9092");
+        configs.put(AdminClientConfig.BOOTSTRAP_SERVERS_CONFIG, kafkaBootstrapServers);
         return new KafkaAdmin(configs);
     }
 
     @Bean
     public NewTopic userEventTopic() {
-        return new NewTopic("topic-user-event", 10, (short) 1);
+        return new NewTopic("topic-user-event", 1, (short) 1);
     }
 
     @Bean
-    public ProducerFactory<UUID, Object> producerFactory() {
+    public ProducerFactory<UUID, UserEventDto> producerFactory() {
         Map<String, Object> configProps = new HashMap<>();
 
         configProps.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, kafkaBootstrapServers);
         configProps.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, UUIDSerializer.class);
         configProps.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, JsonSerializer.class);
-        return new DefaultKafkaProducerFactory<>(configProps);
+
+        JsonSerializer<UserEventDto> userEventJsonSerializer = new JsonSerializer<>();
+        return new DefaultKafkaProducerFactory<>(configProps, new UUIDSerializer(), userEventJsonSerializer);
     }
 
     @Bean
-    public KafkaTemplate<UUID, Object> kafkaTemplate() {
+    public KafkaTemplate<UUID, UserEventDto> kafkaTemplate() {
         return new KafkaTemplate<>(producerFactory());
     }
 }
