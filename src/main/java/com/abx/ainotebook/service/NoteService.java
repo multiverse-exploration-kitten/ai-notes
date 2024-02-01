@@ -35,12 +35,15 @@ public class NoteService {
 
     public Note findById(UUID id) {
         return noteRepository
-                .findById(String.valueOf(id))
+                .findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Note not found with ID: " + id));
     }
 
     public Note createNote(CreateNoteDto createNoteDto, UUID userId, UUID notebookId) {
-        Note note = new Note(userId, notebookId, createNoteDto.getTitle());
+        Note note = new Note(
+                UUID.randomUUID(), userId, notebookId,
+                createNoteDto.getTitle(), createNoteDto.getContent(),
+                System.currentTimeMillis(), System.currentTimeMillis());
         return noteRepository.save(note);
     }
 
@@ -52,12 +55,14 @@ public class NoteService {
         return noteRepository.findByNotebookId(notebookId);
     }
 
+    public List<Note> findAllNotes() { return noteRepository.findAll(); }
+
     public List<Note> findByTitleContaining(String title, UUID userId) {
         return noteRepository.findByTitleContaining(title, userId);
     }
 
     public void modifyNote(UUID id, String newContent) {
-        Optional<Note> existingNote = noteRepository.findById(id.toString());
+        Optional<Note> existingNote = noteRepository.findById(id);
         if (existingNote.isPresent()) {
             Note note = existingNote.get();
             note.setContent(newContent);
@@ -68,9 +73,9 @@ public class NoteService {
     }
 
     public void delete(UUID noteId) {
-        if (!noteRepository.existsById(noteId.toString())) {
+        if (!noteRepository.existsById(noteId)) {
             throw new ResourceNotFoundException("Note not found with ID: " + noteId);
         }
-        noteRepository.deleteById(noteId.toString());
+        noteRepository.deleteById(noteId);
     }
 }
