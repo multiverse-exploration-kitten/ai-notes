@@ -1,6 +1,6 @@
 package com.abx.ainotebook.service;
 
-import com.abx.ainotebook.model.ImmutableMouseClick;
+import com.abx.ainotebook.model.Keystroke;
 import com.abx.ainotebook.model.MouseClick;
 import java.util.UUID;
 import org.springframework.kafka.core.KafkaTemplate;
@@ -10,19 +10,19 @@ import org.springframework.stereotype.Service;
 public class KafkaProducerService {
     public static final String TOPIC_MOUSE_CLICK = "topic-mouse-click";
 
-    private final KafkaTemplate<UUID, MouseClick> kafkaTemplate;
+    public static final String TOPIC_KEYSTROKE = "topic-keystroke";
 
-    public KafkaProducerService(KafkaTemplate<UUID, MouseClick> kafkaTemplate) {
+    private final KafkaTemplate<UUID, Object> kafkaTemplate;
+
+    public KafkaProducerService(KafkaTemplate<UUID, Object> kafkaTemplate) {
         this.kafkaTemplate = kafkaTemplate;
     }
 
-    public void recordMouseClick(UUID notebookId, long coordX, long coordY, String targetId) {
-        MouseClick mouseClick = ImmutableMouseClick.builder()
-                .x(coordX)
-                .y(coordY)
-                .clickedTarget(targetId)
-                .notebookId(notebookId)
-                .build();
+    public void recordMouseClick(UUID notebookId, MouseClick mouseClick) {
         kafkaTemplate.send(TOPIC_MOUSE_CLICK, notebookId, mouseClick);
+    }
+
+    public void recordKeystroke(UUID notebookId, Keystroke keystroke) {
+        kafkaTemplate.send(TOPIC_KEYSTROKE, notebookId, keystroke);
     }
 }
