@@ -46,7 +46,7 @@ public class NoteBookControllerTest {
     @Test
     public void createNotebook() throws Exception {
         UUID userID = UUID.randomUUID();
-        NotebookDto notebook = ImmutableNotebookDto.builder().userID(userID).build();
+        NotebookDto notebook = ImmutableNotebookDto.builder().getuserID(userID).build();
         CreateNotebookDto createNotebookDto =
                 ImmutableCreateNotebookDto.builder().build();
         Mockito.when(noteBookService.createNotebook(createNotebookDto, userID)).thenReturn(notebook);
