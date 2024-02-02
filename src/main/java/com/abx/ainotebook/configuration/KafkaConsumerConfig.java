@@ -22,7 +22,7 @@ public class KafkaConsumerConfig {
     public ConsumerFactory<UUID, Object> consumerFactory() {
         Map<String, Object> props = new HashMap<>();
         props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, kafkaBootstrapServers);
-        props.put(ConsumerConfig.GROUP_ID_CONFIG, "group-mouse-click"); // identify consumer group
+        props.put(ConsumerConfig.GROUP_ID_CONFIG, "group-user-event"); // identify consumer group
         return new DefaultKafkaConsumerFactory<>(props, new UUIDDeserializer(), new JsonDeserializer<>(Object.class));
     }
 
