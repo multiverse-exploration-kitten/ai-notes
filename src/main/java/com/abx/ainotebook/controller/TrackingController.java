@@ -17,13 +17,14 @@ public class TrackingController {
         this.kafkaProducerService = kafkaProducerService;
     }
 
-    @PostMapping("/track-mouse-click/{notebookId}")
-    public void trackMouseClick(@PathVariable UUID notebookId, @RequestBody MouseClick mouseClick) {
-        kafkaProducerService.recordMouseClick(notebookId, mouseClick);
+    @PostMapping("/track-mouse-click/{userId}/{noteId}")
+    public void trackMouseClick(
+            @PathVariable UUID userId, @PathVariable UUID noteId, @RequestBody MouseClick mouseClick) {
+        kafkaProducerService.recordMouseClick(userId, noteId, mouseClick);
     }
 
-    @PostMapping("/track-keystroke/{notebookId}")
-    public void trackKeystroke(@PathVariable UUID notebookId, @RequestBody Keystroke keystroke) {
-        kafkaProducerService.recordKeystroke(notebookId, keystroke);
+    @PostMapping("/track-keystroke/{userId}/{noteId}")
+    public void trackKeystroke(@PathVariable UUID userId, @PathVariable UUID noteId, @RequestBody Keystroke keystroke) {
+        kafkaProducerService.recordKeystroke(userId, noteId, keystroke);
     }
 }
