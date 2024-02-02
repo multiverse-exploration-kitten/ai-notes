@@ -22,7 +22,6 @@ public class KafkaProducerConfig {
     private String kafkaBootstrapServers;
 
     @Bean
-    // TODO: what do we need admin for?
     public KafkaAdmin kafkaAdmin() {
         Map<String, Object> configs = new HashMap<>();
         configs.put(AdminClientConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9092");
@@ -35,7 +34,6 @@ public class KafkaProducerConfig {
     }
 
     @Bean
-    // TODO: move config values to app properties
     public ProducerFactory<UUID, Object> producerFactory() {
         Map<String, Object> configProps = new HashMap<>();
 

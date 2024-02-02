@@ -9,6 +9,4 @@ import org.immutables.value.Value;
 @JsonDeserialize(as = ImmutableKeystroke.class)
 public interface Keystroke {
     String getPressedKey();
-
-    String getKeystrokeType();
 }
