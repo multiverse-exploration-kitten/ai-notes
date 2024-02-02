@@ -7,7 +7,11 @@ import com.abx.ainotebook.dto.NotebookDto;
 import com.abx.ainotebook.model.Notebook;
 import com.abx.ainotebook.service.NoteBookService;
 import com.fasterxml.jackson.databind.ObjectMapper;
+
+import java.sql.Time;
+import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 import org.junit.jupiter.api.Test;
@@ -15,6 +19,7 @@ import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.ResponseEntity;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
@@ -46,12 +51,15 @@ public class NoteBookControllerTest {
     @Test
     public void createNotebook() throws Exception {
         UUID userID = UUID.randomUUID();
-        NotebookDto notebook = ImmutableNotebookDto.builder().getuserID(userID).build();
+        Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+        NotebookDto notebookdto = ImmutableNotebookDto.builder().userID(userID).title("").category("").createdAt(timestamp).updatedAt(timestamp).build();
         CreateNotebookDto createNotebookDto =
-                ImmutableCreateNotebookDto.builder().build();
-        Mockito.when(noteBookService.createNotebook(createNotebookDto, userID)).thenReturn((Notebook) notebook);
+                ImmutableCreateNotebookDto.builder().category("").title("").build();
+        Notebook notebook = new Notebook(notebookdto.userID(),notebookdto.getTitle(),notebookdto.getCategory());
 
-        mockMvc.perform(MockMvcRequestBuilders.get("notebook/userID/create"))
+        Mockito.when(noteBookService.createNotebook(createNotebookDto, userID)).thenReturn(notebook);
+
+        mockMvc.perform(MockMvcRequestBuilders.get("/notebook/{userID}/create"))
                 .andExpect(MockMvcResultMatchers.status().isOk());
     }
 }

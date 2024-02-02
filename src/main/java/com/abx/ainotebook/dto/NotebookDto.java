@@ -18,5 +18,5 @@ public interface NotebookDto {
 
     Timestamp getUpdatedAt();
 
-    UUID getuserID();
+    UUID userID();
 }
