@@ -14,12 +14,10 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http
-                .csrf(AbstractHttpConfigurer::disable)
+        http.csrf(AbstractHttpConfigurer::disable)
                 .cors(AbstractHttpConfigurer::disable)
-                .authorizeRequests((authorizeRequests) -> authorizeRequests
-                        .anyRequest().permitAll()
-                );
+                .authorizeRequests(
+                        (authorizeRequests) -> authorizeRequests.anyRequest().permitAll());
         return http.build();
     }
 
@@ -28,9 +26,7 @@ public class SecurityConfig {
         return new WebMvcConfigurer() {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
-                registry.addMapping("/**")
-                        .allowedOrigins("*")
-                        .allowCredentials(false);
+                registry.addMapping("/**").allowedOrigins("*").allowCredentials(false);
             }
         };
     }

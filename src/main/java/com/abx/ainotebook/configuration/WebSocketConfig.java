@@ -17,8 +17,6 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
-        registry.addEndpoint("/note-auto-save")
-                .setAllowedOriginPatterns("*")
-                .withSockJS();
+        registry.addEndpoint("/note-auto-save").setAllowedOriginPatterns("*").withSockJS();
     }
 }

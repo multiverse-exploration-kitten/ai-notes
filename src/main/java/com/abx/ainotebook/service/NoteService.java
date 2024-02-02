@@ -44,9 +44,13 @@ public class NoteService {
             throw new Exception("CreateNoteDto, userId, or notebookId is null");
         }
         Note note = new Note(
-                UUID.randomUUID(), userId, notebookId,
-                createNoteDto.getTitle(), createNoteDto.getContent(),
-                System.currentTimeMillis(), System.currentTimeMillis());
+                UUID.randomUUID(),
+                userId,
+                notebookId,
+                createNoteDto.getTitle(),
+                createNoteDto.getContent(),
+                System.currentTimeMillis(),
+                System.currentTimeMillis());
 
         Note savedNote = noteRepository.save(note);
         if (savedNote == null) {
@@ -63,7 +67,9 @@ public class NoteService {
         return noteRepository.findByNotebookId(notebookId);
     }
 
-    public List<Note> findAllNotes() { return noteRepository.findAll(); }
+    public List<Note> findAllNotes() {
+        return noteRepository.findAll();
+    }
 
     public List<Note> findByTitleContaining(String title, UUID userId) {
         return noteRepository.findByTitleContaining(title, userId);
