@@ -30,8 +30,8 @@ public class KafkaProducerConfig {
     }
 
     @Bean
-    public NewTopic mouseclickTopic() {
-        return new NewTopic("topic-mouse-click", 10, (short) 1);
+    public NewTopic userEventTopic() {
+        return new NewTopic("topic-user-event", 10, (short) 1);
     }
 
     @Bean
