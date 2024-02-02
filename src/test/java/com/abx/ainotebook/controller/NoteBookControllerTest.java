@@ -49,7 +49,7 @@ public class NoteBookControllerTest {
         NotebookDto notebook = ImmutableNotebookDto.builder().getuserID(userID).build();
         CreateNotebookDto createNotebookDto =
                 ImmutableCreateNotebookDto.builder().build();
-        Mockito.when(noteBookService.createNotebook(createNotebookDto, userID)).thenReturn(notebook);
+        Mockito.when(noteBookService.createNotebook(createNotebookDto, userID)).thenReturn((Notebook) notebook);
 
         mockMvc.perform(MockMvcRequestBuilders.get("notebook/userID/create"))
                 .andExpect(MockMvcResultMatchers.status().isOk());
