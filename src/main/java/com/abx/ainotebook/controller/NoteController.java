@@ -107,7 +107,7 @@ public class NoteController {
         return ResponseEntity.ok(noteDto);
     }
 
-    @MessageMapping("/notes/{noteId}/web_socket")
+    @MessageMapping("/notes/{noteId}/auto-save")
     public ResponseEntity<String> receiveNote(@DestinationVariable UUID noteId, @RequestBody String noteContent) {
         log("Received Note Content: " + noteContent);
         noteService.modifyNote(noteId, noteContent);

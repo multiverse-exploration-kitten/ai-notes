@@ -14,15 +14,12 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        // example purposes only, do not use in production
         http
                 .csrf(AbstractHttpConfigurer::disable)
                 .cors(AbstractHttpConfigurer::disable)
                 .authorizeRequests((authorizeRequests) -> authorizeRequests
                         .anyRequest().permitAll()
                 );
-
-
         return http.build();
     }
 
@@ -32,9 +29,8 @@ public class SecurityConfig {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/**")
-                        .allowedOrigins("http://localhost:63343") // Specify the actual origin
-                        .allowedMethods("GET", "POST", "PUT", "DELETE") // Specify the methods you want to allow
-                        .allowCredentials(true); // Allow credentials
+                        .allowedOrigins("*")
+                        .allowCredentials(false);
             }
         };
     }

@@ -76,10 +76,10 @@
     let stompClient = null;
     let lastSavedContent = '';
     const autoSaveInterval = 5000;
-    const debounceTime = 2000;
+    const debounceTime = 20000;
     let debounceTimer = null;
     function connect() {
-        const socket = new SockJS(`http://localhost:8080/note_websocket`);
+        const socket = new SockJS(`http://localhost:8080/note-auto-save`);
         stompClient = Stomp.over(socket);
         stompClient.connect({}, function(frame) {
             console.log('Connected: ' + frame);
@@ -93,17 +93,17 @@
         console.log("saveNote() called!")
         if (lastSavedContent !== noteContent) {
             console.log(noteContent);
-            stompClient.send(`/app/notes/${noteId}/web_socket`, {}, noteContent);
+            stompClient.send(`/app/notes/${noteId}/auto-save`, {}, noteContent);
             lastSavedContent = noteContent;
             console.log('Note saved at', new Date());
         }
     }
 
     function setupAutoSave() {
-        document.getElementById('noteContent').addEventListener('input', function() {
-            clearTimeout(debounceTime);
-            debounceTimer = setTimeout(saveNote, debounceTime);
-        })
+        // document.getElementById('noteContent').addEventListener('input', function() {
+        //     clearTimeout(debounceTimer);
+        //     debounceTimer = setTimeout(saveNote, debounceTime);
+        // })
         setInterval(saveNote, autoSaveInterval);
     }
     window.onload = function() {
