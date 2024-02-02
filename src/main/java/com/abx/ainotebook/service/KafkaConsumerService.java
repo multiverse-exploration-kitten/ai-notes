@@ -12,6 +12,7 @@ import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.kafka.support.KafkaHeaders;
 import org.springframework.messaging.handler.annotation.Header;
 import org.springframework.messaging.handler.annotation.Payload;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -53,4 +54,7 @@ public class KafkaConsumerService {
         model.setTimestamp(Instant.now());
         keystrokeRepository.save(model);
     }
+
+    @Scheduled(fixedRate = 5000)
+    public void pollKafka() {}
 }
