@@ -7,11 +7,8 @@ import com.abx.ainotebook.dto.NotebookDto;
 import com.abx.ainotebook.model.Notebook;
 import com.abx.ainotebook.service.NoteBookService;
 import com.fasterxml.jackson.databind.ObjectMapper;
-
-import java.sql.Time;
 import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 import org.junit.jupiter.api.Test;
@@ -19,7 +16,6 @@ import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.http.ResponseEntity;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
@@ -43,23 +39,29 @@ public class NoteBookControllerTest {
         Mockito.when(noteBookService.findByCategoryUAndUserId("History", userID))
                 .thenReturn(notebooks);
 
-        mockMvc.perform(MockMvcRequestBuilders.get("/notebook/{userID}/History"))
+        mockMvc.perform(MockMvcRequestBuilders.get(String.format("/notebook/%s/History", userID)))
                 .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.category").value("History"));
+                .andExpect(MockMvcResultMatchers.jsonPath("$[0].category").value("History"));
     }
 
     @Test
     public void createNotebook() throws Exception {
         UUID userID = UUID.randomUUID();
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());
-        NotebookDto notebookdto = ImmutableNotebookDto.builder().userID(userID).title("").category("").createdAt(timestamp).updatedAt(timestamp).build();
+        NotebookDto notebookdto = ImmutableNotebookDto.builder()
+                .userID(userID)
+                .title("")
+                .category("")
+                .createdAt(timestamp)
+                .updatedAt(timestamp)
+                .build();
         CreateNotebookDto createNotebookDto =
                 ImmutableCreateNotebookDto.builder().category("").title("").build();
-        Notebook notebook = new Notebook(notebookdto.userID(),notebookdto.getTitle(),notebookdto.getCategory());
+        Notebook notebook = new Notebook(notebookdto.userID(), notebookdto.getTitle(), notebookdto.getCategory());
 
         Mockito.when(noteBookService.createNotebook(createNotebookDto, userID)).thenReturn(notebook);
 
-        mockMvc.perform(MockMvcRequestBuilders.get("/notebook/{userID}/create"))
+        mockMvc.perform(MockMvcRequestBuilders.get(String.format("/notebook/%s/create", userID)))
                 .andExpect(MockMvcResultMatchers.status().isOk());
     }
 }

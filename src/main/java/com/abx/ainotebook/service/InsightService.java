@@ -3,7 +3,9 @@ package com.abx.ainotebook.service;
 import com.abx.ainotebook.generativeai.GenerativeAiService;
 import com.theokanning.openai.completion.CompletionChoice;
 import java.util.List;
+import org.springframework.stereotype.Service;
 
+@Service
 public class InsightService {
     private final GenerativeAiService<String, List<CompletionChoice>> gptService;
     private final String insightPrompt = "Please generate an insight for the following note: ";
