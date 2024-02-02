@@ -24,7 +24,7 @@ public class TrackingController {
     }
 
     @PostMapping("/track-keystroke/{userId}/{noteId}")
-    public void trackKeystroke(@PathVariable UUID userId, @PathVariable UUID noteId, @RequestBody Keystroke keystroke) {
-        kafkaProducerService.recordKeystroke(userId, noteId, keystroke);
+    public void trackKeystroke(@PathVariable UUID userId, @PathVariable UUID noteId, @RequestBody String pressedKey) {
+        kafkaProducerService.recordKeystroke(userId, noteId, pressedKey);
     }
 }

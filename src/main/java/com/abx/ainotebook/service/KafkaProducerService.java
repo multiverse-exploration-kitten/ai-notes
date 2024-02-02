@@ -38,10 +38,9 @@ public class KafkaProducerService {
         kafkaTemplate.send(TOPIC_MOUSE_CLICK, noteId, userEventDto);
     }
 
-    public void recordKeystroke(UUID userId, UUID noteId, Keystroke keystroke) {
+    public void recordKeystroke(UUID userId, UUID noteId, String pressedKey) {
         Map<String, Object> mouseClickAttributes = new HashMap<>();
-        mouseClickAttributes.put("pressedKey", keystroke.getPressedKey());
-        mouseClickAttributes.put("keystrokeType", keystroke.getKeystrokeType());
+        mouseClickAttributes.put("pressedKey", pressedKey);
 
         UserEventDto userEventDto = ImmutableUserEventDto.builder()
                 .userId(userId)
