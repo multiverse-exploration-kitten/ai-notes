@@ -86,7 +86,7 @@ public class NoteController {
 
     @PostMapping("user/{userId}/notebook/{notebookId}/create_note")
     public ResponseEntity<NoteDto> createNote(
-            @RequestBody CreateNoteDto createNoteDto, @PathVariable UUID userId, @PathVariable UUID notebookId) throws Exception {
+            @RequestBody CreateNoteDto createNoteDto, @PathVariable UUID userId, @PathVariable UUID notebookId) {
 
         if (Objects.equals(createNoteDto.getTitle(), null)) {
             return ResponseEntity.badRequest().build();
