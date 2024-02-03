@@ -4,7 +4,6 @@ import com.abx.ainotebook.dto.UserEventDto;
 import com.abx.ainotebook.model.ActionFilter;
 import com.abx.ainotebook.model.UserEventMongoModel;
 import com.abx.ainotebook.repository.UserEventRepository;
-
 import java.util.Set;
 import java.util.UUID;
 import org.springframework.kafka.annotation.KafkaListener;
