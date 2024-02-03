@@ -1,10 +1,6 @@
 package com.abx.ainotebook.model;
 
 import jakarta.persistence.Id;
-<<<<<<< HEAD
-=======
-import java.time.Instant;
->>>>>>> 7d9e407 (introduced UserEvent type)
 import java.util.Map;
 import java.util.UUID;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -28,11 +24,7 @@ public class UserEventMongoModel {
     private Map<String, Object> eventAttributes;
 
     @Field
-<<<<<<< HEAD
     private long timestamp;
-=======
-    private Instant timestamp;
->>>>>>> 7d9e407 (introduced UserEvent type)
 
     public UUID getId() {
         return id;
@@ -74,19 +66,11 @@ public class UserEventMongoModel {
         this.eventAttributes = eventAttributes;
     }
 
-<<<<<<< HEAD
     public long getTimestamp() {
         return timestamp;
     }
 
     public void setTimestamp(long timestamp) {
-=======
-    public Instant getTimestamp() {
-        return timestamp;
-    }
-
-    public void setTimestamp(Instant timestamp) {
->>>>>>> 7d9e407 (introduced UserEvent type)
         this.timestamp = timestamp;
     }
 }
