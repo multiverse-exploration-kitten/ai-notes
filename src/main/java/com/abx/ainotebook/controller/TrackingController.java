@@ -1,6 +1,5 @@
 package com.abx.ainotebook.controller;
 
-import com.abx.ainotebook.model.Keystroke;
 import com.abx.ainotebook.model.MouseClick;
 import com.abx.ainotebook.service.KafkaProducerService;
 import java.util.UUID;

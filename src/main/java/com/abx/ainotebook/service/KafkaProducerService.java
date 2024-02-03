@@ -2,7 +2,6 @@ package com.abx.ainotebook.service;
 
 import com.abx.ainotebook.dto.ImmutableUserEventDto;
 import com.abx.ainotebook.dto.UserEventDto;
-import com.abx.ainotebook.model.Keystroke;
 import com.abx.ainotebook.model.MouseClick;
 import java.util.HashMap;
 import java.util.Map;

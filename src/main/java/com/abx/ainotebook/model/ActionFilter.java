@@ -1,8 +1,10 @@
 package com.abx.ainotebook.model;
 
-import java.time.Duration;
-import java.time.Instant;
-import java.util.*;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
+import java.util.UUID;
 
 public class ActionFilter {
     private static final long GEN_INSIGHT_INTERVAL = 10000;
