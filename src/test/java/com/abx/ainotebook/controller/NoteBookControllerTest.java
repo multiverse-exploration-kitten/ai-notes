@@ -7,7 +7,6 @@ import com.abx.ainotebook.dto.NotebookDto;
 import com.abx.ainotebook.model.Notebook;
 import com.abx.ainotebook.service.NoteBookService;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -47,7 +46,7 @@ public class NoteBookControllerTest {
     @Test
     public void createNotebook() throws Exception {
         UUID userID = UUID.randomUUID();
-        Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+        long timestamp = 02042024;
         NotebookDto notebookdto = ImmutableNotebookDto.builder()
                 .userID(userID)
                 .title("")
