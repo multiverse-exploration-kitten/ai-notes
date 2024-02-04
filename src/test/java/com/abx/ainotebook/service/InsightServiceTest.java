@@ -15,19 +15,19 @@ public class InsightServiceTest {
 
     @Test
     void genInsight() {
-        insightService.genInsight(
-                "Mr and Mrs Dursley, of number four, Privet Drive, were proud to say that they were perfectly normal, thank you very much. They were the last people you'd expect to be involved in anything strange or mysterious, because they just didn't hold with such nonsense.");
+        insightService.genInsight("Mr and Mrs Dursley, of number four, Privet Drive,"
+                + " were proud to say that they were perfectly normal, thank you very much.");
         verify(insightService, times(1))
-                .genInsight(
-                        "Mr and Mrs Dursley, of number four, Privet Drive, were proud to say that they were perfectly normal, thank you very much. They were the last people you'd expect to be involved in anything strange or mysterious, because they just didn't hold with such nonsense.");
+                .genInsight("Mr and Mrs Dursley, of number four, Privet Drive,"
+                        + " were proud to say that they were perfectly normal, thank you very much.");
     }
 
     @Test
     void genSummary() {
-        insightService.genSummary(
-                "Mr and Mrs Dursley, of number four, Privet Drive, were proud to say that they were perfectly normal, thank you very much. They were the last people you'd expect to be involved in anything strange or mysterious, because they just didn't hold with such nonsense.");
+        insightService.genSummary("Mr and Mrs Dursley, of number four, Privet Drive,"
+                + " were proud to say that they were perfectly normal, thank you very much.");
         verify(insightService, times(1))
-                .genSummary(
-                        "Mr and Mrs Dursley, of number four, Privet Drive, were proud to say that they were perfectly normal, thank you very much. They were the last people you'd expect to be involved in anything strange or mysterious, because they just didn't hold with such nonsense.");
+                .genSummary("Mr and Mrs Dursley, of number four, Privet Drive,"
+                        + " were proud to say that they were perfectly normal, thank you very much.");
     }
 }
