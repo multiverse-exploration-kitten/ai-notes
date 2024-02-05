@@ -20,7 +20,8 @@ public class KafkaConsumerService {
     private final NoteService noteService;
     private final InsightService insightService;
 
-    public KafkaConsumerService(UserEventRepository userEventRepository, NoteService noteService, InsightService insightService) {
+    public KafkaConsumerService(
+            UserEventRepository userEventRepository, NoteService noteService, InsightService insightService) {
         this.userEventRepository = userEventRepository;
         this.actionFilter = new ActionFilter();
         this.noteService = noteService;
