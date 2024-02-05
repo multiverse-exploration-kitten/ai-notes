@@ -14,19 +14,19 @@ public class ActionFilter {
         this.lastKeyPressTimestamps = new HashMap<>();
     }
 
-    public void processKeyPressEvent(UUID userId, long timestamp) {
-        lastKeyPressTimestamps.put(userId, timestamp);
+    public void processKeyPressEvent(UUID noteId, long timestamp) {
+        lastKeyPressTimestamps.put(noteId, timestamp);
     }
 
-    public Set<UUID> checkInactiveUsers() {
+    public Set<UUID> checkInactiveNotes() {
         Set<UUID> inactiveUsers = new HashSet<>();
         long currentTime = System.currentTimeMillis();
 
-        for (UUID userId : lastKeyPressTimestamps.keySet()) {
-            long lastKeyPressTime = lastKeyPressTimestamps.get(userId);
+        for (UUID noteId : lastKeyPressTimestamps.keySet()) {
+            long lastKeyPressTime = lastKeyPressTimestamps.get(noteId);
 
             if (currentTime - lastKeyPressTime > GEN_INSIGHT_INTERVAL) {
-                inactiveUsers.add(userId);
+                inactiveUsers.add(noteId);
             }
         }
         return inactiveUsers;
