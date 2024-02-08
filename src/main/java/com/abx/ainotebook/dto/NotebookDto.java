@@ -13,7 +13,7 @@ public interface NotebookDto {
 
     String getCategory();
 
-    Timestamp getCreatedAt();
+    long getCreatedAt();
 
-    Timestamp getUpdatedAt();
+    long getUpdatedAt();
 }
