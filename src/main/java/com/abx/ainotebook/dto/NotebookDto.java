@@ -2,7 +2,6 @@ package com.abx.ainotebook.dto;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import java.sql.Timestamp;
 import org.immutables.value.Value;
 
 @Value.Immutable

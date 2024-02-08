@@ -4,7 +4,6 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-import java.sql.Timestamp;
 import java.util.UUID;
 
 @Entity
@@ -28,8 +27,7 @@ public class Notebook {
     @Column(name = "updated_at")
     private long updatedAt;
 
-    public Notebook(
-            UUID notebookId, UUID userId, String title, String category, long createdAt, long updatedAt) {
+    public Notebook(UUID notebookId, UUID userId, String title, String category, long createdAt, long updatedAt) {
         this.notebookId = notebookId;
         this.userId = userId;
         this.title = title;
