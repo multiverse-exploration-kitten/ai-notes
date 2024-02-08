@@ -16,7 +16,7 @@ public class GenInsightController {
         this.insightService = insightService;
     }
 
-    @GetMapping("/notes/{noteId}/{notes}")
+    @GetMapping("/note/{noteId}/genInsight/{notes}")
     public ResponseEntity<String> genInsight(@PathVariable("noteId") UUID noteId, @PathVariable("notes") String notes) {
         if (Objects.equals(notes, "")) {
             return ResponseEntity.badRequest().body(null);
@@ -28,7 +28,7 @@ public class GenInsightController {
         return ResponseEntity.ok(insights);
     }
 
-    @GetMapping("/notes/{noteId}/{notes}")
+    @GetMapping("/note/{noteId}/genSummary/{notes}")
     public ResponseEntity<String> genSummary(@PathVariable("noteId") UUID noteId, @PathVariable("notes") String notes) {
         if (Objects.equals(notes, "")) {
             return ResponseEntity.badRequest().body(null);
