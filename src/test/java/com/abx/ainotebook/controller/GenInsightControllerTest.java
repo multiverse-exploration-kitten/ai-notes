@@ -1,6 +1,7 @@
 package com.abx.ainotebook.controller;
 
 import com.abx.ainotebook.service.InsightService;
+import com.abx.ainotebook.service.NoteService;
 import java.util.UUID;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,19 +19,21 @@ class GenInsightControllerTest {
     @MockBean
     private InsightService insightService;
 
+    @MockBean
+    private NoteService noteService;
+
     @Test
     void genInsight() throws Exception {
         UUID noteId = UUID.randomUUID();
         String notes = "test";
 
-        mockMvc.perform(MockMvcRequestBuilders.get(String.format("/notes/%s/genIngsight/%s", noteId, notes)));
+        mockMvc.perform(MockMvcRequestBuilders.get(String.format("/notes/%s/genIngsight", noteId)));
     }
 
     @Test
     void genSummary() throws Exception {
         UUID noteId = UUID.randomUUID();
-        String notes = "test";
 
-        mockMvc.perform(MockMvcRequestBuilders.get(String.format("/notes/%s/genSummary/%s", noteId, notes)));
+        mockMvc.perform(MockMvcRequestBuilders.get(String.format("/notes/%s/genSummary", noteId)));
     }
 }

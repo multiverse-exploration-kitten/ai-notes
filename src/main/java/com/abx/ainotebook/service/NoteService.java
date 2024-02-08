@@ -64,9 +64,6 @@ public class NoteService {
             Note note = existingNote.get();
             note.setContent(newContent);
             noteRepository.save(note);
-            //            update later
-            insightService.genInsight(newContent);
-            insightService.genSummary(newContent);
         } else {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Note not found with ID: " + id);
         }
