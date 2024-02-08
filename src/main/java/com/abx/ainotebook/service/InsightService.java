@@ -26,6 +26,7 @@ public class InsightService {
 
     public String genInsight(String notes) {
         List<CompletionChoice> results = gptService.complete(genInsightPrompt(notes));
+//        System.out.println("res: " + results);
         return gptService.parseGptResponse(results);
     }
 

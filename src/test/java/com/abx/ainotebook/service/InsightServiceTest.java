@@ -15,8 +15,9 @@ public class InsightServiceTest {
 
     @Test
     void genInsight() {
-        insightService.genInsight("Mr and Mrs Dursley, of number four, Privet Drive,"
+        String s = insightService.genInsight("Mr and Mrs Dursley, of number four, Privet Drive,"
                 + " were proud to say that they were perfectly normal, thank you very much.");
+        System.out.println("insight: " + s);
         verify(insightService, times(1))
                 .genInsight("Mr and Mrs Dursley, of number four, Privet Drive,"
                         + " were proud to say that they were perfectly normal, thank you very much.");
@@ -24,8 +25,9 @@ public class InsightServiceTest {
 
     @Test
     void genSummary() {
-        insightService.genSummary("Mr and Mrs Dursley, of number four, Privet Drive,"
+        String s = insightService.genSummary("Mr and Mrs Dursley, of number four, Privet Drive,"
                 + " were proud to say that they were perfectly normal, thank you very much.");
+        System.out.println("summary: " + s);
         verify(insightService, times(1))
                 .genSummary("Mr and Mrs Dursley, of number four, Privet Drive,"
                         + " were proud to say that they were perfectly normal, thank you very much.");
