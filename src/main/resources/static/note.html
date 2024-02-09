@@ -55,6 +55,24 @@
             box-shadow: -2px 0 5px rgba(0,0,0,0.1);
             padding: 10px;
             z-index: 100;
+            overflow-y: auto; /* Enables vertical scrolling if content overflows */
+            box-sizing: border-box; /* Makes sure padding is included in the width */
+            border-left: 3px solid #5cb85c; /* Adds a left border for visual separation */
+            font-size: 0.9em; /* Adjust the font size if necessary */
+            line-height: 1.4; /* Improves readability with more space between lines */
+        }
+
+        /* You can also style the h3 and p tags within the sidebar for better appearance */
+        .sidebar h3 {
+            margin-top: 0;
+            color: #333;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 5px;
+        }
+
+        .sidebar p {
+            margin: 10px 0;
+            word-wrap: break-word; /* Ensures that long words will wrap and not overflow */
         }
     </style>
     <script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
@@ -77,7 +95,7 @@
     </div>
     <!-- This is the sidebar for displaying results -->
     <div id="sidebar" class="sidebar" style="display:none;">
-        <h3>Results</h3>
+        <h3>Result</h3>
         <p id="resultsText"></p>
     </div>
 </div>
@@ -99,8 +117,6 @@
     let stompClient = null;
     let lastSavedContent = '';
     const autoSaveInterval = 5000;
-    const debounceTime = 20000;
-    let debounceTimer = null;
     function connect() {
         const socket = new SockJS(`http://localhost:8080/note-auto-save`);
         stompClient = Stomp.over(socket);
@@ -112,7 +128,6 @@
     }
     function saveNote() {
         const noteContent = document.getElementById('noteContent').value;
-        console.log("saveNote() called!")
         if (lastSavedContent !== noteContent) {
             console.log(noteContent);
             stompClient.send(`/app/notes/${noteId}/auto-save`, {}, noteContent);
@@ -120,17 +135,32 @@
             console.log('Note saved at', new Date());
         }
     }
+    function debounce(func, wait, immediate) {
+        var timeout;
+        return function() {
+            var context = this, args = arguments;
+            var later = function() {
+                timeout = null;
+                if (!immediate) func.apply(context, args);
+            };
+            var callNow = immediate && !timeout;
+            clearTimeout(timeout);
+            timeout = setTimeout(later, wait);
+            if (callNow) func.apply(context, args);
+        };
+    }
     function setupAutoSave() {
-        // document.getElementById('noteContent').addEventListener('input', function() {
-        //     clearTimeout(debounceTimer);
-        //     debounceTimer = setTimeout(saveNote, debounceTime);
-        // })
-        setInterval(saveNote, autoSaveInterval);
+        var textarea = document.getElementById('noteContent');
+        var debouncedSaveNote = debounce(function() {
+            saveNote();
+        }, 2000); // Wait for 2 seconds after the last event to save the note
+        textarea.addEventListener('input', debouncedSaveNote);
     }
     function generateInsight() {
         fetch(`http://localhost:8080/note/${noteId}/genInsight`)
             .then(response => response.text())
             .then(data => {
+                console.log(data);
                 displayResults(data);
             })
             .catch(error => console.error('Error generating insight:', error));
@@ -139,6 +169,7 @@
         fetch(`http://localhost:8080/note/${noteId}/genSummary`)
             .then(response => response.text())
             .then(data => {
+                console.log(data);
                 displayResults(data);
             })
             .catch(error => console.error('Error generating summary:', error));
@@ -146,7 +177,13 @@
     function displayResults(data) {
         const sidebar = document.getElementById('sidebar');
         const resultsText = document.getElementById('resultsText');
-        resultsText.textContent = data;
+        if (typeof data === 'string') {
+            resultsText.textContent = data;
+            resultsText.style.color = 'black'; // Default text color
+        } else {
+            resultsText.textContent = 'Warning: The fetched data is not in text format.';
+            resultsText.style.color = 'red'; // Change text color to red for warning
+        }
         sidebar.style.display = 'block'; // Show the sidebar
     }
     document.addEventListener('click', function(event) {
