@@ -16,11 +16,9 @@ import org.springframework.web.server.ResponseStatusException;
 @Service
 public class NoteService {
     private final NoteRepository noteRepository;
-    private final InsightService insightService;
 
     public NoteService(NoteRepository noteRepository, InsightService insightService) {
         this.noteRepository = noteRepository;
-        this.insightService = insightService;
     }
 
     public NoteDto convertNoteToDto(Note note) {

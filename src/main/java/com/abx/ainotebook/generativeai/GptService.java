@@ -6,7 +6,7 @@ import com.theokanning.openai.service.OpenAiService;
 import java.util.List;
 import org.springframework.stereotype.Service;
 
-@Service
+
 public class GptService implements GenerativeAiService<String, List<CompletionChoice>> {
     private static final String GPT_MODEL = "babbage-002";
     private final OpenAiService openAiService;
