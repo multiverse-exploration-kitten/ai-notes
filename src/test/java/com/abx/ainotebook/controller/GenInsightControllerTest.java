@@ -9,6 +9,7 @@ import com.abx.ainotebook.service.NoteService;
 import java.util.UUID;
 
 import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -34,26 +35,27 @@ class GenInsightControllerTest {
 
     @MockBean
     private NoteService noteService;
-
+    @InjectMocks
+    private GenInsightController genInsightController;
     @Test
     void genInsight() throws Exception {
-//        UUID noteId = UUID.randomUUID();
-//        UUID userId = UUID.randomUUID();
-//        String notes = "test";
-
-//        NoteDto noteDto = ImmutableNoteDto.builder().content("").createdAt(timestamp).title("Chapter I").updatedAt(timestamp).build();
-//        Mockito.when(noteService.findById(noteId)).thenReturn(mockNote);
-//
-//        mockMvc.perform(MockMvcRequestBuilders.get("/notes/" + noteId))
-//                .andExpect(MockMvcResultMatchers.status().isOk());
-//        mockMvc.perform(MockMvcRequestBuilders.get(String.format("/notes/%s/genIngsight", noteId))).andExpect(MockMvcResultMatchers.status().isOk());
+        UUID noteId = UUID.randomUUID();
+        UUID userId = UUID.randomUUID();
+        Note note = new Note(noteId, userId, "Chapter I");
+        Mockito.when(noteService.findById(noteId)).thenReturn(note);
+        Mockito.when(insightService.genInsight(note.getContent())).thenReturn("test");
+        mockMvc.perform(MockMvcRequestBuilders.get(String.format("/notes/%s/genIngsight", noteId))).andExpect(MockMvcResultMatchers.status().isOk());
 
     }
 
     @Test
     void genSummary() throws Exception {
         UUID noteId = UUID.randomUUID();
+        UUID userId = UUID.randomUUID();
+        Note note = new Note(noteId, userId, "Chapter I");
+        Mockito.when(noteService.findById(noteId)).thenReturn(note);
+        Mockito.when(insightService.genInsight(note.getContent())).thenReturn("test");
+        mockMvc.perform(MockMvcRequestBuilders.get(String.format("/notes/%s/genSummary", noteId))).andExpect(MockMvcResultMatchers.status().isOk());
 
-        mockMvc.perform(MockMvcRequestBuilders.get(String.format("/notes/%s/genSummary", noteId)));
     }
 }

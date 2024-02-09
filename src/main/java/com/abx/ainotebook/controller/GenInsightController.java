@@ -28,9 +28,6 @@ public class GenInsightController {
         }
         Note note = noteService.findById(noteId);
         String notes = note.getContent();
-        if (Objects.equals(notes, "")) {
-            return ResponseEntity.badRequest().body(null);
-        }
         var insights = insightService.genInsight(notes);
         return ResponseEntity.ok(insights);
     }
@@ -42,9 +39,6 @@ public class GenInsightController {
         }
         Note note = noteService.findById(noteId);
         String notes = note.getContent();
-        if (Objects.equals(notes, "")) {
-            return ResponseEntity.badRequest().body(null);
-        }
         var insights = insightService.genSummary(notes);
         return ResponseEntity.ok(insights);
     }

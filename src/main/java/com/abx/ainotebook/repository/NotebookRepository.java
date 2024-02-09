@@ -11,5 +11,5 @@ public interface NotebookRepository extends JpaRepository<Notebook, UUID> {
 
     List<Notebook> findByTitleAndUserId(String title, UUID userID);
 
-    List<Notebook> findByCreatedAtAfter(Timestamp createdAt);
+    List<Notebook> findByCreatedAtAfter(long createdAt);
 }
