@@ -33,7 +33,7 @@
             height: 150px;
             resize: vertical;
         }
-        button#saveButton {
+        button {
             background-color: #5cb85c;
             color: #fff;
             border: none;
@@ -42,8 +42,19 @@
             cursor: pointer;
             font-size: 16px;
         }
-        button#saveButton:hover {
+        button:hover {
             background-color: #4cae4c;
+        }
+        .sidebar {
+            position: fixed;
+            right: 0;
+            top: 0;
+            width: 250px;
+            height: 100%;
+            background: #fff;
+            box-shadow: -2px 0 5px rgba(0,0,0,0.1);
+            padding: 10px;
+            z-index: 100;
         }
     </style>
     <script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
@@ -55,13 +66,25 @@
         <div class="col">
             <h2 id="noteTitle">Your Note Title Here</h2>
             <textarea id="noteContent" class="form-control" placeholder="Write your note here..."></textarea>
-            <button id="saveButton" onclick=saveNote()>Save Note</button>
         </div>
     </div>
+    <!-- Add this inside your <div class="container"> in your existing HTML -->
+    <div class="row">
+        <div class="col">
+            <button id="genInsightButton" class=“button" onclick="generateInsight()">Generate Insight</button>
+            <button id="genSummaryButton" class=“button" onclick="generateSummary()">Generate Summary</button>
+        </div>
+    </div>
+    <!-- This is the sidebar for displaying results -->
+    <div id="sidebar" class="sidebar" style="display:none;">
+        <h3>Results</h3>
+        <p id="resultsText"></p>
+    </div>
 </div>
+
 <script>
     const noteId = '96546a17-6467-4c86-8f2b-c173154003d6';
-
+    const userId = '499b3fed-e900-4ded-bee5-de729616bd3e';
     function fetchNote() {
         fetch(`http://localhost:8080/notes/${noteId}`)
             .then(response => response.json())
@@ -87,7 +110,6 @@
             console.log('Error connecting to WebSocket:', error);
         });
     }
-
     function saveNote() {
         const noteContent = document.getElementById('noteContent').value;
         console.log("saveNote() called!")
@@ -98,7 +120,6 @@
             console.log('Note saved at', new Date());
         }
     }
-
     function setupAutoSave() {
         // document.getElementById('noteContent').addEventListener('input', function() {
         //     clearTimeout(debounceTimer);
@@ -106,6 +127,42 @@
         // })
         setInterval(saveNote, autoSaveInterval);
     }
+    function generateInsight() {
+        fetch(`http://localhost:8080/note/${noteId}/genInsight`)
+            .then(response => response.text())
+            .then(data => {
+                displayResults(data);
+            })
+            .catch(error => console.error('Error generating insight:', error));
+    }
+    function generateSummary() {
+        fetch(`http://localhost:8080/note/${noteId}/genSummary`)
+            .then(response => response.text())
+            .then(data => {
+                displayResults(data);
+            })
+            .catch(error => console.error('Error generating summary:', error));
+    }
+    function displayResults(data) {
+        const sidebar = document.getElementById('sidebar');
+        const resultsText = document.getElementById('resultsText');
+        resultsText.textContent = data;
+        sidebar.style.display = 'block'; // Show the sidebar
+    }
+    document.addEventListener('click', function(event) {
+        const mouseClickData = {
+            pageX: event.pageX,
+            pageY: event.pageY,
+            targetId: event.target.id
+        };
+        stompClient.send(`/app/track-mouse-click/${userId}/${noteId}`, {}, JSON.stringify(mouseClickData));
+    });
+    document.addEventListener('keypress', function(event) {
+        const keypressData = {
+            key: event.key
+        };
+        stompClient.send(`/app/track-keystroke/${userId}/${noteId}`, {}, JSON.stringify(keypressData));
+    });
     window.onload = function() {
         fetchNote();
         connect();
