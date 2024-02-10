@@ -20,7 +20,7 @@ public class GenInsightController {
         this.noteService = noteService;
     }
 
-    @GetMapping("/note/{noteId}/genInsight")
+    @GetMapping("/note/{noteId}/insight")
     public ResponseEntity<String> genInsight(@PathVariable("noteId") UUID noteId) {
 
         if (Objects.equals(noteId, null)) {
@@ -32,7 +32,7 @@ public class GenInsightController {
         return ResponseEntity.ok(insights);
     }
 
-    @GetMapping("/note/{noteId}/genSummary")
+    @GetMapping("/note/{noteId}/summary")
     public ResponseEntity<String> genSummary(@PathVariable("noteId") UUID noteId) {
         if (Objects.equals(noteId, null)) {
             return ResponseEntity.badRequest().body(null);

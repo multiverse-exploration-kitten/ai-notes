@@ -23,6 +23,7 @@ import static org.mockito.Mockito.when;
 @WebMvcTest(GenInsightController.class)
 class GenInsightControllerTest {
 
+    public static final String NOTE_CONTROLLER_ROOT_PATH = "note";
     @Autowired
     private MockMvc mockMvc;
     private Note mockNote;
@@ -44,7 +45,7 @@ class GenInsightControllerTest {
         Note note = new Note(noteId, userId, "Chapter I");
         Mockito.when(noteService.findById(noteId)).thenReturn(note);
         Mockito.when(insightService.genInsight(note.getContent())).thenReturn("test");
-        mockMvc.perform(MockMvcRequestBuilders.get(String.format("/notes/%s/genIngsight", noteId))).andExpect(MockMvcResultMatchers.status().isOk());
+        mockMvc.perform(MockMvcRequestBuilders.get(String.format("/" + NOTE_CONTROLLER_ROOT_PATH + "/%s/insight", noteId))).andExpect(MockMvcResultMatchers.status().isOk());
 
     }
 
@@ -55,7 +56,7 @@ class GenInsightControllerTest {
         Note note = new Note(noteId, userId, "Chapter I");
         Mockito.when(noteService.findById(noteId)).thenReturn(note);
         Mockito.when(insightService.genInsight(note.getContent())).thenReturn("test");
-        mockMvc.perform(MockMvcRequestBuilders.get(String.format("/notes/%s/genSummary", noteId))).andExpect(MockMvcResultMatchers.status().isOk());
+        mockMvc.perform(MockMvcRequestBuilders.get(String.format("/" + NOTE_CONTROLLER_ROOT_PATH + "/%s/summary", noteId))).andExpect(MockMvcResultMatchers.status().isOk());
 
     }
 }
