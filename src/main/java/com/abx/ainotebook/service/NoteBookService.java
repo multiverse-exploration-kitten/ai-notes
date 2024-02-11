@@ -3,7 +3,6 @@ package com.abx.ainotebook.service;
 import com.abx.ainotebook.dto.CreateNotebookDto;
 import com.abx.ainotebook.model.Notebook;
 import com.abx.ainotebook.repository.NotebookRepository;
-import java.sql.Timestamp;
 import java.util.List;
 import java.util.UUID;
 import org.springframework.stereotype.Service;

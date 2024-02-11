@@ -1,13 +1,9 @@
 package com.abx.ainotebook.controller;
 
-import com.abx.ainotebook.dto.ImmutableNoteDto;
-import com.abx.ainotebook.dto.NoteDto;
 import com.abx.ainotebook.model.Note;
 import com.abx.ainotebook.service.InsightService;
 import com.abx.ainotebook.service.NoteService;
-
 import java.util.UUID;
-
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mockito;
@@ -18,14 +14,14 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
-import static org.mockito.Mockito.when;
-
 @WebMvcTest(GenInsightController.class)
 class GenInsightControllerTest {
 
     public static final String NOTE_CONTROLLER_ROOT_PATH = "note";
+
     @Autowired
     private MockMvc mockMvc;
+
     private Note mockNote;
     private UUID noteId;
     private UUID userId;
@@ -36,8 +32,10 @@ class GenInsightControllerTest {
 
     @MockBean
     private NoteService noteService;
+
     @InjectMocks
     private GenInsightController genInsightController;
+
     @Test
     void genInsight() throws Exception {
         UUID noteId = UUID.randomUUID();
@@ -45,8 +43,9 @@ class GenInsightControllerTest {
         Note note = new Note(noteId, userId, "Chapter I");
         Mockito.when(noteService.findById(noteId)).thenReturn(note);
         Mockito.when(insightService.genInsight(note.getContent())).thenReturn("test");
-        mockMvc.perform(MockMvcRequestBuilders.get(String.format("/" + NOTE_CONTROLLER_ROOT_PATH + "/%s/insight", noteId))).andExpect(MockMvcResultMatchers.status().isOk());
-
+        mockMvc.perform(MockMvcRequestBuilders.get(
+                        String.format("/" + NOTE_CONTROLLER_ROOT_PATH + "/%s/insight", noteId)))
+                .andExpect(MockMvcResultMatchers.status().isOk());
     }
 
     @Test
@@ -56,7 +55,8 @@ class GenInsightControllerTest {
         Note note = new Note(noteId, userId, "Chapter I");
         Mockito.when(noteService.findById(noteId)).thenReturn(note);
         Mockito.when(insightService.genInsight(note.getContent())).thenReturn("test");
-        mockMvc.perform(MockMvcRequestBuilders.get(String.format("/" + NOTE_CONTROLLER_ROOT_PATH + "/%s/summary", noteId))).andExpect(MockMvcResultMatchers.status().isOk());
-
+        mockMvc.perform(MockMvcRequestBuilders.get(
+                        String.format("/" + NOTE_CONTROLLER_ROOT_PATH + "/%s/summary", noteId)))
+                .andExpect(MockMvcResultMatchers.status().isOk());
     }
 }
