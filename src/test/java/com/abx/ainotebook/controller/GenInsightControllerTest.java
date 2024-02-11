@@ -5,7 +5,6 @@ import com.abx.ainotebook.service.InsightService;
 import com.abx.ainotebook.service.NoteService;
 import java.util.UUID;
 import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -22,19 +21,11 @@ class GenInsightControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
-    private Note mockNote;
-    private UUID noteId;
-    private UUID userId;
-    private UUID notebookId;
-
     @MockBean
     private InsightService insightService;
 
     @MockBean
     private NoteService noteService;
-
-    @InjectMocks
-    private GenInsightController genInsightController;
 
     @Test
     void genInsight() throws Exception {
