@@ -90,32 +90,4 @@ public class NoteControllerTest {
                 .andExpect(MockMvcResultMatchers.status().isOk());
     }
 
-    //    @Test
-    //    void testCreateNote() throws Exception {
-    //        // Assuming CreateNoteDto has a builder pattern
-    //        CreateNoteDto createNoteDto = ImmutableCreateNoteDto.builder()
-    //                .title("Hello Title")
-    //                .content("Hello content")
-    //                .build();
-    //
-    //        // Assuming NoteDto has a builder pattern
-    //        NoteDto noteDto = ImmutableNoteDto.builder()
-    //                .title("Sample Title")
-    //                .content("Sample content.")
-    //                .createdAt(System.currentTimeMillis())
-    //                .updatedAt(System.currentTimeMillis())
-    //                .build();
-    //
-    //        when(noteService.createNote(any(CreateNoteDto.class), any(UUID.class),
-    // any(UUID.class))).thenReturn(mockNote);
-    //        when(noteService.convertNoteToDto(any(Note.class))).thenReturn(noteDto);
-    //
-    //        String jsonContent = "{\"title\":\"Sample Note Title 2\",\"content\":\"This is the content of the note,
-    // again.\"}";
-    //
-    //        mockMvc.perform(post("/user/" + userId + "/notebook/" + notebookId + "/create_note")
-    //                        .contentType(MediaType.APPLICATION_JSON)
-    //                        .content(jsonContent))
-    //                .andExpect(status().isOk());
-    //    }
 }
