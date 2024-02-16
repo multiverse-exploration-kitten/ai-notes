@@ -5,7 +5,6 @@ plugins {
     id("io.spring.dependency-management") version "1.1.4"
     id("com.diffplug.spotless") version "6.18.0"
     id("org.flywaydb.flyway") version "7.15.0"
-    id ("com.vanniktech.maven.publish" ) version "0.19.0"
 }
 
 group = "com.abx"
