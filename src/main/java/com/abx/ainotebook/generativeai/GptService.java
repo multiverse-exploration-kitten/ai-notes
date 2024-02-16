@@ -4,9 +4,7 @@ import com.theokanning.openai.completion.CompletionChoice;
 import com.theokanning.openai.completion.CompletionRequest;
 import com.theokanning.openai.service.OpenAiService;
 import java.util.List;
-import org.springframework.stereotype.Service;
 
-@Service
 public class GptService implements GenerativeAiService<String, List<CompletionChoice>> {
     private static final String GPT_MODEL = "babbage-002";
     private final OpenAiService openAiService;
@@ -27,7 +25,7 @@ public class GptService implements GenerativeAiService<String, List<CompletionCh
 
     @Override
     public String parseGptResponse(List<CompletionChoice> completionChoices) {
-//        System.out.println("com: " + completionChoices);
+        //        System.out.println("com: " + completionChoices);
         StringBuilder ans = new StringBuilder();
         for (CompletionChoice choice : completionChoices) {
             ans.append(parseSingleGptResponse(choice));
@@ -36,7 +34,7 @@ public class GptService implements GenerativeAiService<String, List<CompletionCh
     }
 
     private String parseSingleGptResponse(CompletionChoice choice) {
-//        System.out.println("choice: " + choice.getText());
+        //        System.out.println("choice: " + choice.getText());
         return choice.getText();
     }
 }
