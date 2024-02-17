@@ -14,4 +14,5 @@ CREATE TABLE ai_notes.notebook(
 CREATE INDEX user_id_title_index ON ai_notes.notebook(user_id,title);
 CREATE INDEX user_id_category_index ON ai_notes.notebook(user_id,category);
 
-
+INSERT INTO ai_notes.notebook (notebook_id, user_id, title, category)
+VALUES ('123e4567-e89b-12d3-a456-426655440000', '123e4567-e89b-12d3-a456-426614174000', 'Introduction to AI', 'Education');
