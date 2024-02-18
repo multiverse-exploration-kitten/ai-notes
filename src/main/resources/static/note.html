@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI-Notebook</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f4;
+            color: #333;
+            line-height: 1.6;
+        }
+        .container {
+            max-width: 800px;
+            margin: 30px auto;
+            padding: 20px;
+            background: #fff;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        h2#noteTitle {
+            font-size: 24px;
+            margin-bottom: 10px;
+            color: #333;
+        }
+        textarea#noteContent {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            height: 150px;
+            resize: vertical;
+        }
+        button#saveButton {
+            background-color: #5cb85c;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button#saveButton:hover {
+            background-color: #4cae4c;
+        }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
+</head>
+<body>
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <h2 id="noteTitle">Your Note Title Here</h2>
+            <textarea id="noteContent" class="form-control" placeholder="Write your note here..."></textarea>
+            <button id="saveButton" onclick=saveNote()>Save Note</button>
+        </div>
+    </div>
+</div>
+<script>
+    const noteId = '96546a17-6467-4c86-8f2b-c173154003d6';
+
+    function fetchNote() {
+        fetch(`http://localhost:8080/notes/${noteId}`)
+            .then(response => response.json())
+            .then(data => {
+                console.log(data);
+                document.getElementById('noteTitle').textContent = data.title;
+                document.getElementById('noteContent').value = data.content;
+                document.title = data.title;
+            })
+            .catch(error => console.error('Error fetching note:', error));
+    }
+    let stompClient = null;
+    let lastSavedContent = '';
+    const autoSaveInterval = 5000;
+    const debounceTime = 20000;
+    let debounceTimer = null;
+    function connect() {
+        const socket = new SockJS(`http://localhost:8080/note-auto-save`);
+        stompClient = Stomp.over(socket);
+        stompClient.connect({}, function(frame) {
+            console.log('Connected: ' + frame);
+        }, function(error) {
+            console.log('Error connecting to WebSocket:', error);
+        });
+    }
+
+    function saveNote() {
+        const noteContent = document.getElementById('noteContent').value;
+        console.log("saveNote() called!")
+        if (lastSavedContent !== noteContent) {
+            console.log(noteContent);
+            stompClient.send(`/app/notes/${noteId}/auto-save`, {}, noteContent);
+            lastSavedContent = noteContent;
+            console.log('Note saved at', new Date());
+        }
+    }
+
+    function setupAutoSave() {
+        // document.getElementById('noteContent').addEventListener('input', function() {
+        //     clearTimeout(debounceTimer);
+        //     debounceTimer = setTimeout(saveNote, debounceTime);
+        // })
+        setInterval(saveNote, autoSaveInterval);
+    }
+    window.onload = function() {
+        fetchNote();
+        connect();
+        setupAutoSave();
+    }
+</script>
+</body>
+</html>

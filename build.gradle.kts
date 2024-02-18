@@ -23,8 +23,11 @@ repositories {
 dependencies {
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
+    implementation("org.springframework.boot:spring-boot-starter-security")
+    implementation("org.springframework.boot:spring-boot-starter-websocket")
     implementation("com.diffplug.spotless:spotless-plugin-gradle:6.18.0")
     implementation("org.springframework.boot:spring-boot-starter-data-mongodb")
+
 
     implementation ("com.theokanning.openai-gpt3-java:service:0.12.0")
 
