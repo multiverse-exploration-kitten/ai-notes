@@ -3,13 +3,21 @@ CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 
 
 CREATE TABLE IF NOT EXISTS ai_notes.users (
+<<<<<<< HEAD
                                               user_id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+=======
+    user_id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+>>>>>>> af01210 (finished authentication service)
     first_name VARCHAR(255),
     last_name VARCHAR(255),
     email VARCHAR(255),
     password VARCHAR(255),
     role VARCHAR(255)
+<<<<<<< HEAD
     );
+=======
+);
+>>>>>>> af01210 (finished authentication service)
 
 CREATE TABLE IF NOT EXISTS ai_notes.notebook (
                                                  notebook_id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
