@@ -5,6 +5,7 @@ import com.abx.ainotebook.dto.UserEventDto;
 import com.abx.ainotebook.model.MouseClick;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 import java.util.UUID;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
@@ -21,7 +22,7 @@ public class KafkaProducerService {
         this.kafkaTemplate = kafkaTemplate;
     }
 
-    public void recordMouseClick(UUID userId, UUID noteId, MouseClick mouseClick) {
+    public Optional<UserEventDto> recordMouseClick(UUID userId, UUID noteId, MouseClick mouseClick) {
         Map<String, Object> mouseClickAttributes = new HashMap<>();
         mouseClickAttributes.put("x", mouseClick.getX());
         mouseClickAttributes.put("y", mouseClick.getY());
@@ -34,10 +35,13 @@ public class KafkaProducerService {
                 .eventAttributes(mouseClickAttributes)
                 .build();
 
-        kafkaTemplate.send(TOPIC_MOUSE_CLICK, noteId, userEventDto);
+        var future = kafkaTemplate.send(TOPIC_MOUSE_CLICK, noteId, userEventDto);
+
+        return future.thenApply(result -> Optional.of(userEventDto))
+                .exceptionally(ex -> Optional.empty()).join();
     }
 
-    public void recordKeystroke(UUID userId, UUID noteId, String pressedKey) {
+    public Optional<UserEventDto> recordKeystroke(UUID userId, UUID noteId, String pressedKey) {
         Map<String, Object> mouseClickAttributes = new HashMap<>();
         mouseClickAttributes.put("pressedKey", pressedKey);
 
@@ -48,6 +52,8 @@ public class KafkaProducerService {
                 .eventAttributes(mouseClickAttributes)
                 .build();
 
-        kafkaTemplate.send(TOPIC_KEYSTROKE, noteId, userEventDto);
+        var future = kafkaTemplate.send(TOPIC_KEYSTROKE, noteId, userEventDto);
+        return future.thenApply(result -> Optional.of(userEventDto))
+                .exceptionally(ex -> Optional.empty()).join();
     }
 }

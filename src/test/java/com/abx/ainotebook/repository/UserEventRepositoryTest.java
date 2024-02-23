@@ -6,6 +6,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.data.mongo.DataMongoTest;
+import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 
 import java.util.HashMap;
 import java.util.UUID;
@@ -39,7 +40,5 @@ public class UserEventRepositoryTest {
         UserEventMongoModel savedUserEventMongoModel = userEventRepository.save(model);
 
         Assertions.assertThat(savedUserEventMongoModel).isNotNull();
-
-
     }
 }
