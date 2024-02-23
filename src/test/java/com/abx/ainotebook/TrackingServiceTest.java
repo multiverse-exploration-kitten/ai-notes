@@ -8,8 +8,9 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 
 @WebMvcTest(KafkaProducerService.class)
 public class TrackingServiceTest {
-//    @MockBean
-//    private final UserEventRepository userEventRepository;
+    @MockBean
+    private KafkaProducerService kafkaProducerService;
 
+    // mockito.mock
 
 }
