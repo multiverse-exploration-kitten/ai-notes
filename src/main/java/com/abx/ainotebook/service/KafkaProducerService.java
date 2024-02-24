@@ -13,9 +13,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class KafkaProducerService {
-    public static final String TOPIC_MOUSE_CLICK = "topic-mouse-click";
-
-    public static final String TOPIC_KEYSTROKE = "topic-keystroke";
+    public static final String TOPIC_USER_EVENT = "topic-user-event";
 
     private final KafkaTemplate<UUID, Object> kafkaTemplate;
 
@@ -36,24 +34,26 @@ public class KafkaProducerService {
                 .eventAttributes(mouseClickAttributes)
                 .build();
 
-        var future = kafkaTemplate.send(TOPIC_MOUSE_CLICK, noteId, userEventDto);
+        var future = kafkaTemplate.send(TOPIC_USER_EVENT, noteId, userEventDto);
         return future.thenApply(result -> Optional.of(userEventDto))
-                .exceptionally(ex -> Optional.empty()).join();
+                .exceptionally(ex -> Optional.empty())
+                .join();
     }
 
     public Optional<UserEventDto> recordKeystroke(UUID userId, UUID noteId, Keystroke keystroke) {
-        Map<String, Object> KeystrokeAttributes = new HashMap<>();
-        KeystrokeAttributes.put("pressedKey", keystroke.getPressedKey());
+        Map<String, Object> keystrokeAttributes = new HashMap<>();
+        keystrokeAttributes.put("pressedKey", keystroke.getPressedKey());
 
         UserEventDto userEventDto = ImmutableUserEventDto.builder()
                 .userId(userId)
                 .noteId(noteId)
                 .eventType("Keystroke")
-                .eventAttributes(KeystrokeAttributes)
+                .eventAttributes(keystrokeAttributes)
                 .build();
 
-        var future = kafkaTemplate.send(TOPIC_KEYSTROKE, noteId, userEventDto);
+        var future = kafkaTemplate.send(TOPIC_USER_EVENT, noteId, userEventDto);
         return future.thenApply(result -> Optional.of(userEventDto))
-                .exceptionally(ex -> Optional.empty()).join();
+                .exceptionally(ex -> Optional.empty())
+                .join();
     }
 }
