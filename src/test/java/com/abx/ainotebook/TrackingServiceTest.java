@@ -1,44 +1,58 @@
-// package com.abx.ainotebook;
+//package com.abx.ainotebook;
 //
-// import com.abx.ainotebook.dto.ImmutableUserEventDto;
-// import com.abx.ainotebook.dto.UserEventDto;
-// import com.abx.ainotebook.model.ImmutableMouseClick;
-// import com.abx.ainotebook.model.MouseClick;
-// import com.abx.ainotebook.repository.UserEventRepository;
-// import com.abx.ainotebook.service.KafkaConsumerService;
-// import com.abx.ainotebook.service.KafkaProducerService;
-// import org.assertj.core.api.Assertions;
-// import org.junit.jupiter.api.BeforeEach;
-// import org.junit.jupiter.api.Test;
-// import org.mockito.ArgumentCaptor;
-// import org.mockito.Captor;
-// import org.springframework.beans.factory.annotation.Autowired;
-// import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-// import org.springframework.boot.test.context.SpringBootTest;
-// import org.springframework.boot.test.mock.mockito.MockBean;
-// import org.springframework.kafka.test.context.EmbeddedKafka;
-// import org.springframework.test.annotation.DirtiesContext;
+//import com.abx.ainotebook.dto.ImmutableUserEventDto;
+//import com.abx.ainotebook.dto.UserEventDto;
+//import com.abx.ainotebook.model.ImmutableMouseClick;
+//import com.abx.ainotebook.model.MouseClick;
+//import com.abx.ainotebook.service.KafkaConsumerService;
+//import com.fasterxml.jackson.core.JsonProcessingException;
+//import com.fasterxml.jackson.databind.ObjectMapper;
+//import java.util.HashMap;
+//import java.util.Map;
+//import java.util.UUID;
+//import org.apache.kafka.clients.producer.Producer;
+//import org.apache.kafka.clients.producer.ProducerRecord;
+//import org.apache.kafka.common.serialization.StringSerializer;
+//import org.apache.kafka.common.serialization.UUIDSerializer;
+//import org.junit.jupiter.api.AfterAll;
+//import org.junit.jupiter.api.Assertions;
+//import org.junit.jupiter.api.BeforeEach;
+//import org.junit.jupiter.api.Test;
+//import org.junit.jupiter.api.TestInstance;
+//import org.mockito.ArgumentCaptor;
+//import org.mockito.Captor;
+//import org.mockito.Mockito;
+//import org.springframework.beans.factory.annotation.Autowired;
+//import org.springframework.boot.test.context.SpringBootTest;
+//import org.springframework.boot.test.mock.mockito.MockBean;
+//import org.springframework.kafka.core.DefaultKafkaProducerFactory;
+//import org.springframework.kafka.test.EmbeddedKafkaBroker;
+//import org.springframework.kafka.test.context.EmbeddedKafka;
+//import org.springframework.kafka.test.utils.KafkaTestUtils;
+//import org.springframework.test.context.TestPropertySource;
 //
-// import java.util.HashMap;
-// import java.util.Map;
-// import java.util.UUID;
+//@SpringBootTest
+//@EmbeddedKafka
+//@TestPropertySource(
+//        properties = {
+//            "spring.kafka.bootstrap-servers=${spring.embedded.kafka.brokers}",
+//            "spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.H2Dialect"
+//        })
+//@TestInstance(TestInstance.Lifecycle.PER_CLASS)
+//public class TrackingServiceTest {
+//    private Producer<UUID, String> producer;
 //
-// import static org.junit.jupiter.api.Assertions.assertEquals;
-// import static org.junit.jupiter.api.Assertions.assertNotNull;
-// import static org.mockito.Mockito.timeout;
-// import static org.mockito.Mockito.verify;
-//
-// @SpringBootTest(properties = "spring.kafka.bootstrap-servers=${spring.embedded.kafka.brokers}")
-// @EmbeddedKafka
-// public class TrackingServiceTest {
 //    @Autowired
-//    private KafkaProducerService kafkaProducerService;
+//    private EmbeddedKafkaBroker embeddedKafkaBroker;
 //
-//    @Autowired
+//    @MockBean
 //    private KafkaConsumerService kafkaConsumerService;
 //
+//    @Autowired
+//    private ObjectMapper objectMapper;
+//
 //    @Captor
-//    ArgumentCaptor<UserEventDto> userEventDtoArgumentCaptor;
+//    private ArgumentCaptor<UserEventDto> userEventDtoArgumentCaptor;
 //
 //    private UUID userId;
 //
@@ -48,27 +62,49 @@
 //    void before() {
 //        userId = UUID.randomUUID();
 //        noteId = UUID.randomUUID();
+//
+//        Map<String, Object> configs = new HashMap<>(KafkaTestUtils.producerProps(embeddedKafkaBroker));
+//        producer = new DefaultKafkaProducerFactory<>(configs, new UUIDSerializer(), new StringSerializer())
+//                .createProducer();
+//    }
+//
+//    @AfterAll
+//    void after() {
+//        producer.close();
 //    }
 //
 //    @Test
-//    public void TrackingService_RecordMouseClick_ListenerReceivesUserEvent() {
+//    public void kafkaConsumerService_ListenToPartition_ReceivesProducedMouseclick() throws JsonProcessingException {
 //        MouseClick mouseClick = ImmutableMouseClick.builder()
 //                .x(16)
 //                .y(15)
 //                .clickedTarget("GenInsight")
 //                .build();
 //
-//        kafkaProducerService.recordMouseClick(userId, noteId, mouseClick);
-//        verify(kafkaConsumerService, timeout(5000).times(1))
+//        Map<String, Object> mouseClickAttributes = new HashMap<>();
+//        mouseClickAttributes.put("x", mouseClick.getX());
+//        mouseClickAttributes.put("y", mouseClick.getY());
+//        mouseClickAttributes.put("clickedTarget", mouseClick.getClickedTarget());
+//
+//        UserEventDto producedUserEventDto = ImmutableUserEventDto.builder()
+//                .userId(userId)
+//                .noteId(noteId)
+//                .eventType("MouseClick")
+//                .eventAttributes(mouseClickAttributes)
+//                .build();
+//
+//        String message = objectMapper.writeValueAsString(producedUserEventDto);
+//        producer.send(new ProducerRecord<>("topic-user-event", 0, noteId, message));
+//        Mockito.verify(kafkaConsumerService, Mockito.timeout(5000).times(1))
 //                .listenToPartition(userEventDtoArgumentCaptor.capture());
 //
 //        UserEventDto userEventDto = userEventDtoArgumentCaptor.getValue();
-//        assertNotNull(userEventDto);
-//        assertEquals(userId, userEventDto.getUserId());
-//        assertEquals(noteId, userEventDto.getNoteId());
-//        assertEquals("MouseClick", userEventDto.getEventType());
-//        assertEquals(16, userEventDto.getEventAttributes().get("x"));
-//        assertEquals(15, userEventDto.getEventAttributes().get("y"));
-//        assertEquals("GenInsight", userEventDto.getEventAttributes().get("clickedTarget"));
+//        Assertions.assertNotNull(userEventDto);
+//        Assertions.assertEquals(userId, userEventDto.getUserId());
+//        Assertions.assertEquals(noteId, userEventDto.getNoteId());
+//        Assertions.assertEquals("MouseClick", userEventDto.getEventType());
+//        Assertions.assertEquals(16, userEventDto.getEventAttributes().get("x"));
+//        Assertions.assertEquals(15, userEventDto.getEventAttributes().get("y"));
+//        Assertions.assertEquals("GenInsight", userEventDto.getEventAttributes().get("clickedTarget"));
 //    }
-// }
+//}

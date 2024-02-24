@@ -1,18 +1,17 @@
-// package com.abx.ainotebook.repository;
+//package com.abx.ainotebook.repository;
 //
-// import com.abx.ainotebook.model.UserEventMongoModel;
-// import org.assertj.core.api.Assertions;
-// import org.junit.jupiter.api.BeforeEach;
-// import org.junit.jupiter.api.Test;
-// import org.springframework.beans.factory.annotation.Autowired;
-// import org.springframework.boot.test.autoconfigure.data.mongo.DataMongoTest;
-// import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
+//import com.abx.ainotebook.model.UserEventMongoModel;
+//import java.util.HashMap;
+//import java.util.Map;
+//import java.util.UUID;
+//import org.assertj.core.api.Assertions;
+//import org.junit.jupiter.api.BeforeEach;
+//import org.junit.jupiter.api.Test;
+//import org.springframework.beans.factory.annotation.Autowired;
+//import org.springframework.boot.test.autoconfigure.data.mongo.DataMongoTest;
 //
-// import java.util.HashMap;
-// import java.util.UUID;
-//
-// @DataMongoTest
-// public class UserEventRepositoryTest {
+//@DataMongoTest
+//public class UserEventRepositoryTest {
 //    @Autowired
 //    private UserEventRepository userEventRepository;
 //
@@ -26,9 +25,9 @@
 //    }
 //
 //    @Test
-//    public void UserEventRepository_Save_ReturnSavedUserEvent() {
+//    public void userEventRepository_Save_ReturnSavedUserEvent() {
 //        UserEventMongoModel model = new UserEventMongoModel();
-//        HashMap<String, Object> eventAttributes = new HashMap<>();
+//        Map<String, Object> eventAttributes = new HashMap<>();
 //        eventAttributes.put("pressedKey", "K");
 //        model.setId(UUID.randomUUID());
 //        model.setUserId(userId);
@@ -41,4 +40,4 @@
 //
 //        Assertions.assertThat(savedUserEventMongoModel).isNotNull();
 //    }
-// }
+//}
