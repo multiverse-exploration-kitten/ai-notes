@@ -7,8 +7,11 @@ import com.abx.ainotebook.model.ImmutableMouseClick;
 import com.abx.ainotebook.model.Keystroke;
 import com.abx.ainotebook.model.MouseClick;
 import com.abx.ainotebook.service.KafkaProducerService;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
+import java.util.UUID;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -19,11 +22,6 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
-
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
-import java.util.UUID;
 
 @WebMvcTest(TrackingController.class)
 public class TrackingControllerTest {
@@ -44,7 +42,7 @@ public class TrackingControllerTest {
     private UUID noteId;
 
     @BeforeEach
-    void setup() {
+    void before() {
         userId = UUID.randomUUID();
         noteId = UUID.randomUUID();
 
@@ -60,30 +58,32 @@ public class TrackingControllerTest {
                 .eventAttributes(mouseClickAttributes)
                 .build();
 
-        Map<String, Object> KeystrokeAttributes = new HashMap<>();
-        KeystrokeAttributes.put("pressedKey", "K");
+        Map<String, Object> keystrokeAttributes = new HashMap<>();
+        keystrokeAttributes.put("pressedKey", "K");
 
         keystrokeUserEventDto = ImmutableUserEventDto.builder()
                 .userId(userId)
                 .noteId(noteId)
                 .eventType("Keystroke")
-                .eventAttributes(KeystrokeAttributes)
+                .eventAttributes(keystrokeAttributes)
                 .build();
     }
 
     @Test
-    public void TrackingController_TrackMouseclick_ReturnsProducedUserEventDto() throws Exception {
+    public void trackingController_TrackMouseclick_ReturnsProducedUserEventDto() throws Exception {
         MouseClick mouseClick = ImmutableMouseClick.builder()
-                        .x(16)
-                        .y(15)
-                        .clickedTarget("GenInsight")
-                        .build();
+                .x(16)
+                .y(15)
+                .clickedTarget("GenInsight")
+                .build();
         String jsonMouseClick = objectMapper.writeValueAsString(mouseClick);
 
         String url = String.format("/track-mouse-click/%s/%s", userId, noteId);
         Mockito.when(kafkaProducerService.recordMouseClick(userId, noteId, mouseClick))
                 .thenReturn(Optional.of(mouseclickUserEventDto));
-        mockMvc.perform(MockMvcRequestBuilders.post(url).contentType(MediaType.APPLICATION_JSON).content(jsonMouseClick))
+        mockMvc.perform(MockMvcRequestBuilders.post(url)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(jsonMouseClick))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.userId").value(userId.toString()))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.noteId").value(noteId.toString()))
@@ -93,22 +93,23 @@ public class TrackingControllerTest {
     }
 
     @Test
-    public void TrackingController_TrackKeystroke_ReturnsProducedUserEventDto() throws Exception {
+    public void trackingController_TrackKeystroke_ReturnsProducedUserEventDto() throws Exception {
         String pressedKey = "K";
-        Keystroke keystroke = ImmutableKeystroke.builder()
-                .pressedKey(pressedKey)
-                .build();
+        Keystroke keystroke =
+                ImmutableKeystroke.builder().pressedKey(pressedKey).build();
         String jsonKeystroke = objectMapper.writeValueAsString(keystroke);
 
         String url = String.format("/track-keystroke/%s/%s", userId, noteId);
         Mockito.when(kafkaProducerService.recordKeystroke(userId, noteId, keystroke))
                 .thenReturn(Optional.of(keystrokeUserEventDto));
-        mockMvc.perform(MockMvcRequestBuilders.post(url).contentType(MediaType.APPLICATION_JSON).content(jsonKeystroke))
+        mockMvc.perform(MockMvcRequestBuilders.post(url)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(jsonKeystroke))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.userId").value(userId.toString()))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.noteId").value(noteId.toString()))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.eventType").value("Keystroke"))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.eventAttributes.pressedKey").value(pressedKey));
+                .andExpect(MockMvcResultMatchers.jsonPath("$.eventAttributes.pressedKey")
+                        .value(pressedKey));
     }
-
 }
