@@ -3,11 +3,8 @@ package com.abx.ainotebook.generativeai;
 import com.theokanning.openai.completion.CompletionChoice;
 import com.theokanning.openai.completion.CompletionRequest;
 import com.theokanning.openai.service.OpenAiService;
-import org.springframework.stereotype.Service;
-
 import java.util.List;
 
-@Service
 public class GptService implements GenerativeAiService<String, List<CompletionChoice>> {
     private static final String GPT_MODEL = "babbage-002";
     private final OpenAiService openAiService;
