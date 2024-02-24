@@ -2,6 +2,7 @@ package com.abx.ainotebook.controller;
 
 import com.abx.ainotebook.dto.NoteDto;
 import com.abx.ainotebook.dto.UserEventDto;
+import com.abx.ainotebook.model.Keystroke;
 import com.abx.ainotebook.model.MouseClick;
 import com.abx.ainotebook.service.KafkaProducerService;
 
@@ -35,8 +36,8 @@ public class TrackingController {
     }
 
     @PostMapping("/track-keystroke/{userId}/{noteId}")
-    public ResponseEntity<UserEventDto> trackKeystroke(@PathVariable UUID userId, @PathVariable UUID noteId, @RequestBody String pressedKey) {
-        Optional<UserEventDto> optionalUserEventDto = kafkaProducerService.recordKeystroke(userId, noteId, pressedKey);
+    public ResponseEntity<UserEventDto> trackKeystroke(@PathVariable UUID userId, @PathVariable UUID noteId, @RequestBody Keystroke keystroke) {
+        Optional<UserEventDto> optionalUserEventDto = kafkaProducerService.recordKeystroke(userId, noteId, keystroke);
         return optionalUserEventDto
                 .map(userEventDto -> ResponseEntity.ok(userEventDto))
                 .orElseGet(() -> ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null));

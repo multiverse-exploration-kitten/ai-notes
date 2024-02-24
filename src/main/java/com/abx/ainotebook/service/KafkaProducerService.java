@@ -2,6 +2,7 @@ package com.abx.ainotebook.service;
 
 import com.abx.ainotebook.dto.ImmutableUserEventDto;
 import com.abx.ainotebook.dto.UserEventDto;
+import com.abx.ainotebook.model.Keystroke;
 import com.abx.ainotebook.model.MouseClick;
 import java.util.HashMap;
 import java.util.Map;
@@ -36,20 +37,19 @@ public class KafkaProducerService {
                 .build();
 
         var future = kafkaTemplate.send(TOPIC_MOUSE_CLICK, noteId, userEventDto);
-
         return future.thenApply(result -> Optional.of(userEventDto))
                 .exceptionally(ex -> Optional.empty()).join();
     }
 
-    public Optional<UserEventDto> recordKeystroke(UUID userId, UUID noteId, String pressedKey) {
-        Map<String, Object> mouseClickAttributes = new HashMap<>();
-        mouseClickAttributes.put("pressedKey", pressedKey);
+    public Optional<UserEventDto> recordKeystroke(UUID userId, UUID noteId, Keystroke keystroke) {
+        Map<String, Object> KeystrokeAttributes = new HashMap<>();
+        KeystrokeAttributes.put("pressedKey", keystroke.getPressedKey());
 
         UserEventDto userEventDto = ImmutableUserEventDto.builder()
                 .userId(userId)
                 .noteId(noteId)
                 .eventType("Keystroke")
-                .eventAttributes(mouseClickAttributes)
+                .eventAttributes(KeystrokeAttributes)
                 .build();
 
         var future = kafkaTemplate.send(TOPIC_KEYSTROKE, noteId, userEventDto);
