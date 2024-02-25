@@ -26,6 +26,7 @@
 //import org.springframework.boot.test.context.SpringBootTest;
 //import org.springframework.boot.test.mock.mockito.MockBean;
 //import org.springframework.kafka.core.DefaultKafkaProducerFactory;
+//import org.springframework.kafka.support.serializer.JsonSerializer;
 //import org.springframework.kafka.test.EmbeddedKafkaBroker;
 //import org.springframework.kafka.test.context.EmbeddedKafka;
 //import org.springframework.kafka.test.utils.KafkaTestUtils;
@@ -40,7 +41,7 @@
 //        })
 //@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 //public class TrackingServiceTest {
-//    private Producer<UUID, String> producer;
+//    private Producer<UUID, UserEventDto> producer;
 //
 //    @Autowired
 //    private EmbeddedKafkaBroker embeddedKafkaBroker;
@@ -64,8 +65,12 @@
 //        noteId = UUID.randomUUID();
 //
 //        Map<String, Object> configs = new HashMap<>(KafkaTestUtils.producerProps(embeddedKafkaBroker));
-//        producer = new DefaultKafkaProducerFactory<>(configs, new UUIDSerializer(), new StringSerializer())
-//                .createProducer();
+//        JsonSerializer<UserEventDto> userEventJsonSerializer = new JsonSerializer<>();
+//        producer = new DefaultKafkaProducerFactory<>(
+//                configs,
+//                new UUIDSerializer(),
+//                userEventJsonSerializer
+//        ).createProducer();
 //    }
 //
 //    @AfterAll
@@ -93,9 +98,8 @@
 //                .eventAttributes(mouseClickAttributes)
 //                .build();
 //
-//        String message = objectMapper.writeValueAsString(producedUserEventDto);
-//        producer.send(new ProducerRecord<>("topic-user-event", 0, noteId, message));
-//        Mockito.verify(kafkaConsumerService, Mockito.timeout(5000).times(1))
+//        producer.send(new ProducerRecord<>("topic-user-event", 0, noteId, producedUserEventDto));
+//        Mockito.verify(kafkaConsumerService, Mockito.timeout(15000).times(1))
 //                .listenToPartition(userEventDtoArgumentCaptor.capture());
 //
 //        UserEventDto userEventDto = userEventDtoArgumentCaptor.getValue();
