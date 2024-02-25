@@ -1,17 +1,17 @@
-//package com.abx.ainotebook.repository;
+// package com.abx.ainotebook.repository;
 //
-//import com.abx.ainotebook.model.UserEventMongoModel;
-//import java.util.HashMap;
-//import java.util.Map;
-//import java.util.UUID;
-//import org.assertj.core.api.Assertions;
-//import org.junit.jupiter.api.BeforeEach;
-//import org.junit.jupiter.api.Test;
-//import org.springframework.beans.factory.annotation.Autowired;
-//import org.springframework.boot.test.autoconfigure.data.mongo.DataMongoTest;
+// import com.abx.ainotebook.model.UserEventMongoModel;
+// import java.util.HashMap;
+// import java.util.Map;
+// import java.util.UUID;
+// import org.assertj.core.api.Assertions;
+// import org.junit.jupiter.api.BeforeEach;
+// import org.junit.jupiter.api.Test;
+// import org.springframework.beans.factory.annotation.Autowired;
+// import org.springframework.boot.test.autoconfigure.data.mongo.DataMongoTest;
 //
-//@DataMongoTest
-//public class UserEventRepositoryTest {
+// @DataMongoTest
+// public class UserEventRepositoryTest {
 //    @Autowired
 //    private UserEventRepository userEventRepository;
 //
@@ -40,4 +40,4 @@
 //
 //        Assertions.assertThat(savedUserEventMongoModel).isNotNull();
 //    }
-//}
+// }
