@@ -3,8 +3,6 @@ package com.abx.ainotebook.generativeai;
 import com.theokanning.openai.completion.CompletionChoice;
 import com.theokanning.openai.completion.CompletionRequest;
 import com.theokanning.openai.service.OpenAiService;
-
-
 import java.util.List;
 import java.util.Map;
 

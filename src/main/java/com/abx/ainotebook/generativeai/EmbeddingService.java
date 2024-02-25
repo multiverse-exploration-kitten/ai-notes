@@ -1,6 +1,11 @@
-
 package com.abx.ainotebook.generativeai;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 import org.springframework.stereotype.Service;
 import com.abx.ainotebook.model.EmbeddedModel;
 import com.abx.ainotebook.repository.EmbeddedRepository;
@@ -9,12 +14,6 @@ import com.theokanning.openai.embedding.EmbeddingResult;
 import com.theokanning.openai.embedding.Embedding;
 import com.theokanning.openai.service.OpenAiService;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
 @Service
 public class EmbeddingService {
