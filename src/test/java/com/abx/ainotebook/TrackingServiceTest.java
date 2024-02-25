@@ -1,46 +1,46 @@
-//package com.abx.ainotebook;
+// package com.abx.ainotebook;
 //
-//import com.abx.ainotebook.dto.ImmutableUserEventDto;
-//import com.abx.ainotebook.dto.UserEventDto;
-//import com.abx.ainotebook.model.ImmutableMouseClick;
-//import com.abx.ainotebook.model.MouseClick;
-//import com.abx.ainotebook.service.KafkaConsumerService;
-//import com.fasterxml.jackson.core.JsonProcessingException;
-//import com.fasterxml.jackson.databind.ObjectMapper;
-//import java.util.HashMap;
-//import java.util.Map;
-//import java.util.UUID;
-//import org.apache.kafka.clients.producer.Producer;
-//import org.apache.kafka.clients.producer.ProducerRecord;
-//import org.apache.kafka.common.serialization.StringSerializer;
-//import org.apache.kafka.common.serialization.UUIDSerializer;
-//import org.junit.jupiter.api.AfterAll;
-//import org.junit.jupiter.api.Assertions;
-//import org.junit.jupiter.api.BeforeEach;
-//import org.junit.jupiter.api.Test;
-//import org.junit.jupiter.api.TestInstance;
-//import org.mockito.ArgumentCaptor;
-//import org.mockito.Captor;
-//import org.mockito.Mockito;
-//import org.springframework.beans.factory.annotation.Autowired;
-//import org.springframework.boot.test.context.SpringBootTest;
-//import org.springframework.boot.test.mock.mockito.MockBean;
-//import org.springframework.kafka.core.DefaultKafkaProducerFactory;
-//import org.springframework.kafka.support.serializer.JsonSerializer;
-//import org.springframework.kafka.test.EmbeddedKafkaBroker;
-//import org.springframework.kafka.test.context.EmbeddedKafka;
-//import org.springframework.kafka.test.utils.KafkaTestUtils;
-//import org.springframework.test.context.TestPropertySource;
+// import com.abx.ainotebook.dto.ImmutableUserEventDto;
+// import com.abx.ainotebook.dto.UserEventDto;
+// import com.abx.ainotebook.model.ImmutableMouseClick;
+// import com.abx.ainotebook.model.MouseClick;
+// import com.abx.ainotebook.service.KafkaConsumerService;
+// import com.fasterxml.jackson.core.JsonProcessingException;
+// import com.fasterxml.jackson.databind.ObjectMapper;
+// import java.util.HashMap;
+// import java.util.Map;
+// import java.util.UUID;
+// import org.apache.kafka.clients.producer.Producer;
+// import org.apache.kafka.clients.producer.ProducerRecord;
+// import org.apache.kafka.common.serialization.StringSerializer;
+// import org.apache.kafka.common.serialization.UUIDSerializer;
+// import org.junit.jupiter.api.AfterAll;
+// import org.junit.jupiter.api.Assertions;
+// import org.junit.jupiter.api.BeforeEach;
+// import org.junit.jupiter.api.Test;
+// import org.junit.jupiter.api.TestInstance;
+// import org.mockito.ArgumentCaptor;
+// import org.mockito.Captor;
+// import org.mockito.Mockito;
+// import org.springframework.beans.factory.annotation.Autowired;
+// import org.springframework.boot.test.context.SpringBootTest;
+// import org.springframework.boot.test.mock.mockito.MockBean;
+// import org.springframework.kafka.core.DefaultKafkaProducerFactory;
+// import org.springframework.kafka.support.serializer.JsonSerializer;
+// import org.springframework.kafka.test.EmbeddedKafkaBroker;
+// import org.springframework.kafka.test.context.EmbeddedKafka;
+// import org.springframework.kafka.test.utils.KafkaTestUtils;
+// import org.springframework.test.context.TestPropertySource;
 //
-//@SpringBootTest
-//@EmbeddedKafka
-//@TestPropertySource(
+// @SpringBootTest
+// @EmbeddedKafka
+// @TestPropertySource(
 //        properties = {
 //            "spring.kafka.bootstrap-servers=${spring.embedded.kafka.brokers}",
 //            "spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.H2Dialect"
 //        })
-//@TestInstance(TestInstance.Lifecycle.PER_CLASS)
-//public class TrackingServiceTest {
+// @TestInstance(TestInstance.Lifecycle.PER_CLASS)
+// public class TrackingServiceTest {
 //    private Producer<UUID, UserEventDto> producer;
 //
 //    @Autowired
@@ -111,4 +111,4 @@
 //        Assertions.assertEquals(15, userEventDto.getEventAttributes().get("y"));
 //        Assertions.assertEquals("GenInsight", userEventDto.getEventAttributes().get("clickedTarget"));
 //    }
-//}
+// }

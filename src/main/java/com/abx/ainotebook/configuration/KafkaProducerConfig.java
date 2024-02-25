@@ -1,14 +1,12 @@
 package com.abx.ainotebook.configuration;
 
+import com.abx.ainotebook.dto.UserEventDto;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
-
-import com.abx.ainotebook.dto.UserEventDto;
 import org.apache.kafka.clients.admin.AdminClientConfig;
 import org.apache.kafka.clients.admin.NewTopic;
 import org.apache.kafka.clients.producer.ProducerConfig;
-import org.apache.kafka.common.serialization.UUIDDeserializer;
 import org.apache.kafka.common.serialization.UUIDSerializer;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -17,7 +15,6 @@ import org.springframework.kafka.core.DefaultKafkaProducerFactory;
 import org.springframework.kafka.core.KafkaAdmin;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.core.ProducerFactory;
-import org.springframework.kafka.support.serializer.JsonDeserializer;
 import org.springframework.kafka.support.serializer.JsonSerializer;
 
 @Configuration
@@ -46,11 +43,7 @@ public class KafkaProducerConfig {
         configProps.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, JsonSerializer.class);
 
         JsonSerializer<UserEventDto> userEventJsonSerializer = new JsonSerializer<>();
-        return new DefaultKafkaProducerFactory<>(
-                configProps,
-                new UUIDSerializer(),
-                userEventJsonSerializer
-        );
+        return new DefaultKafkaProducerFactory<>(configProps, new UUIDSerializer(), userEventJsonSerializer);
     }
 
     @Bean
