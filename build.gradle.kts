@@ -5,7 +5,6 @@ plugins {
     id("io.spring.dependency-management") version "1.1.4"
     id("com.diffplug.spotless") version "6.18.0"
     id("org.flywaydb.flyway") version "7.15.0"
-    id ("com.vanniktech.maven.publish" ) version "0.19.0"
 }
 
 group = "com.abx"
@@ -24,8 +23,11 @@ repositories {
 dependencies {
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
+    implementation("org.springframework.boot:spring-boot-starter-security")
+    implementation("org.springframework.boot:spring-boot-starter-websocket")
     implementation("com.diffplug.spotless:spotless-plugin-gradle:6.18.0")
     implementation("org.springframework.boot:spring-boot-starter-data-mongodb")
+
 
     implementation ("com.theokanning.openai-gpt3-java:service:0.12.0")
 

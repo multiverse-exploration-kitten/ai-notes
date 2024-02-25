@@ -39,9 +39,24 @@ public class NoteService {
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Note not found with ID: " + id));
     }
 
-    public Note createNote(CreateNoteDto createNoteDto, UUID userId, UUID notebookId) {
-        Note note = new Note(userId, notebookId, createNoteDto.getTitle());
-        return noteRepository.save(note);
+    public Note createNote(CreateNoteDto createNoteDto, UUID userId, UUID notebookId) throws Exception {
+        if (createNoteDto == null || userId == null || notebookId == null) {
+            throw new Exception("CreateNoteDto, userId, or notebookId is null");
+        }
+        Note note = new Note(
+                UUID.randomUUID(),
+                userId,
+                notebookId,
+                createNoteDto.getTitle(),
+                createNoteDto.getContent(),
+                System.currentTimeMillis(),
+                System.currentTimeMillis());
+
+        Note savedNote = noteRepository.save(note);
+        if (savedNote == null) {
+            throw new Exception("Failed to save the note");
+        }
+        return savedNote;
     }
 
     public List<Note> findByUserId(UUID userId) {
@@ -50,6 +65,10 @@ public class NoteService {
 
     public List<Note> findByNotebookId(UUID notebookId) {
         return noteRepository.findByNotebookId(notebookId);
+    }
+
+    public List<Note> findAllNotes() {
+        return noteRepository.findAll();
     }
 
     public List<Note> findByTitleContaining(String title, UUID userId) {
