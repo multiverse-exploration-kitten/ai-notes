@@ -25,6 +25,8 @@ public class Note {
     // TODO:
     //  private Map<String, Object> metadata;
 
+    public Note() {}
+
     public Note(UUID id, UUID userId, UUID notebookId, String title, String content, Long createdAt, Long updatedAt) {
         this.id = id;
         this.userId = userId;

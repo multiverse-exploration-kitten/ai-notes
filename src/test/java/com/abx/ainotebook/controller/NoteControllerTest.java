@@ -89,5 +89,4 @@ public class NoteControllerTest {
         mockMvc.perform(MockMvcRequestBuilders.get("/users/" + userId))
                 .andExpect(MockMvcResultMatchers.status().isOk());
     }
-
 }

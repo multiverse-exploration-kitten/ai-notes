@@ -15,7 +15,7 @@ public interface NotebookDto {
 
     long getCreatedAt();
 
-    long getUpdatedAt();
-
     UUID userID();
+
+    long getUpdatedAt();
 }
