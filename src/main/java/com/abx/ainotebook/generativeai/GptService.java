@@ -42,6 +42,11 @@ public class GptService implements GenerativeAiService<String, List<CompletionCh
         return choice.getText();
     }
 
+    @Override
+    public Map<String, Object> generateEmbedding(String prompt) {
+        throw new UnsupportedOperationException("GptService does not support embedding generation.");
+    }
+
 //    public String embed() {
 //        return "";
 //    }
