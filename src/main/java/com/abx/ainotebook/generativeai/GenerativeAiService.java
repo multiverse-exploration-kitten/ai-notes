@@ -10,4 +10,4 @@ public interface GenerativeAiService<GenerativeAiPrompt, GenerativeAiResponse> {
 
     Map<String, Object> generateEmbedding(GenerativeAiPrompt prompt);
 }
-}
+
