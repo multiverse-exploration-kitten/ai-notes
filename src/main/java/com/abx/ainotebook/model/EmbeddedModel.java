@@ -1,10 +1,9 @@
 package com.abx.ainotebook.model;
 
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
-
 import java.util.Map;
 import java.util.UUID;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document(collection = "embedded_content")
 public class EmbeddedModel {
@@ -21,7 +20,8 @@ public class EmbeddedModel {
   private Long createdAt;
   private Integer index;
 
-  public EmbeddedModel(UUID id, UUID referenceId, String type, Map<String, Float> embedding, Long createdAt, Integer index) {
+  public EmbeddedModel(UUID id, UUID referenceId, String type,
+                       Map<String, Float> embedding, Long createdAt, Integer index) {
     this.id = id;
     this.referenceId = referenceId;
     this.type = type;
