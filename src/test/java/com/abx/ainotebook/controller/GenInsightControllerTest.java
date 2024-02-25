@@ -31,7 +31,10 @@ class GenInsightControllerTest {
     void genInsight() throws Exception {
         UUID noteId = UUID.randomUUID();
         UUID userId = UUID.randomUUID();
-        Note note = new Note(noteId, userId, "Chapter I");
+        Note note = new Note();
+        note.setContent("Chapter I");
+        note.setId(noteId);
+        note.setUserId(userId);
         Mockito.when(noteService.findById(noteId)).thenReturn(note);
         Mockito.when(insightService.genInsight(note.getContent())).thenReturn("test");
         mockMvc.perform(MockMvcRequestBuilders.get(
@@ -43,7 +46,10 @@ class GenInsightControllerTest {
     void genSummary() throws Exception {
         UUID noteId = UUID.randomUUID();
         UUID userId = UUID.randomUUID();
-        Note note = new Note(noteId, userId, "Chapter I");
+        Note note = new Note();
+        note.setContent("Chapter I");
+        note.setId(noteId);
+        note.setUserId(userId);
         Mockito.when(noteService.findById(noteId)).thenReturn(note);
         Mockito.when(insightService.genInsight(note.getContent())).thenReturn("test");
         mockMvc.perform(MockMvcRequestBuilders.get(
