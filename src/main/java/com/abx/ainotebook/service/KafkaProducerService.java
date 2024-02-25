@@ -15,9 +15,9 @@ import org.springframework.stereotype.Service;
 public class KafkaProducerService {
     public static final String TOPIC_USER_EVENT = "topic-user-event";
 
-    private final KafkaTemplate<UUID, Object> kafkaTemplate;
+    private final KafkaTemplate<UUID, UserEventDto> kafkaTemplate;
 
-    public KafkaProducerService(KafkaTemplate<UUID, Object> kafkaTemplate) {
+    public KafkaProducerService(KafkaTemplate<UUID, UserEventDto> kafkaTemplate) {
         this.kafkaTemplate = kafkaTemplate;
     }
 

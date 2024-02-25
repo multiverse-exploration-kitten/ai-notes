@@ -3,6 +3,8 @@ package com.abx.ainotebook.configuration;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
+
+import com.abx.ainotebook.dto.UserEventDto;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.common.serialization.UUIDDeserializer;
 import org.springframework.beans.factory.annotation.Value;
@@ -18,18 +20,27 @@ public class KafkaConsumerConfig {
     @Value("${spring.kafka.bootstrap-servers}")
     private String kafkaBootstrapServers;
 
+    @Value("${spring.kafka.consumer.properties.spring.json.trusted.packages}")
+    private String trustedPackages;
+
     @Bean
-    public ConsumerFactory<UUID, Object> consumerFactory() {
+    public ConsumerFactory<UUID, UserEventDto> consumerFactory() {
         Map<String, Object> props = new HashMap<>();
         props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, kafkaBootstrapServers);
         props.put(ConsumerConfig.GROUP_ID_CONFIG, "group-user-event"); // identify consumer group
-        return new DefaultKafkaConsumerFactory<>(props, new UUIDDeserializer(), new JsonDeserializer<>(Object.class));
+
+        JsonDeserializer<UserEventDto> userEventDtoJsonDeserializer = new JsonDeserializer<>();
+        userEventDtoJsonDeserializer.addTrustedPackages(trustedPackages);
+        return new DefaultKafkaConsumerFactory<>(
+                props,
+                new UUIDDeserializer(),
+                new JsonDeserializer<>(UserEventDto.class));
     }
 
     @Bean
-    public ConcurrentKafkaListenerContainerFactory<UUID, Object> kafkaListenerContainerFactory() {
+    public ConcurrentKafkaListenerContainerFactory<UUID, UserEventDto> kafkaListenerContainerFactory() {
 
-        ConcurrentKafkaListenerContainerFactory<UUID, Object> factory = new ConcurrentKafkaListenerContainerFactory<>();
+        ConcurrentKafkaListenerContainerFactory<UUID, UserEventDto> factory = new ConcurrentKafkaListenerContainerFactory<>();
         factory.setConsumerFactory(consumerFactory());
         return factory;
     }
