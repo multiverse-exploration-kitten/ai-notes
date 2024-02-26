@@ -2,14 +2,13 @@ package com.abx.ainotebook.controller;
 
 import com.abx.ainotebook.dto.CreateNoteDto;
 import com.abx.ainotebook.dto.ImmutableCreateNoteDto;
-import com.abx.ainotebook.dto.NoteDto;
 import com.abx.ainotebook.dto.ImmutableNoteDto;
+import com.abx.ainotebook.dto.NoteDto;
 import com.abx.ainotebook.model.Note;
 import com.abx.ainotebook.service.NoteBookService;
 import com.abx.ainotebook.service.NoteService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.Random;
 import java.util.UUID;
 import org.junit.jupiter.api.BeforeEach;
@@ -121,7 +120,8 @@ public class NoteControllerTest {
                 .build();
 
         // Mock the service method
-        Mockito.when(noteService.createNote(Mockito.any(CreateNoteDto.class), Mockito.eq(userId), Mockito.eq(notebookId)))
+        Mockito.when(noteService.createNote(
+                        Mockito.any(CreateNoteDto.class), Mockito.eq(userId), Mockito.eq(notebookId)))
                 .thenReturn(mockCreatedNote);
 
         // Perform the post request and verify the outcome
@@ -131,5 +131,4 @@ public class NoteControllerTest {
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.content().json(objectMapper.writeValueAsString(expectedNoteDto)));
     }
-
 }
