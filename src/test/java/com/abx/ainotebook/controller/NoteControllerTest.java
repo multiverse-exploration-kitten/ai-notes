@@ -1,10 +1,15 @@
 package com.abx.ainotebook.controller;
 
+import com.abx.ainotebook.dto.CreateNoteDto;
+import com.abx.ainotebook.dto.ImmutableCreateNoteDto;
+import com.abx.ainotebook.dto.NoteDto;
+import com.abx.ainotebook.dto.ImmutableNoteDto;
 import com.abx.ainotebook.model.Note;
 import com.abx.ainotebook.service.NoteBookService;
 import com.abx.ainotebook.service.NoteService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.Random;
 import java.util.UUID;
 import org.junit.jupiter.api.BeforeEach;
@@ -15,6 +20,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
@@ -89,4 +95,41 @@ public class NoteControllerTest {
         mockMvc.perform(MockMvcRequestBuilders.get("/users/" + userId))
                 .andExpect(MockMvcResultMatchers.status().isOk());
     }
+
+    @Test
+    void testCreateNote() throws Exception {
+        // Prepare the input and output objects
+        CreateNoteDto createNoteDto = ImmutableCreateNoteDto.builder()
+                .title("Test Note Title")
+                .content("Test Note Content")
+                .build();
+        long timestamp = 02042024;
+
+        Note mockCreatedNote = new Note();
+        mockCreatedNote.setTitle(createNoteDto.getTitle());
+        mockCreatedNote.setContent(createNoteDto.getContent());
+        mockCreatedNote.setCreatedAt(timestamp);
+        mockCreatedNote.setUpdatedAt(timestamp);
+        // Assuming Note has a constructor or setters to set these properties
+
+        NoteDto expectedNoteDto = ImmutableNoteDto.builder()
+                .title(mockCreatedNote.getTitle())
+                .content(mockCreatedNote.getContent())
+                .createdAt(mockCreatedNote.getCreatedAt())
+                .updatedAt(mockCreatedNote.getUpdatedAt())
+                .userId(userId)
+                .build();
+
+        // Mock the service method
+        Mockito.when(noteService.createNote(Mockito.any(CreateNoteDto.class), Mockito.eq(userId), Mockito.eq(notebookId)))
+                .thenReturn(mockCreatedNote);
+
+        // Perform the post request and verify the outcome
+        mockMvc.perform(MockMvcRequestBuilders.post("/user/" + userId + "/notebook/" + notebookId + "/create_note")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(createNoteDto)))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.content().json(objectMapper.writeValueAsString(expectedNoteDto)));
+    }
+
 }

@@ -104,6 +104,7 @@ public class NoteController {
                 .content(createdNote.getContent())
                 .createdAt(createdNote.getCreatedAt())
                 .updatedAt(createdNote.getUpdatedAt())
+                .userId(userId)
                 .build();
         return ResponseEntity.ok(noteDto);
     }
