@@ -8,7 +8,6 @@ import com.abx.ainotebook.service.NoteBookService;
 import com.abx.ainotebook.service.NoteService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.Random;
 import java.util.UUID;
 import org.junit.jupiter.api.BeforeEach;
@@ -122,5 +121,4 @@ public class NoteControllerTest {
                         .content(objectMapper.writeValueAsString(createNoteDto)))
                 .andExpect(MockMvcResultMatchers.status().isOk());
     }
-
 }
