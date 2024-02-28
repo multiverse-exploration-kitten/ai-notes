@@ -1,5 +1,11 @@
 package com.abx.ainotebook.generativeai;
 
+import com.theokanning.openai.embedding.Embedding;
+import com.theokanning.openai.embedding.EmbeddingRequest;
+import com.theokanning.openai.embedding.EmbeddingResult;
+import com.theokanning.openai.service.OpenAiService;
+import com.abx.ainotebook.model.EmbeddedModel;
+import com.abx.ainotebook.repository.EmbeddedRepository;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -7,12 +13,6 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import org.springframework.stereotype.Service;
-import com.theokanning.openai.embedding.Embedding;
-import com.theokanning.openai.embedding.EmbeddingRequest;
-import com.theokanning.openai.embedding.EmbeddingResult;
-import com.theokanning.openai.service.OpenAiService;
-import com.abx.ainotebook.model.EmbeddedModel;
-import com.abx.ainotebook.repository.EmbeddedRepository;
 
 @Service
 public class EmbeddingService {
@@ -25,7 +25,7 @@ public class EmbeddingService {
     this.embeddedRepository = embeddedRepository;
   }
 
-  public List<EmbeddedModel> createAndSaveEmbeddings(List<String> texts, UUID referenceId, String type) {
+  public void createAndSaveEmbeddings(List<String> texts, UUID referenceId, String type) {
     List<EmbeddedModel> savedModels = new ArrayList<>();
     List<Embedding> embeddings = generateEmbeddings(texts);
 
@@ -49,7 +49,6 @@ public class EmbeddingService {
 
       savedModels.add(embeddedRepository.save(embeddedModel));
     }
-    return savedModels;
   }
 
   private List<Embedding> generateEmbeddings(List<String> texts) {
