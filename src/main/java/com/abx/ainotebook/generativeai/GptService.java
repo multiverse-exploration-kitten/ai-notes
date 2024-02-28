@@ -4,6 +4,7 @@ import com.theokanning.openai.completion.CompletionChoice;
 import com.theokanning.openai.completion.CompletionRequest;
 import com.theokanning.openai.service.OpenAiService;
 import java.util.List;
+import java.util.Map;
 
 public class GptService implements GenerativeAiService<String, List<CompletionChoice>> {
     private static final String GPT_MODEL = "babbage-002";
@@ -37,4 +38,14 @@ public class GptService implements GenerativeAiService<String, List<CompletionCh
         //        System.out.println("choice: " + choice.getText());
         return choice.getText();
     }
+
+    @Override
+    public Map<String, Object> generateEmbedding(String prompt) {
+        throw new UnsupportedOperationException("GptService does not support embedding generation.");
+    }
+
+//    public String embed() {
+//        return "";
+//    }
+
 }
