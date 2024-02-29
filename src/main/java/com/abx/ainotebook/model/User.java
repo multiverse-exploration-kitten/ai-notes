@@ -16,9 +16,10 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 @Entity
-@Table(name = "ai_notes.users")
+@Table(name = "users", schema = "ai_notes")
 public class User implements UserDetails {
     @Id
+    @Column(name = "user_id")
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
