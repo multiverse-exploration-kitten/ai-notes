@@ -30,6 +30,9 @@ public class NoteService {
                 .content(note.getContent())
                 .createdAt(note.getCreatedAt())
                 .updatedAt(note.getUpdatedAt())
+                .userId(note.getUserId())
+                .notebookId(note.getNotebookId())
+                .id(note.getId())
                 .build();
     }
 

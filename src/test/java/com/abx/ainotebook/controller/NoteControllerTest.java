@@ -117,13 +117,16 @@ public class NoteControllerTest {
                 .createdAt(mockCreatedNote.getCreatedAt())
                 .updatedAt(mockCreatedNote.getUpdatedAt())
                 .userId(userId)
+                .notebookId(notebookId)
+                .id(noteId)
                 .build();
 
         // Mock the service method
         Mockito.when(noteService.createNote(
                         Mockito.any(CreateNoteDto.class), Mockito.eq(userId), Mockito.eq(notebookId)))
                 .thenReturn(mockCreatedNote);
-
+        String expectedJson = objectMapper.writeValueAsString(expectedNoteDto);
+        System.out.println("Expected JSON: " + expectedJson);
         // Perform the post request and verify the outcome
         mockMvc.perform(MockMvcRequestBuilders.post("/user/" + userId + "/notebook/" + notebookId + "/create_note")
                         .contentType(MediaType.APPLICATION_JSON)

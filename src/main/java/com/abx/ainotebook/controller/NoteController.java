@@ -1,7 +1,6 @@
 package com.abx.ainotebook.controller;
 
 import com.abx.ainotebook.dto.CreateNoteDto;
-import com.abx.ainotebook.dto.ImmutableNoteDto;
 import com.abx.ainotebook.dto.NoteDto;
 import com.abx.ainotebook.model.Note;
 import com.abx.ainotebook.service.NoteBookService;
@@ -99,13 +98,7 @@ public class NoteController {
             return ResponseEntity.badRequest().build();
         }
         Note createdNote = noteService.createNote(createNoteDto, userId, notebookId);
-        NoteDto noteDto = ImmutableNoteDto.builder()
-                .title(createdNote.getTitle())
-                .content(createdNote.getContent())
-                .createdAt(createdNote.getCreatedAt())
-                .updatedAt(createdNote.getUpdatedAt())
-                .userId(userId)
-                .build();
+        NoteDto noteDto = noteService.convertNoteToDto(createdNote);
         return ResponseEntity.ok(noteDto);
     }
 
