@@ -2,8 +2,6 @@ package com.abx.ainotebook.controller;
 
 import com.abx.ainotebook.dto.CreateNoteDto;
 import com.abx.ainotebook.dto.ImmutableCreateNoteDto;
-import com.abx.ainotebook.dto.ImmutableNoteDto;
-import com.abx.ainotebook.dto.NoteDto;
 import com.abx.ainotebook.model.Note;
 import com.abx.ainotebook.service.NoteBookService;
 import com.abx.ainotebook.service.NoteService;
