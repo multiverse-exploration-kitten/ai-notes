@@ -50,7 +50,7 @@ public class KafkaConsumerService {
         return userEventDto;
     }
 
-    @Scheduled(fixedRate = 5000) //TODO: via active web socket
+    @Scheduled(fixedRate = 5000)
     public void genInsight() {
         Set<UUID> inactiveNotes = actionFilter.checkInactiveNotes();
 
