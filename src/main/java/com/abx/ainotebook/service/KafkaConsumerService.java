@@ -50,17 +50,10 @@ public class KafkaConsumerService {
         return userEventDto;
     }
 
-    @Scheduled(fixedRate = 5000) //TODO: via active web socket
+    @Scheduled(fixedRate = 5000)
     public void genInsight() {
         Set<UUID> inactiveNotes = actionFilter.checkInactiveNotes();
 
-        // TODO: parallelize this task?
-        //        for (UUID noteId : inactiveNotes) {
-        //            Note note = noteService.findById(noteId);
-        //            String noteContent = note.getContent();
-        //            String insight = insightService.genInsight(noteContent);
-
-        // TODO: display insight to UI
-        //        }
+        // TODO: display insight to UI via web socket
     }
 }
