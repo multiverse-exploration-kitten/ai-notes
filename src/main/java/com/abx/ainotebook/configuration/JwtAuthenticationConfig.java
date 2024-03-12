@@ -16,6 +16,10 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 public class JwtAuthenticationConfig {
     private UserRepository userRepository;
 
+    public JwtAuthenticationConfig(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
+
     @Bean
     public UserDetailsService userDetailsService() {
         return username ->
