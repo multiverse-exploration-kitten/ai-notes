@@ -33,14 +33,14 @@ jobs:
 
       mongodb:
         image: mongo
-        ports:
-          - 27017:27017
         env:
           MONGO_INITDB_ROOT_USERNAME: root
           MONGO_INITDB_ROOT_PASSWORD: password
           MONGO_INITDB_DATABASE: ainotes_db
+        ports:
+          - 27017:27017
         options: >-
-          --health-cmd "echo 'db.runCommand({ ping: 1 })' | mongo localhost:27017/test --quiet" 
+#          --health-cmd "echo 'db.runCommand({ ping: 1 })' | mongo localhost:27017/test --quiet"
           --health-interval 10s 
           --health-timeout 5s 
           --health-retries 5
