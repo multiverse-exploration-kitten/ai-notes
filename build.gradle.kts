@@ -23,10 +23,17 @@ repositories {
 dependencies {
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
+    implementation("org.springframework.boot:spring-boot-starter-security")
+    implementation("org.springframework.boot:spring-boot-starter-websocket")
     implementation("com.diffplug.spotless:spotless-plugin-gradle:6.18.0")
     implementation("org.springframework.boot:spring-boot-starter-data-mongodb")
 
+
+    implementation ("com.theokanning.openai-gpt3-java:service:0.12.0")
+
+
     implementation ("org.springframework.kafka:spring-kafka")
+
     annotationProcessor("org.immutables:value:2.9.3")
     compileOnly("org.immutables:value:2.9.3")
     implementation("com.fasterxml.jackson.core:jackson-databind:2.15.2")
@@ -79,3 +86,4 @@ flyway {
     schemas = arrayOf("ai_notes")
     locations = arrayOf("classpath:db.migration")
 }
+
