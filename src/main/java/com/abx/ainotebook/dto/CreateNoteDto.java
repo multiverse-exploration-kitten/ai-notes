@@ -9,4 +9,6 @@ import org.immutables.value.Value;
 @JsonDeserialize(as = ImmutableCreateNoteDto.class)
 public interface CreateNoteDto {
     String getTitle();
+
+    String getContent();
 }

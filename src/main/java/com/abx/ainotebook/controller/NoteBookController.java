@@ -36,7 +36,7 @@ public class NoteBookController {
         return ResponseEntity.ok(found);
     }
 
-    @PostMapping("notebook/{user-uuid}/create")
+    @PostMapping("/notebook/{user-uuid}/create")
     public ResponseEntity<NotebookDto> createNotebook(
             @RequestBody CreateNotebookDto createNotebookDto, @PathVariable("user-uuid") UUID userUuid) {
         if (Objects.equals(createNotebookDto.getTitle(), null)) {
