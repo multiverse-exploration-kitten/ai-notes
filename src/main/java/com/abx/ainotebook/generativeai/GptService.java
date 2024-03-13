@@ -25,6 +25,7 @@ public class GptService implements GenerativeAiService<String, List<CompletionCh
 
     @Override
     public String parseGptResponse(List<CompletionChoice> completionChoices) {
+        //        System.out.println("com: " + completionChoices);
         StringBuilder ans = new StringBuilder();
         for (CompletionChoice choice : completionChoices) {
             ans.append(parseSingleGptResponse(choice));
@@ -33,7 +34,7 @@ public class GptService implements GenerativeAiService<String, List<CompletionCh
     }
 
     private String parseSingleGptResponse(CompletionChoice choice) {
-
+        //        System.out.println("choice: " + choice.getText());
         return choice.getText();
     }
 }

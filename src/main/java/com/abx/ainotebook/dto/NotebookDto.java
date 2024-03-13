@@ -2,7 +2,7 @@ package com.abx.ainotebook.dto;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import java.sql.Timestamp;
+import java.util.UUID;
 import org.immutables.value.Value;
 
 @Value.Immutable
@@ -13,7 +13,9 @@ public interface NotebookDto {
 
     String getCategory();
 
-    Timestamp getCreatedAt();
+    long getCreatedAt();
 
-    Timestamp getUpdatedAt();
+    UUID userID();
+
+    long getUpdatedAt();
 }

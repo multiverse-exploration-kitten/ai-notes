@@ -4,7 +4,6 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-import java.sql.Timestamp;
 import java.util.UUID;
 
 @Entity
@@ -23,13 +22,12 @@ public class Notebook {
     private String category;
 
     @Column(name = "created_at")
-    private Timestamp createdAt;
+    private long createdAt;
 
     @Column(name = "updated_at")
-    private Timestamp updatedAt;
+    private long updatedAt;
 
-    public Notebook(
-            UUID notebookId, UUID userId, String title, String category, Timestamp createdAt, Timestamp updatedAt) {
+    public Notebook(UUID notebookId, UUID userId, String title, String category, long createdAt, long updatedAt) {
         this.notebookId = notebookId;
         this.userId = userId;
         this.title = title;
@@ -38,13 +36,11 @@ public class Notebook {
         this.updatedAt = updatedAt;
     }
 
-    //     TODO: overload constructor
     public Notebook(UUID userId, String title, String category) {
         this.userId = userId;
         this.title = title;
         this.category = category;
     }
-    //    public Note()
 
     public UUID getNotebookId() {
         return notebookId;
@@ -62,15 +58,15 @@ public class Notebook {
         return category;
     }
 
-    public Timestamp getCreatedAt() {
+    public long getCreatedAt() {
         return createdAt;
     }
 
-    public Timestamp getUpdatedAt() {
+    public long getUpdatedAt() {
         return updatedAt;
     }
 
-    public void setUpdatedAt(Timestamp updatedAt) {
+    public void setUpdatedAt(long updatedAt) {
         this.updatedAt = updatedAt;
     }
 
@@ -90,7 +86,7 @@ public class Notebook {
         this.category = category;
     }
 
-    public void setCreatedAt(Timestamp createdAt) {
+    public void setCreatedAt(long createdAt) {
         this.createdAt = createdAt;
     }
 }

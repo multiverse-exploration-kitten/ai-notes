@@ -16,11 +16,9 @@ import org.springframework.web.server.ResponseStatusException;
 @Service
 public class NoteService {
     private final NoteRepository noteRepository;
-    private final InsightService insightService;
 
     public NoteService(NoteRepository noteRepository, InsightService insightService) {
         this.noteRepository = noteRepository;
-        this.insightService = insightService;
     }
 
     public NoteDto convertNoteToDto(Note note) {
@@ -37,13 +35,28 @@ public class NoteService {
 
     public Note findById(UUID id) {
         return noteRepository
-                .findById(String.valueOf(id))
+                .findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Note not found with ID: " + id));
     }
 
-    public Note createNote(CreateNoteDto createNoteDto, UUID userId, UUID notebookId) {
-        Note note = new Note(userId, notebookId, createNoteDto.getTitle());
-        return noteRepository.save(note);
+    public Note createNote(CreateNoteDto createNoteDto, UUID userId, UUID notebookId) throws Exception {
+        if (createNoteDto == null || userId == null || notebookId == null) {
+            throw new Exception("CreateNoteDto, userId, or notebookId is null");
+        }
+        Note note = new Note(
+                UUID.randomUUID(),
+                userId,
+                notebookId,
+                createNoteDto.getTitle(),
+                createNoteDto.getContent(),
+                System.currentTimeMillis(),
+                System.currentTimeMillis());
+
+        Note savedNote = noteRepository.save(note);
+        if (savedNote == null) {
+            throw new Exception("Failed to save the note");
+        }
+        return savedNote;
     }
 
     public List<Note> findByUserId(UUID userId) {
@@ -54,28 +67,29 @@ public class NoteService {
         return noteRepository.findByNotebookId(notebookId);
     }
 
+    public List<Note> findAllNotes() {
+        return noteRepository.findAll();
+    }
+
     public List<Note> findByTitleContaining(String title, UUID userId) {
         return noteRepository.findByTitleContaining(title, userId);
     }
 
     public void modifyNote(UUID id, String newContent) {
-        Optional<Note> existingNote = noteRepository.findById(id.toString());
+        Optional<Note> existingNote = noteRepository.findById(id);
         if (existingNote.isPresent()) {
             Note note = existingNote.get();
             note.setContent(newContent);
             noteRepository.save(note);
-            //            update later
-            insightService.genInsight(newContent);
-            insightService.genSummary(newContent);
         } else {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Note not found with ID: " + id);
         }
     }
 
     public void delete(UUID noteId) {
-        if (!noteRepository.existsById(noteId.toString())) {
+        if (!noteRepository.existsById(noteId)) {
             throw new ResourceNotFoundException("Note not found with ID: " + noteId);
         }
-        noteRepository.deleteById(noteId.toString());
+        noteRepository.deleteById(noteId);
     }
 }

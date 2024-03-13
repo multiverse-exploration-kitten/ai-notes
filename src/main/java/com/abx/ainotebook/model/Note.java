@@ -25,6 +25,8 @@ public class Note {
     // TODO:
     //  private Map<String, Object> metadata;
 
+    public Note() {}
+
     public Note(UUID id, UUID userId, UUID notebookId, String title, String content, Long createdAt, Long updatedAt) {
         this.id = id;
         this.userId = userId;
@@ -35,10 +37,26 @@ public class Note {
         this.updatedAt = updatedAt;
     }
 
-    public Note(UUID id, UUID userId, String title) {
-        this.id = id;
-        this.userId = userId;
-        this.title = title;
+    @Override
+    public String toString() {
+        return "Note{"
+                + "id="
+                + id
+                + ", userId="
+                + userId
+                + ", notebookId="
+                + notebookId
+                + ", title='"
+                + title
+                + '\''
+                + ", content='"
+                + content
+                + '\''
+                + ", createdAt="
+                + createdAt
+                + ", updatedAt="
+                + updatedAt
+                + '}';
     }
 
     public UUID getId() {

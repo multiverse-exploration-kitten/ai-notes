@@ -4,12 +4,17 @@ import com.abx.ainotebook.dto.CreateNoteDto;
 import com.abx.ainotebook.dto.ImmutableNoteDto;
 import com.abx.ainotebook.dto.NoteDto;
 import com.abx.ainotebook.model.Note;
+import com.abx.ainotebook.service.NoteBookService;
 import com.abx.ainotebook.service.NoteService;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 import java.util.stream.Collectors;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
+import org.springframework.messaging.handler.annotation.DestinationVariable;
+import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -19,10 +24,18 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class NoteController {
+    private static final Logger logger = LoggerFactory.getLogger(NoteController.class);
     private final NoteService noteService;
+    private final NoteBookService noteBookService;
 
-    public NoteController(NoteService noteService) {
+    public NoteController(NoteService noteService, NoteBookService noteBookService) {
         this.noteService = noteService;
+        this.noteBookService = noteBookService;
+    }
+
+    @GetMapping("/notes")
+    public String notes() {
+        return "note";
     }
 
     @GetMapping("/notes/{noteId}")
@@ -32,6 +45,12 @@ public class NoteController {
         }
         Note note = noteService.findById(noteId);
         return ResponseEntity.ok(note);
+    }
+
+    @GetMapping("/notes/list")
+    public ResponseEntity<List<Note>> getNotes() {
+        List<Note> notes = noteService.findAllNotes();
+        return ResponseEntity.ok(notes);
     }
 
     @DeleteMapping("/notes/{noteId}")
@@ -67,7 +86,8 @@ public class NoteController {
 
     @PostMapping("user/{userId}/notebook/{notebookId}/create_note")
     public ResponseEntity<NoteDto> createNote(
-            @RequestBody CreateNoteDto createNoteDto, @PathVariable UUID userId, @PathVariable UUID notebookId) {
+            @RequestBody CreateNoteDto createNoteDto, @PathVariable UUID userId, @PathVariable UUID notebookId)
+            throws Exception {
 
         if (Objects.equals(createNoteDto.getTitle(), null)) {
             return ResponseEntity.badRequest().build();
@@ -86,5 +106,17 @@ public class NoteController {
                 .updatedAt(createdNote.getUpdatedAt())
                 .build();
         return ResponseEntity.ok(noteDto);
+    }
+
+    @MessageMapping("/notes/{noteId}/auto-save")
+    public ResponseEntity<String> receiveNote(@DestinationVariable UUID noteId, @RequestBody String noteContent) {
+        log("Received Note Content: " + noteContent);
+        noteService.modifyNote(noteId, noteContent);
+        return ResponseEntity.ok(noteContent);
+    }
+
+    private void log(String message) {
+        //        System.out.println(message);
+        logger.info(message);
     }
 }

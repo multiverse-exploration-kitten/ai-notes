@@ -3,7 +3,6 @@ package com.abx.ainotebook.service;
 import com.abx.ainotebook.dto.CreateNotebookDto;
 import com.abx.ainotebook.model.Notebook;
 import com.abx.ainotebook.repository.NotebookRepository;
-import java.sql.Timestamp;
 import java.util.List;
 import java.util.UUID;
 import org.springframework.stereotype.Service;
@@ -42,7 +41,7 @@ public class NoteBookService {
         notebookRepository.deleteById(notebookId);
     }
 
-    public List<Notebook> findByCreatedDateAfter(Timestamp createdAt) {
+    public List<Notebook> findByCreatedDateAfter(long createdAt) {
         return notebookRepository.findByCreatedAtAfter(createdAt);
     }
 }
