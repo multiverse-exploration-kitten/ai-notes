@@ -24,6 +24,9 @@ class NoteBookServiceTest {
     @MockBean
     private NoteBookService noteBookService;
 
+    @MockBean
+    private JwtService jwtService;
+
     @Test
     void createNotebook() {
         UUID userID = UUID.randomUUID();

@@ -5,6 +5,7 @@ import com.abx.ainotebook.dto.ImmutableCreateNotebookDto;
 import com.abx.ainotebook.dto.ImmutableNotebookDto;
 import com.abx.ainotebook.dto.NotebookDto;
 import com.abx.ainotebook.model.Notebook;
+import com.abx.ainotebook.service.JwtService;
 import com.abx.ainotebook.service.NoteBookService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.ArrayList;
@@ -25,6 +26,9 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 public class NoteBookControllerTest {
     @Autowired
     private MockMvc mockMvc;
+
+    @MockBean
+    private JwtService jwtService;
 
     @MockBean
     private NoteBookService noteBookService;

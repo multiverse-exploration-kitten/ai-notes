@@ -2,6 +2,7 @@ package com.abx.ainotebook.controller;
 
 import com.abx.ainotebook.model.Note;
 import com.abx.ainotebook.service.InsightService;
+import com.abx.ainotebook.service.JwtService;
 import com.abx.ainotebook.service.NoteService;
 import java.util.UUID;
 import org.junit.jupiter.api.Test;
@@ -28,6 +29,9 @@ class GenInsightControllerTest {
 
     @MockBean
     private NoteService noteService;
+
+    @MockBean
+    private JwtService jwtService;
 
     @Test
     void genInsight() throws Exception {

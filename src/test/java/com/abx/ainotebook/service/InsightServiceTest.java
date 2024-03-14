@@ -13,6 +13,9 @@ public class InsightServiceTest {
     @MockBean
     private InsightService insightService;
 
+    @MockBean
+    private JwtService jwtService;
+
     @Test
     void genInsight() {
         String sentence = insightService.genInsight("Mr and Mrs Dursley, of number four, Privet Drive,"
