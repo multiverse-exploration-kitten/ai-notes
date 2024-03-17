@@ -33,6 +33,7 @@ dependencies {
 
 
     implementation ("org.springframework.kafka:spring-kafka")
+    testImplementation ("org.springframework.kafka:spring-kafka-test")
 
     annotationProcessor("org.immutables:value:2.9.3")
     compileOnly("org.immutables:value:2.9.3")

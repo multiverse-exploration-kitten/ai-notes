@@ -1,34 +1,59 @@
 package com.abx.ainotebook.service;
 
-import com.abx.ainotebook.model.MouseClick;
-import com.abx.ainotebook.model.MouseClickMongoModel;
-import com.abx.ainotebook.repository.MouseClickRepository;
-import java.time.Instant;
+import com.abx.ainotebook.dto.UserEventDto;
+import com.abx.ainotebook.model.ActionFilter;
+import com.abx.ainotebook.model.UserEventMongoModel;
+import com.abx.ainotebook.repository.UserEventRepository;
+import java.util.Set;
 import java.util.UUID;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.messaging.handler.annotation.Payload;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 @Service
 public class KafkaConsumerService {
-    private final MouseClickRepository mouseClickRepository;
+    public static final String TOPIC_USER_EVENT = "topic-user-event";
+    private final UserEventRepository userEventRepository;
+    private final ActionFilter actionFilter;
+    //    private final NoteService noteService;
+    //    private final InsightService insightService;
 
-    public static final String TOPIC_MOUSE_CLICK = "topic-mouse-click";
-
-    public KafkaConsumerService(MouseClickRepository mouseClickRepository) {
-        this.mouseClickRepository = mouseClickRepository;
+    public KafkaConsumerService(UserEventRepository userEventRepository) {
+        this.userEventRepository = userEventRepository;
+        this.actionFilter = new ActionFilter();
+        //        this.noteService = noteService;
+        //        this.insightService = insightService;
     }
 
-    @KafkaListener(topics = TOPIC_MOUSE_CLICK, groupId = "group-mouse-click")
-    public void listenToPartition(@Payload MouseClick mouseClick) {
-        MouseClickMongoModel model = new MouseClickMongoModel();
+    @KafkaListener(topics = TOPIC_USER_EVENT, groupId = "group-user-event")
+    public UserEventDto listenToPartition(@Payload UserEventDto userEventDto) {
+        UserEventMongoModel model = new UserEventMongoModel();
+
+        long eventTimestamp = System.currentTimeMillis();
+        UUID userId = userEventDto.getUserId();
+        UUID noteId = userEventDto.getNoteId();
+        String eventType = userEventDto.getEventType();
 
         model.setId(UUID.randomUUID());
-        model.setNotebookId(mouseClick.getNotebookId());
-        model.setCoordX(mouseClick.getX());
-        model.setCoordY(mouseClick.getY());
-        model.setClickedTargetId(mouseClick.getClickedTarget());
-        model.setTimestamp(Instant.now());
-        mouseClickRepository.save(model);
+        model.setUserId(userId);
+        model.setNoteId(noteId);
+        model.setEventType(eventType);
+        model.setEventAttributes(userEventDto.getEventAttributes());
+        model.setTimestamp(eventTimestamp);
+        userEventRepository.save(model);
+
+        if (eventType.equalsIgnoreCase("Keystroke")) {
+            actionFilter.processKeyPressEvent(noteId, eventTimestamp);
+        }
+
+        return userEventDto;
+    }
+
+    @Scheduled(fixedRate = 5000)
+    public void genInsight() {
+        Set<UUID> inactiveNotes = actionFilter.checkInactiveNotes();
+
+        // TODO: display insight to UI via web socket
     }
 }
