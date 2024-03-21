@@ -2,8 +2,8 @@ package com.abx.ainotebook.service;
 
 import com.abx.ainotebook.generativeai.GenerativeAiService;
 import com.theokanning.openai.completion.CompletionChoice;
-import org.springframework.stereotype.Service;
 import java.util.List;
+import org.springframework.stereotype.Service;
 
 @Service
 public class InsightService {
@@ -34,4 +34,3 @@ public class InsightService {
         return gptService.parseGptResponse(results);
     }
 }
-
