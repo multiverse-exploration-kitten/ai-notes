@@ -1,6 +1,7 @@
 package com.abx.ainotebook.controller;
 
 import com.abx.ainotebook.model.Note;
+import com.abx.ainotebook.service.JwtService;
 import com.abx.ainotebook.service.NoteBookService;
 import com.abx.ainotebook.service.NoteService;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -37,6 +38,9 @@ public class NoteControllerTest {
 
     @Autowired
     private ObjectMapper objectMapper;
+
+    @MockBean
+    private JwtService jwtService;
 
     private static Random random = new Random();
 
