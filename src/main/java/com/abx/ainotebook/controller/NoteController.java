@@ -61,7 +61,7 @@ public class NoteController {
         return ResponseEntity.ok().build();
     }
 
-    @GetMapping("notebooks/{notebookId}")
+    @GetMapping("/notebooks/{notebookId}")
     public ResponseEntity<List<NoteDto>> getNotesByNotebookId(@PathVariable UUID notebookId) {
         if (Objects.equals(notebookId, null)) {
             return ResponseEntity.badRequest().build();
@@ -72,7 +72,7 @@ public class NoteController {
         return ResponseEntity.ok(noteDtos);
     }
 
-    @GetMapping("users/{userId}")
+    @GetMapping("/users/{userId}")
     public ResponseEntity<List<NoteDto>> getNotesByUserId(@PathVariable UUID userId) {
         if (Objects.equals(userId, null)) {
             return ResponseEntity.badRequest().build();
@@ -83,7 +83,7 @@ public class NoteController {
         return ResponseEntity.ok(noteDtos);
     }
 
-    @PostMapping("user/{userId}/notebook/{notebookId}/create_note")
+    @PostMapping("/users/{userId}/notebooks/{notebookId}/create_note")
     public ResponseEntity<NoteDto> createNote(
             @RequestBody CreateNoteDto createNoteDto, @PathVariable UUID userId, @PathVariable UUID notebookId)
             throws Exception {
@@ -91,7 +91,8 @@ public class NoteController {
         if (Objects.equals(createNoteDto.getTitle(), null)) {
             return ResponseEntity.badRequest().build();
         }
-        if (Objects.equals(userId, null)) {
+        if (Objects.equals(userId, null))
+        {
             return ResponseEntity.badRequest().build();
         }
         if (Objects.equals(notebookId, null)) {
