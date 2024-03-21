@@ -116,7 +116,7 @@ public class NoteControllerTest {
                         Mockito.any(CreateNoteDto.class), Mockito.eq(userId), Mockito.eq(notebookId)))
                 .thenReturn(mockCreatedNote);
 
-        mockMvc.perform(MockMvcRequestBuilders.post("/user/" + userId + "/notebook/" + notebookId + "/create_note")
+        mockMvc.perform(MockMvcRequestBuilders.post("/users/" + userId + "/notebooks/" + notebookId + "/create_note")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(createNoteDto)))
                 .andExpect(MockMvcResultMatchers.status().isOk());
