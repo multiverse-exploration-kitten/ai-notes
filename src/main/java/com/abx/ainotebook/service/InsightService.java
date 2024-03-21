@@ -34,3 +34,4 @@ public class InsightService {
         return gptService.parseGptResponse(results);
     }
 }
+
