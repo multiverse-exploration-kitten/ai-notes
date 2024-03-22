@@ -1,5 +1,7 @@
 package com.abx.ainotebook.controller;
 
+import com.abx.ainotebook.dto.CreateNoteDto;
+import com.abx.ainotebook.dto.ImmutableCreateNoteDto;
 import com.abx.ainotebook.model.Note;
 import com.abx.ainotebook.service.JwtService;
 import com.abx.ainotebook.service.NoteBookService;
@@ -16,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
@@ -91,6 +94,31 @@ public class NoteControllerTest {
         Mockito.when(noteService.findByUserId(userId)).thenReturn(Arrays.asList(mockNote));
 
         mockMvc.perform(MockMvcRequestBuilders.get("/users/" + userId))
+                .andExpect(MockMvcResultMatchers.status().isOk());
+    }
+
+    @Test
+    void testCreateNote() throws Exception {
+        // Prepare the input and output objects
+        CreateNoteDto createNoteDto = ImmutableCreateNoteDto.builder()
+                .title("Test Note Title")
+                .content("Test Note Content")
+                .build();
+        long timestamp = 02042024;
+
+        Note mockCreatedNote = new Note();
+        mockCreatedNote.setTitle(createNoteDto.getTitle());
+        mockCreatedNote.setContent(createNoteDto.getContent());
+        mockCreatedNote.setCreatedAt(timestamp);
+        mockCreatedNote.setUpdatedAt(timestamp);
+
+        Mockito.when(noteService.createNote(
+                        Mockito.any(CreateNoteDto.class), Mockito.eq(userId), Mockito.eq(notebookId)))
+                .thenReturn(mockCreatedNote);
+
+        mockMvc.perform(MockMvcRequestBuilders.post("/users/" + userId + "/notebooks/" + notebookId + "/create_note")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(createNoteDto)))
                 .andExpect(MockMvcResultMatchers.status().isOk());
     }
 }

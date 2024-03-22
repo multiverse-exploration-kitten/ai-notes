@@ -6,6 +6,7 @@ import com.abx.ainotebook.model.ImmutableKeystroke;
 import com.abx.ainotebook.model.ImmutableMouseClick;
 import com.abx.ainotebook.model.Keystroke;
 import com.abx.ainotebook.model.MouseClick;
+import com.abx.ainotebook.service.JwtService;
 import com.abx.ainotebook.service.KafkaProducerService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.HashMap;
@@ -31,6 +32,10 @@ public class TrackingControllerTest {
     private MockMvc mockMvc;
 
     @MockBean
+    private JwtService jwtService;
+
+    @MockBean
+
     private KafkaProducerService kafkaProducerService;
 
     private final ObjectMapper objectMapper = new ObjectMapper();

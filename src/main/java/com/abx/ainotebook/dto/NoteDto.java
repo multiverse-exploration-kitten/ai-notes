@@ -18,4 +18,8 @@ public interface NoteDto {
     long getUpdatedAt();
 
     UUID getUserId();
+
+    UUID getId();
+
+    UUID getNotebookId();
 }

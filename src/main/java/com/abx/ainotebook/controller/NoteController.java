@@ -1,7 +1,6 @@
 package com.abx.ainotebook.controller;
 
 import com.abx.ainotebook.dto.CreateNoteDto;
-import com.abx.ainotebook.dto.ImmutableNoteDto;
 import com.abx.ainotebook.dto.NoteDto;
 import com.abx.ainotebook.model.Note;
 import com.abx.ainotebook.service.NoteBookService;
@@ -62,7 +61,7 @@ public class NoteController {
         return ResponseEntity.ok().build();
     }
 
-    @GetMapping("notebooks/{notebookId}")
+    @GetMapping("/notebooks/{notebookId}")
     public ResponseEntity<List<NoteDto>> getNotesByNotebookId(@PathVariable UUID notebookId) {
         if (Objects.equals(notebookId, null)) {
             return ResponseEntity.badRequest().build();
@@ -73,7 +72,7 @@ public class NoteController {
         return ResponseEntity.ok(noteDtos);
     }
 
-    @GetMapping("users/{userId}")
+    @GetMapping("/users/{userId}")
     public ResponseEntity<List<NoteDto>> getNotesByUserId(@PathVariable UUID userId) {
         if (Objects.equals(userId, null)) {
             return ResponseEntity.badRequest().build();
@@ -84,7 +83,7 @@ public class NoteController {
         return ResponseEntity.ok(noteDtos);
     }
 
-    @PostMapping("user/{userId}/notebook/{notebookId}/create_note")
+    @PostMapping("/users/{userId}/notebooks/{notebookId}/create_note")
     public ResponseEntity<NoteDto> createNote(
             @RequestBody CreateNoteDto createNoteDto, @PathVariable UUID userId, @PathVariable UUID notebookId)
             throws Exception {
@@ -99,12 +98,7 @@ public class NoteController {
             return ResponseEntity.badRequest().build();
         }
         Note createdNote = noteService.createNote(createNoteDto, userId, notebookId);
-        NoteDto noteDto = ImmutableNoteDto.builder()
-                .title(createdNote.getTitle())
-                .content(createdNote.getContent())
-                .createdAt(createdNote.getCreatedAt())
-                .updatedAt(createdNote.getUpdatedAt())
-                .build();
+        NoteDto noteDto = noteService.convertNoteToDto(createdNote);
         return ResponseEntity.ok(noteDto);
     }
 
