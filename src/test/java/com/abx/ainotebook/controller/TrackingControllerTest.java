@@ -35,7 +35,6 @@ public class TrackingControllerTest {
     private JwtService jwtService;
 
     @MockBean
-
     private KafkaProducerService kafkaProducerService;
 
     private final ObjectMapper objectMapper = new ObjectMapper();
