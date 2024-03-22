@@ -38,6 +38,9 @@ public class TrackingControllerTest {
 
     private KafkaProducerService kafkaProducerService;
 
+    @MockBean
+    private JwtService jwtService;
+
     private final ObjectMapper objectMapper = new ObjectMapper();
 
     private UserEventDto mouseclickUserEventDto;
