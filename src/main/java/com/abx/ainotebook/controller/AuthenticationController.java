@@ -46,6 +46,7 @@ public class AuthenticationController {
         }
 
         AuthenticationResponse response = authenticationService.authenticate(request);
+        // Should differentiate INTERNAL_SERVER_ERROR and AUTHENTICATION FAILURE
         if (response.getToken() == null) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }

@@ -16,7 +16,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 @Entity
-@Table(name = "users", schema = "ai_notes")
+@Table(name = "users")
 public class User implements UserDetails {
     @Id
     @Column(name = "user_id")
