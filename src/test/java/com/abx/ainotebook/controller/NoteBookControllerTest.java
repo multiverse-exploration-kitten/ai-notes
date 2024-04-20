@@ -41,7 +41,7 @@ public class NoteBookControllerTest {
         Notebook newNotebook = new Notebook(userID, "", "History");
         List<Notebook> notebooks = new ArrayList<>();
         notebooks.add(newNotebook);
-        Mockito.when(noteBookService.findByCategoryUAndUserId("History", userID))
+        Mockito.when(noteBookService.findByCategoryAndUserId("History", userID))
                 .thenReturn(notebooks);
 
         mockMvc.perform(MockMvcRequestBuilders.get(String.format("/notebook/%s/History", userID)))

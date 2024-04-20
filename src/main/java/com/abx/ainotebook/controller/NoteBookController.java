@@ -5,6 +5,8 @@ import com.abx.ainotebook.dto.ImmutableNotebookDto;
 import com.abx.ainotebook.dto.NotebookDto;
 import com.abx.ainotebook.model.Notebook;
 import com.abx.ainotebook.service.NoteBookService;
+
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
@@ -23,16 +25,35 @@ public class NoteBookController {
         this.noteBookService = noteBookService;
     }
 
-    @GetMapping("/notebook/{user_uuid}/{user_id_category_index}")
+    @GetMapping("/notebook/{userId}")
+    public ResponseEntity<List<NotebookDto>> getNotebooksByUserId(@PathVariable UUID userId) {
+        if (Objects.equals(userId, "") || Objects.isNull(userId)) {
+            return ResponseEntity.badRequest().body(null);
+        }
+        List<Notebook> notebooks = noteBookService.findByUserId(userId);
+        List<NotebookDto> notebookDtos = new ArrayList<>();
+        for (Notebook notebook : notebooks) {
+            NotebookDto notebookDto = ImmutableNotebookDto.builder()
+                    .category(notebook.getCategory())
+                    .title(notebook.getTitle())
+                    .createdAt(notebook.getCreatedAt())
+                    .updatedAt(notebook.getUpdatedAt())
+                    .build();
+            notebookDtos.add(notebookDto);
+        }
+        return ResponseEntity.ok(notebookDtos);
+    }
+
+    @GetMapping("/notebook/{userId}/{category}")
     public ResponseEntity<List<Notebook>> findByCategoryUAndUserId(
-            @PathVariable("user_id_category_index") String category, @PathVariable("user_uuid") UUID userID) {
+            @PathVariable("category") String category, @PathVariable("userId") UUID userID) {
         if (Objects.equals(category, "")) {
             return ResponseEntity.badRequest().body(null);
         }
         if (Objects.equals(userID, null)) {
             return ResponseEntity.badRequest().body(null);
         }
-        var found = noteBookService.findByCategoryUAndUserId(category, userID);
+        var found = noteBookService.findByCategoryAndUserId(category, userID);
         return ResponseEntity.ok(found);
     }
 

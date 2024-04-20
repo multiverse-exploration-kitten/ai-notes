@@ -32,12 +32,12 @@ public class NoteController {
         this.noteBookService = noteBookService;
     }
 
-    @GetMapping("/notes")
+    @GetMapping("/note")
     public String notes() {
         return "note";
     }
 
-    @GetMapping("/notes/{noteId}")
+    @GetMapping("/note/{noteId}")
     public ResponseEntity<Note> getNote(@PathVariable("noteId") UUID noteId) {
         if (Objects.equals(noteId, null)) {
             return ResponseEntity.badRequest().build();
@@ -46,13 +46,13 @@ public class NoteController {
         return ResponseEntity.ok(note);
     }
 
-    @GetMapping("/notes/list")
+    @GetMapping("/note/list")
     public ResponseEntity<List<Note>> getNotes() {
         List<Note> notes = noteService.findAllNotes();
         return ResponseEntity.ok(notes);
     }
 
-    @DeleteMapping("/notes/{noteId}")
+    @DeleteMapping("/note/{noteId}")
     public ResponseEntity<Note> deleteNote(@PathVariable("noteId") UUID noteId) {
         if (Objects.equals(noteId, null)) {
             return ResponseEntity.badRequest().build();
@@ -61,7 +61,7 @@ public class NoteController {
         return ResponseEntity.ok().build();
     }
 
-    @GetMapping("/notebooks/{notebookId}")
+    @GetMapping("/notebook/{notebookId}")
     public ResponseEntity<List<NoteDto>> getNotesByNotebookId(@PathVariable UUID notebookId) {
         if (Objects.equals(notebookId, null)) {
             return ResponseEntity.badRequest().build();
@@ -72,7 +72,7 @@ public class NoteController {
         return ResponseEntity.ok(noteDtos);
     }
 
-    @GetMapping("/users/{userId}")
+    @GetMapping("/user/{userId}")
     public ResponseEntity<List<NoteDto>> getNotesByUserId(@PathVariable UUID userId) {
         if (Objects.equals(userId, null)) {
             return ResponseEntity.badRequest().build();
@@ -83,7 +83,7 @@ public class NoteController {
         return ResponseEntity.ok(noteDtos);
     }
 
-    @PostMapping("/users/{userId}/notebooks/{notebookId}/create_note")
+    @PostMapping("/user/{userId}/notebook/{notebookId}/create_note")
     public ResponseEntity<NoteDto> createNote(
             @RequestBody CreateNoteDto createNoteDto, @PathVariable UUID userId, @PathVariable UUID notebookId)
             throws Exception {
@@ -102,7 +102,7 @@ public class NoteController {
         return ResponseEntity.ok(noteDto);
     }
 
-    @MessageMapping("/notes/{noteId}/auto-save")
+    @MessageMapping("/note/{noteId}/auto-save")
     public ResponseEntity<String> receiveNote(@DestinationVariable UUID noteId, @RequestBody String noteContent) {
         log("Received Note Content: " + noteContent);
         noteService.modifyNote(noteId, noteContent);

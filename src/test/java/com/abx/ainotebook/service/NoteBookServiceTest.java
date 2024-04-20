@@ -56,15 +56,15 @@ class NoteBookServiceTest {
     @Test
     void findByCategoryUAndUserId() {
         UUID userID = UUID.randomUUID();
-        noteBookService.findByCategoryUAndUserId("History", userID);
-        verify(noteBookService, times((1))).findByCategoryUAndUserId("History", userID);
+        noteBookService.findByCategoryAndUserId("History", userID);
+        verify(noteBookService, times((1))).findByCategoryAndUserId("History", userID);
     }
 
     @Test
     void findByTitleAndUserId() {
         UUID userID = UUID.randomUUID();
-        noteBookService.findByCategoryUAndUserId("Lesson One", userID);
-        verify(noteBookService, times((1))).findByCategoryUAndUserId("Lesson One", userID);
+        noteBookService.findByCategoryAndUserId("Lesson One", userID);
+        verify(noteBookService, times((1))).findByCategoryAndUserId("Lesson One", userID);
     }
 
     @Test
