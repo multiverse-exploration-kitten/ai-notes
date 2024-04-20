@@ -19,9 +19,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
+@RequestMapping("/note-api")
 public class NoteController {
     private static final Logger logger = LoggerFactory.getLogger(NoteController.class);
     private final NoteService noteService;
@@ -83,7 +85,7 @@ public class NoteController {
         return ResponseEntity.ok(noteDtos);
     }
 
-    @PostMapping("/user/{userId}/notebook/{notebookId}/create_note")
+    @PostMapping("/user/{userId}/notebook/{notebookId}/create")
     public ResponseEntity<NoteDto> createNote(
             @RequestBody CreateNoteDto createNoteDto, @PathVariable UUID userId, @PathVariable UUID notebookId)
             throws Exception {

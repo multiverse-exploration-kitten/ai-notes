@@ -13,6 +13,7 @@ public class Notebook {
     @Id
     private UUID notebookId;
 
+    @Column(name = "user_id")
     private UUID userId;
 
     @Column(name = "title")
@@ -36,11 +37,7 @@ public class Notebook {
         this.updatedAt = updatedAt;
     }
 
-    public Notebook(UUID userId, String title, String category) {
-        this.userId = userId;
-        this.title = title;
-        this.category = category;
-    }
+    public Notebook() {}
 
     public UUID getNotebookId() {
         return notebookId;

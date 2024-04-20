@@ -13,9 +13,11 @@ public interface NotebookDto {
 
     String getCategory();
 
-    long getCreatedAt();
+    UUID getUserID();
 
-    UUID userID();
+    UUID getId();
+
+    long getCreatedAt();
 
     long getUpdatedAt();
 }
