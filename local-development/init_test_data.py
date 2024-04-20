@@ -41,6 +41,9 @@ def generate_users_notes():
     # Connect to MongoDB
     mongodb_uri = "mongodb://root:password@localhost:27017/ainotes_db"
     client = MongoClient(mongodb_uri, authSource="admin", uuidRepresentation='standard')
+    # Connect to Postgres
+
+    userId = "123e4567-e89b-12d3-a456-426614174000"
 
     db = client['ainotes_db']
     users = db['users']
@@ -87,4 +90,4 @@ def generate_users_notes():
 
 # Call the function to insert the note
 # insert_note()
-generate_users_notes()
+# generate_users_notes()
