@@ -64,8 +64,7 @@ public class NoteControllerTest {
                 "Test",
                 "Hello world!",
                 System.currentTimeMillis(),
-                System.currentTimeMillis()
-        );
+                System.currentTimeMillis());
     }
 
     @Test
@@ -116,8 +115,7 @@ public class NoteControllerTest {
         mockCreatedNote.setCreatedAt(timestamp);
         mockCreatedNote.setUpdatedAt(timestamp);
         Mockito.when(noteService.createNote(
-                        Mockito.any(CreateNoteDto.class), Mockito.eq(userId), Mockito.eq(notebookId)
-                ))
+                        Mockito.any(CreateNoteDto.class), Mockito.eq(userId), Mockito.eq(notebookId)))
                 .thenReturn(mockCreatedNote);
         mockMvc.perform(MockMvcRequestBuilders.post("/note-api/user/" + userId + "/notebook/" + notebookId + "/create")
                         .contentType(MediaType.APPLICATION_JSON)

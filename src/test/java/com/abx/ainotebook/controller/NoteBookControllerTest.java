@@ -2,17 +2,13 @@ package com.abx.ainotebook.controller;
 
 import com.abx.ainotebook.dto.CreateNotebookDto;
 import com.abx.ainotebook.dto.ImmutableCreateNotebookDto;
-import com.abx.ainotebook.dto.ImmutableNotebookDto;
-import com.abx.ainotebook.dto.NotebookDto;
 import com.abx.ainotebook.model.Notebook;
 import com.abx.ainotebook.service.JwtService;
 import com.abx.ainotebook.service.NoteBookService;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentMatchers;
@@ -66,7 +62,8 @@ public class NoteBookControllerTest {
     @Test
     public void givenUserId_whenFindByCategory_thenReturnsOk() throws Exception {
         List<Notebook> notebooks = Collections.singletonList(notebook);
-        Mockito.when(noteBookService.findByCategoryAndUserId(CATEGORY_HISTORY, userId)).thenReturn(notebooks);
+        Mockito.when(noteBookService.findByCategoryAndUserId(CATEGORY_HISTORY, userId))
+                .thenReturn(notebooks);
 
         mockMvc.perform(MockMvcRequestBuilders.get(NOTEBOOK_API_BASE + userId + "/category/" + CATEGORY_HISTORY))
                 .andExpect(MockMvcResultMatchers.status().isOk())
