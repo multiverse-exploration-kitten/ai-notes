@@ -1,7 +1,6 @@
 package com.abx.ainotebook.controller;
 
 import com.abx.ainotebook.dto.CreateNotebookDto;
-import com.abx.ainotebook.dto.ImmutableNotebookDto;
 import com.abx.ainotebook.dto.NotebookDto;
 import com.abx.ainotebook.model.Notebook;
 import com.abx.ainotebook.service.NoteBookService;
@@ -74,14 +73,7 @@ public class NoteBookController {
             return ResponseEntity.badRequest().build();
         }
         Notebook createdNotebook = noteBookService.createNotebook(createNotebookDto, userId);
-        NotebookDto responseNotebook = ImmutableNotebookDto.builder()
-                .category(createdNotebook.getCategory())
-                .title(createdNotebook.getTitle())
-                .createdAt(createdNotebook.getCreatedAt())
-                .updatedAt(createdNotebook.getUpdatedAt())
-                .userID(userId)
-                .id(createdNotebook.getNotebookId())
-                .build();
-        return ResponseEntity.ok(responseNotebook);
+        NotebookDto responseNotebookDto = noteBookService.convertNotebookToDto(createdNotebook);
+        return ResponseEntity.ok(responseNotebookDto);
     }
 }

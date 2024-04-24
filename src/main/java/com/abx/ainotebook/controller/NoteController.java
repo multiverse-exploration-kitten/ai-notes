@@ -34,11 +34,6 @@ public class NoteController {
         this.noteBookService = noteBookService;
     }
 
-    @GetMapping("/note")
-    public String notes() {
-        return "note";
-    }
-
     @GetMapping("/note/{noteId}")
     public ResponseEntity<Note> getNote(@PathVariable("noteId") UUID noteId) {
         if (Objects.equals(noteId, null)) {
