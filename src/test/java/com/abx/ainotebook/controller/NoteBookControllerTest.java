@@ -9,8 +9,11 @@ import com.abx.ainotebook.service.JwtService;
 import com.abx.ainotebook.service.NoteBookService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
+
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentMatchers;
 import org.mockito.Mockito;
@@ -26,6 +29,10 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 @WebMvcTest(NoteBookController.class)
 @AutoConfigureMockMvc(addFilters = false)
 public class NoteBookControllerTest {
+    private static final String NOTEBOOK_API_BASE = "/notebook-api/user/";
+    private static final String CATEGORY_HISTORY = "History";
+    private static final String CATEGORY_SCIENCE = "Science";
+
     @Autowired
     private MockMvc mockMvc;
 
@@ -36,56 +43,43 @@ public class NoteBookControllerTest {
     private NoteBookService noteBookService;
 
     private final ObjectMapper objectMapper = new ObjectMapper();
+    private UUID userId;
+    private CreateNotebookDto createNotebookDto;
+    private Notebook notebook;
 
-    @Test
-    public void findByCategoryUAndUserId() throws Exception {
-        UUID userID = UUID.randomUUID();
-        CreateNotebookDto createNotebookDto = ImmutableCreateNotebookDto.builder()
-                .title("Test Title")
-                .category("History")
+    @BeforeEach
+    public void setup() {
+        userId = UUID.randomUUID();
+        createNotebookDto = ImmutableCreateNotebookDto.builder()
+                .category(CATEGORY_SCIENCE)
+                .title("New Discoveries")
                 .build();
-        Notebook newNotebook = noteBookService.createNotebook(createNotebookDto, userID);
-        List<Notebook> notebooks = new ArrayList<>();
-        notebooks.add(newNotebook);
-        Mockito.when(noteBookService.findByCategoryAndUserId("History", userID)).thenReturn(notebooks);
-
-        mockMvc.perform(MockMvcRequestBuilders.get(String.format("/notebook-api/user/%s/category/History", userID)))
-                .andExpect(MockMvcResultMatchers.status().isOk());
-        //        mockMvc.perform(MockMvcRequestBuilders.get(String.format("/notebook-api/user/%s/category/History",
-        // userID)))
-        //                .andExpect(MockMvcResultMatchers.status().isOk())
-        //                .andExpect(MockMvcResultMatchers.jsonPath("$[0].category").value("History"));
+        notebook = new Notebook();
+        notebook.setUserId(userId);
+        notebook.setNotebookId(UUID.randomUUID());
+        notebook.setTitle("New Discoveries");
+        notebook.setCategory(CATEGORY_HISTORY);
+        notebook.setCreatedAt(System.currentTimeMillis());
+        notebook.setUpdatedAt(System.currentTimeMillis());
     }
 
     @Test
-    public void createNotebook() throws Exception {
-        UUID userId = UUID.randomUUID();
-        CreateNotebookDto createNotebookDto = ImmutableCreateNotebookDto.builder()
-                .category("Science")
-                .title("New Discoveries")
-                .build();
-        NotebookDto notebookDto = ImmutableNotebookDto.builder()
-                .category("Science")
-                .title("New Discoveries")
-                .createdAt(System.currentTimeMillis())
-                .updatedAt(System.currentTimeMillis())
-                .userID(userId)
-                .id(UUID.randomUUID())
-                .build();
+    public void givenUserId_whenFindByCategory_thenReturnsOk() throws Exception {
+        List<Notebook> notebooks = Collections.singletonList(notebook);
+        Mockito.when(noteBookService.findByCategoryAndUserId(CATEGORY_HISTORY, userId)).thenReturn(notebooks);
 
-        Notebook notebook = new Notebook(); // Assuming you have a proper constructor or use a builder
-        notebook.setCategory("Science");
-        notebook.setTitle("New Discoveries");
-        notebook.setCreatedAt(System.currentTimeMillis());
-        notebook.setUpdatedAt(System.currentTimeMillis());
-        notebook.setUserId(userId);
-        notebook.setNotebookId(notebookDto.getId());
+        mockMvc.perform(MockMvcRequestBuilders.get(NOTEBOOK_API_BASE + userId + "/category/" + CATEGORY_HISTORY))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.content().json(objectMapper.writeValueAsString(notebooks)));
+    }
 
+    @Test
+    public void givenNotebookDetails_whenCreateNotebook_thenReturnsOk() throws Exception {
         Mockito.when(noteBookService.createNotebook(
-                        ArgumentMatchers.any(CreateNotebookDto.class), ArgumentMatchers.any(UUID.class)))
+                        ArgumentMatchers.any(CreateNotebookDto.class), ArgumentMatchers.eq(userId)))
                 .thenReturn(notebook);
 
-        mockMvc.perform(MockMvcRequestBuilders.post(String.format("/notebook-api/user/%s/create", userId))
+        mockMvc.perform(MockMvcRequestBuilders.post(NOTEBOOK_API_BASE + userId + "/create")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(createNotebookDto)))
                 .andExpect(MockMvcResultMatchers.status().isOk());
