@@ -44,7 +44,7 @@ public class NoteBookControllerTest {
     private Notebook notebook;
 
     @BeforeEach
-    public void setup() {
+    public void before() {
         userId = UUID.randomUUID();
         createNotebookDto = ImmutableCreateNotebookDto.builder()
                 .category(CATEGORY_SCIENCE)
