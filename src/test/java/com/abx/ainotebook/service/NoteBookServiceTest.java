@@ -5,8 +5,6 @@ import static org.mockito.Mockito.verify;
 
 import com.abx.ainotebook.dto.CreateNotebookDto;
 import com.abx.ainotebook.dto.ImmutableCreateNotebookDto;
-import com.abx.ainotebook.dto.ImmutableNotebookDto;
-import com.abx.ainotebook.dto.NotebookDto;
 import com.abx.ainotebook.model.Notebook;
 import com.abx.ainotebook.repository.NotebookRepository;
 import java.util.UUID;
@@ -28,22 +26,14 @@ class NoteBookServiceTest {
     private JwtService jwtService;
 
     @Test
-    void createNotebook() {
+    void createNotebook() throws Exception {
         UUID userID = UUID.randomUUID();
-        long timestamp = 02042024;
-        NotebookDto notebookdto = ImmutableNotebookDto.builder()
-                .userID(userID)
-                .title("")
-                .category("")
-                .createdAt(timestamp)
-                .updatedAt(timestamp)
-                .build();
-        Notebook notebook = new Notebook(userID, notebookdto.getTitle(), notebookdto.getCategory());
+
         CreateNotebookDto createNotebookDto =
                 ImmutableCreateNotebookDto.builder().category("").title("").build();
+        Notebook notebook = noteBookService.createNotebook(createNotebookDto, userID);
 
         Mockito.when(notebookRepository.save(notebook)).thenReturn(notebook);
-        noteBookService.createNotebook(createNotebookDto, userID);
         verify(noteBookService, times(1)).createNotebook(createNotebookDto, userID);
     }
 
@@ -56,29 +46,24 @@ class NoteBookServiceTest {
     @Test
     void findByCategoryUAndUserId() {
         UUID userID = UUID.randomUUID();
-        noteBookService.findByCategoryUAndUserId("History", userID);
-        verify(noteBookService, times((1))).findByCategoryUAndUserId("History", userID);
+        noteBookService.findByCategoryAndUserId("History", userID);
+        verify(noteBookService, times((1))).findByCategoryAndUserId("History", userID);
     }
 
     @Test
     void findByTitleAndUserId() {
         UUID userID = UUID.randomUUID();
-        noteBookService.findByCategoryUAndUserId("Lesson One", userID);
-        verify(noteBookService, times((1))).findByCategoryUAndUserId("Lesson One", userID);
+        noteBookService.findByCategoryAndUserId("Lesson One", userID);
+        verify(noteBookService, times((1))).findByCategoryAndUserId("Lesson One", userID);
     }
 
     @Test
-    void save() {
+    void save() throws Exception {
         UUID userID = UUID.randomUUID();
         long timestamp = 02042024;
-        NotebookDto notebookdto = ImmutableNotebookDto.builder()
-                .userID(userID)
-                .title("")
-                .category("")
-                .createdAt(timestamp)
-                .updatedAt(timestamp)
-                .build();
-        Notebook notebook = new Notebook(userID, notebookdto.getTitle(), notebookdto.getCategory());
+        CreateNotebookDto createNotebookdto =
+                ImmutableCreateNotebookDto.builder().title("").category("").build();
+        Notebook notebook = noteBookService.createNotebook(createNotebookdto, userID);
         noteBookService.save(notebook);
         verify(noteBookService, times(1)).save(notebook);
     }

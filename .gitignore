@@ -37,4 +37,5 @@ out/
 .vscode/
 
 .DS_Store
-
+local-development/__pycache__
+local-development/__pycache__/*.pyc

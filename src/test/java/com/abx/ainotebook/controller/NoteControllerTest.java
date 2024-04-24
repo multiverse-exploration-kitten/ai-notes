@@ -57,43 +57,47 @@ public class NoteControllerTest {
         noteId = UUID.randomUUID();
         userId = UUID.randomUUID();
         notebookId = UUID.randomUUID();
+        mockNote = new Note(
+                noteId,
+                userId,
+                notebookId,
+                "Test",
+                "Hello world!",
+                System.currentTimeMillis(),
+                System.currentTimeMillis());
     }
 
     @Test
     void testGetNote() throws Exception {
         Mockito.when(noteService.findById(noteId)).thenReturn(mockNote);
-
-        mockMvc.perform(MockMvcRequestBuilders.get("/notes/" + noteId))
+        mockMvc.perform(MockMvcRequestBuilders.get("/note-api/note/" + noteId))
                 .andExpect(MockMvcResultMatchers.status().isOk());
     }
 
     @Test
     void testGetNotes() throws Exception {
-        Mockito.when(noteService.findAllNotes()).thenReturn(Arrays.asList(mockNote, mockNote));
-
-        mockMvc.perform(MockMvcRequestBuilders.get("/notes/list"))
+        Mockito.when(noteService.findAllNotes()).thenReturn(Arrays.asList(mockNote));
+        mockMvc.perform(MockMvcRequestBuilders.get("/note-api/note/list"))
                 .andExpect(MockMvcResultMatchers.status().isOk());
     }
 
     @Test
     void testDeleteNote() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.delete("/notes/" + noteId))
+        mockMvc.perform(MockMvcRequestBuilders.delete("/note-api/note/" + noteId))
                 .andExpect(MockMvcResultMatchers.status().isOk());
     }
 
     @Test
     void testGetNotesByNotebookId() throws Exception {
         Mockito.when(noteService.findByNotebookId(notebookId)).thenReturn(Arrays.asList(mockNote));
-
-        mockMvc.perform(MockMvcRequestBuilders.get("/notebooks/" + notebookId))
+        mockMvc.perform(MockMvcRequestBuilders.get("/note-api/notebook/" + notebookId))
                 .andExpect(MockMvcResultMatchers.status().isOk());
     }
 
     @Test
     void testGetNotesByUserId() throws Exception {
         Mockito.when(noteService.findByUserId(userId)).thenReturn(Arrays.asList(mockNote));
-
-        mockMvc.perform(MockMvcRequestBuilders.get("/users/" + userId))
+        mockMvc.perform(MockMvcRequestBuilders.get("/note-api/user/" + userId))
                 .andExpect(MockMvcResultMatchers.status().isOk());
     }
 
@@ -105,18 +109,15 @@ public class NoteControllerTest {
                 .content("Test Note Content")
                 .build();
         long timestamp = 02042024;
-
         Note mockCreatedNote = new Note();
         mockCreatedNote.setTitle(createNoteDto.getTitle());
         mockCreatedNote.setContent(createNoteDto.getContent());
         mockCreatedNote.setCreatedAt(timestamp);
         mockCreatedNote.setUpdatedAt(timestamp);
-
         Mockito.when(noteService.createNote(
                         Mockito.any(CreateNoteDto.class), Mockito.eq(userId), Mockito.eq(notebookId)))
                 .thenReturn(mockCreatedNote);
-
-        mockMvc.perform(MockMvcRequestBuilders.post("/users/" + userId + "/notebooks/" + notebookId + "/create_note")
+        mockMvc.perform(MockMvcRequestBuilders.post("/note-api/user/" + userId + "/notebook/" + notebookId + "/create")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(createNoteDto)))
                 .andExpect(MockMvcResultMatchers.status().isOk());
