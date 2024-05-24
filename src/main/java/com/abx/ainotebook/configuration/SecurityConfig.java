@@ -36,7 +36,7 @@ public class SecurityConfig {
                     authorizeHttpRequests
                             .requestMatchers("/api/v1/auth/register", "/api/v1/auth/authenticate")
                             .permitAll();
-                    if (Arrays.asList(env.getActiveProfiles()).contains("dev")) {
+                    if (Arrays.asList(env.getActiveProfiles()).contains("dev") || Arrays.asList(env.getActiveProfiles()).contains("test")) {
                         authorizeHttpRequests.anyRequest().permitAll();
                     } else {
                         authorizeHttpRequests.anyRequest().authenticated();
