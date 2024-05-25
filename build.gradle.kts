@@ -62,6 +62,10 @@ tasks.named<Checkstyle>("checkstyleTest").configure {
     source = fileTree("src/test/java")
 }
 
+tasks.withType<JavaCompile> {
+    options.encoding = "UTF-8"
+    options.release = 17
+}
 
 val checkstylePublicTask = tasks.register("checkstyle") {
     group = "verification"
