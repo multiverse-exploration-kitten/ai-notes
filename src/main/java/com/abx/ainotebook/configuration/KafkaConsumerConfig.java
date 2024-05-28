@@ -36,7 +36,6 @@ public class KafkaConsumerConfig {
 
     @Bean
     public ConcurrentKafkaListenerContainerFactory<UUID, UserEventDto> kafkaListenerContainerFactory() {
-
         ConcurrentKafkaListenerContainerFactory<UUID, UserEventDto> factory =
                 new ConcurrentKafkaListenerContainerFactory<>();
         factory.setConsumerFactory(consumerFactory());

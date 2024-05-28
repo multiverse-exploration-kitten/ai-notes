@@ -31,7 +31,7 @@ dependencies {
 
     implementation ("com.theokanning.openai-gpt3-java:service:0.12.0")
 
-
+    implementation ("org.apache.kafka:kafka-clients")
     implementation ("org.springframework.kafka:spring-kafka")
     testImplementation ("org.springframework.kafka:spring-kafka-test")
 
