@@ -36,11 +36,10 @@ public class SecurityConfig {
                     authorizeHttpRequests
                             .requestMatchers("/api/v1/auth/register", "/api/v1/auth/authenticate")
                             .permitAll();
-                    if (Arrays.asList(env.getActiveProfiles()).contains("dev")
-                            || Arrays.asList(env.getActiveProfiles()).contains("test")) {
-                        authorizeHttpRequests.anyRequest().permitAll();
-                    } else {
+                    if (Arrays.asList(env.getActiveProfiles()).contains("prod")) {
                         authorizeHttpRequests.anyRequest().authenticated();
+                    } else {
+                        authorizeHttpRequests.anyRequest().permitAll();
                     }
                 })
                 .sessionManagement(
