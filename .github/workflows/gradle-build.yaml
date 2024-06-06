@@ -41,10 +41,6 @@ jobs:
         uses: gradle/wrapper-validation-action@ccb4328a959376b642e027874838f60f8e596de3
       - name: Setup Bitnami Kafka
         uses: bbcCorp/kafka-actions@v1
-      - name: Wait for Kafka to be ready
-        run: |
-          echo "Waiting for Kafka to be ready..."
-          while ! curl --silent kafka:9092/brokers/ids; do sleep 5; done
       - name: Build with Gradle
         uses: gradle/gradle-build-action@749f47bda3e44aa060e82d7b3ef7e40d953bd629
         with:
