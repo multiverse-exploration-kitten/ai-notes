@@ -30,31 +30,6 @@ jobs:
         ports:
           - 27017:27017
 
-      zookeeper:
-        image: wurstmeister/zookeeper:3.4.6
-        ports:
-          - 2181:2181
-        options: >-
-          --health-cmd "echo ruok | nc localhost 2181 | grep imok"
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
-
-      kafka:
-        image: wurstmeister/kafka:2.13-2.7.0
-        ports:
-          - 9092:9092
-        env:
-          KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
-          ALLOW_PLAINTEXT_LISTENER: yes
-          KAFKA_LISTENERS: PLAINTEXT://:9092
-          KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://127.0.0.1:9092
-        options: >-
-          --health-cmd "curl --silent localhost:9092/brokers/ids"
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 10
-
     steps:
       - uses: actions/checkout@v3
       - name: Set up JDK 17
@@ -64,10 +39,12 @@ jobs:
           distribution: 'temurin'
       - name: Validate Gradle wrapper
         uses: gradle/wrapper-validation-action@ccb4328a959376b642e027874838f60f8e596de3
-      - name: Wait for Zookeeper to be ready
+      - name: Setup Bitnami Kafka
+        uses: bbcCorp/kafka-actions@v1
+      - name: Wait for Kafka to be ready
         run: |
-          echo "Waiting for Zookeeper to be ready..."
-          while ! echo ruok | nc localhost 2181 | grep -q imok; do sleep 5; done
+          echo "Waiting for Kafka to be ready..."
+          while ! curl --silent kafka:9092/brokers/ids; do sleep 5; done
       - name: Build with Gradle
         uses: gradle/gradle-build-action@749f47bda3e44aa060e82d7b3ef7e40d953bd629
         with:
