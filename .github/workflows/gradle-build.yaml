@@ -40,6 +40,11 @@ jobs:
         ports:
           - 27017:27017
 
+      zookeeper:
+        image: wurstmeister/zookeeper:3.4.6
+        ports:
+          - 2181:2181
+
       kafka:
         image: wurstmeister/kafka:2.13-2.7.0
         ports:
@@ -53,11 +58,6 @@ jobs:
           --health-interval 10s
           --health-timeout 10s
           --health-retries 10
-
-        zoo_keeper:
-          image: wurstmeister/zookeeper:3.4.6
-          ports:
-            - 2181:2181
 
     steps:
       - uses: actions/checkout@v3
