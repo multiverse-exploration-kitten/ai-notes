@@ -54,7 +54,7 @@ jobs:
           --health-timeout 10s
           --health-retries 10
 
-        zookeeper:
+        zoo_keeper:
           image: wurstmeister/zookeeper:3.4.6
           ports:
             - 2181:2181
