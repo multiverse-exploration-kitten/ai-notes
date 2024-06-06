@@ -40,6 +40,25 @@ jobs:
         ports:
           - 27017:27017
 
+      kafka:
+        image: wurstmeister/kafka:2.13-2.7.0
+        ports:
+          - 9092:9092
+        env:
+          KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:9092
+          KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+        options: >-
+          --network-alias kafka
+          --health-cmd "sh -c 'unset JMX_PORT; echo dump | nc localhost 2181 | grep Mode'"
+          --health-interval 10s
+          --health-timeout 10s
+          --health-retries 10
+
+        zookeeper:
+          image: wurstmeister/zookeeper:3.4.6
+          ports:
+            - 2181:2181
+
     steps:
       - uses: actions/checkout@v3
       - name: Set up JDK 17

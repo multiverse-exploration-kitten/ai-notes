@@ -4,15 +4,14 @@ import com.abx.ainotebook.dto.UserEventDto;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
-import org.apache.kafka.clients.admin.AdminClientConfig;
-import org.apache.kafka.clients.admin.NewTopic;
+import org.apache.kafka.clients.CommonClientConfigs;
 import org.apache.kafka.clients.producer.ProducerConfig;
+import org.apache.kafka.common.config.SaslConfigs;
 import org.apache.kafka.common.serialization.UUIDSerializer;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.kafka.core.DefaultKafkaProducerFactory;
-import org.springframework.kafka.core.KafkaAdmin;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.core.ProducerFactory;
 import org.springframework.kafka.support.serializer.JsonSerializer;
@@ -22,17 +21,14 @@ public class KafkaProducerConfig {
     @Value("${spring.kafka.bootstrap-servers}")
     private String kafkaBootstrapServers;
 
-    @Bean
-    public KafkaAdmin kafkaAdmin() {
-        Map<String, Object> configs = new HashMap<>();
-        configs.put(AdminClientConfig.BOOTSTRAP_SERVERS_CONFIG, kafkaBootstrapServers);
-        return new KafkaAdmin(configs);
-    }
+    @Value("${spring.kafka.properties.security.protocol}")
+    private String securityProtocol;
 
-    @Bean
-    public NewTopic userEventTopic() {
-        return new NewTopic("topic-user-event", 1, (short) 1);
-    }
+    @Value("${spring.kafka.properties.sasl.mechanism}")
+    private String saslMechanism;
+
+    @Value("${spring.kafka.properties.security.protocol}")
+    private String securityProtocolConfig;
 
     @Bean
     public ProducerFactory<UUID, UserEventDto> producerFactory() {
@@ -41,6 +37,12 @@ public class KafkaProducerConfig {
         configProps.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, kafkaBootstrapServers);
         configProps.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, UUIDSerializer.class);
         configProps.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, JsonSerializer.class);
+
+        if (securityProtocol != null && saslMechanism != null && securityProtocolConfig != null) {
+            configProps.put(CommonClientConfigs.SECURITY_PROTOCOL_CONFIG, securityProtocol);
+            configProps.put(SaslConfigs.SASL_MECHANISM, saslMechanism);
+            configProps.put(SaslConfigs.SASL_JAAS_CONFIG, securityProtocolConfig);
+        }
 
         JsonSerializer<UserEventDto> userEventJsonSerializer = new JsonSerializer<>();
         return new DefaultKafkaProducerFactory<>(configProps, new UUIDSerializer(), userEventJsonSerializer);

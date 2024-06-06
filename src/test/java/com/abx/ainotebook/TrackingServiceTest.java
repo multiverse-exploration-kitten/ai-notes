@@ -23,10 +23,12 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.kafka.test.EmbeddedKafkaBroker;
 import org.springframework.kafka.test.context.EmbeddedKafka;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestPropertySource;
 
 @SpringBootTest
 @EmbeddedKafka
+@ActiveProfiles("test")
 @TestPropertySource(
         properties = {
             "spring.kafka.bootstrap-servers=${spring.embedded.kafka.brokers}",
