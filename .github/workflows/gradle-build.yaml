@@ -49,12 +49,10 @@ jobs:
           KAFKA_LISTENERS: PLAINTEXT://0.0.0.0:9092
           KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
         options: >-
-          --health-cmd "echo dump | nc localhost 2181 | grep brokers"
+          --health-cmd "curl --silent localhost:9092/brokers/ids"
           --health-interval 10s
           --health-timeout 5s
           --health-retries 10
-        depends_on:
-          - zookeeper
 
     steps:
       - uses: actions/checkout@v3
@@ -65,6 +63,10 @@ jobs:
           distribution: 'temurin'
       - name: Validate Gradle wrapper
         uses: gradle/wrapper-validation-action@ccb4328a959376b642e027874838f60f8e596de3
+      - name: Wait for Zookeeper to be ready
+        run: |
+          echo "Waiting for Zookeeper to be ready..."
+          while ! echo ruok | nc localhost 2181 | grep -q imok; do sleep 5; done
       - name: Build with Gradle
         uses: gradle/gradle-build-action@749f47bda3e44aa060e82d7b3ef7e40d953bd629
         with:
